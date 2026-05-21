@@ -1,61 +1,66 @@
-:root {
-  /* Primary teal */
-  /* core identity color. Used for almost everything interactive. */
-  --teal-50: #e6f5f5;
-  --teal-100: #c0e8e8;
-  --teal-200: #80cfcf;
+@import "tailwindcss";
 
-  --teal-300: #3dbdbc;
-  --teal-400: #00b7b5;
-  --teal-500: #019a98;
+@theme {
+  /* --- Custom Keyframes & Animations --- */
+  --animate-fade-in: fadeIn 0.4s ease-out forwards;
 
-  --teal-600: #018790;
-  --teal-700: #016a71;
-  --teal-800: #005461;
-  --teal-900: #003a45;
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 
-  /* Gold */
-  /* Ratings, featured badges, Islamic decorative elements, premium indicators */
-  --gold-50: #fdf8ec;
-  --gold-100: #fae9b0;
-  --gold-200: #f5d06a;
+  /* --- Brand Color Palette (Tailwind v4 Mapping) --- */
+  /* This instantly gives you utility classes like bg-teal-500, text-gold-300, border-neutral-800 */
 
-  --gold-300: #edb830;
-  --gold-400: #e8a838;
-  --gold-500: #c98a1a;
+  --color-teal-50: #e6f5f5;
+  --color-teal-100: #c0e8e8;
+  --color-teal-200: #80cfcf;
+  --color-teal-300: #3dbdbc;
+  --color-teal-400: #00b7b5;
+  --color-teal-500: #019a98;
+  --color-teal-600: #018790;
+  --color-teal-700: #016a71;
+  --color-teal-800: #005461;
+  --color-teal-900: #003a45;
 
-  --gold-600: #a86d0d;
-  --gold-700: #845208;
-  --gold-800: #623b04;
-  --gold-900: #3d2302;
+  --color-gold-50: #fdf8ec;
+  --color-gold-100: #fae9b0;
+  --color-gold-200: #f5d06a;
+  --color-gold-300: #edb830;
+  --color-gold-400: #e8a838;
+  --color-gold-500: #c98a1a;
+  --color-gold-600: #a86d0d;
+  --color-gold-700: #845208;
+  --color-gold-800: #623b04;
+  --color-gold-900: #3d2302;
 
-  /* Neutral */
-  /* Backgrounds, borders, body text, labels, disabled states. Warm-toned to match teal. */
-  --neutral-50: #f7f7f5;
-  --neutral-100: #eaeae6;
-  --neutral-200: #d4d4ce;
+  --color-neutral-50: #f7f7f5;
+  --color-neutral-100: #eaeae6;
+  --color-neutral-200: #d4d4ce;
+  --color-neutral-300: #b8b8b0;
+  --color-neutral-400: #9a9a94;
+  --color-neutral-500: #76766f;
+  --color-neutral-600: #5e5e5a;
+  --color-neutral-700: #474744;
+  --color-neutral-800: #3a3a37;
+  --color-neutral-900: #1a1a18;
 
-  --neutral-300: #b8b8b0;
-  --neutral-400: #9a9a94;
-  --neutral-500: #76766f;
-
-  --neutral-600: #5e5e5a;
-  --neutral-700: #474744;
-  --neutral-800: #3a3a37;
-  --neutral-900: #1a1a18;
-
-  /* Semantic */
-  --success: #2d9e44;
-  --success-bg: #eaf6ec;
-
-  --warning: #e8931a;
-  --warning-bg: #fef3e2;
-
-  --error: #d93025;
-  --error-bg: #fdecea;
+  /* Semantic Status Colors */
+  --color-success: #2d9e44;
+  --color-success-bg: #eaf6ec;
+  --color-warning: #e8931a;
+  --color-warning-bg: #fef3e2;
+  --color-error: #d93025;
+  --color-error-bg: #fdecea;
 }
 
-.main-content {
-  padding-top: 80px;
+/* --- Base Layout / Custom Utility Fallbacks --- */
+@utility main-content {
   min-height: calc(100vh - 80px);
 }
