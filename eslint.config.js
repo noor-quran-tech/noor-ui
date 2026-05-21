@@ -19,7 +19,26 @@ export default defineConfig([
       globals: globals.browser,
     },
     rules: {
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          vars: "all",
+          args: "after-used",
+          ignoreRestSiblings: true,
+          argsIgnorePattern: "^_",
+        },
+      ],
+
       "no-unused-vars": ["warn", { varsIgnorePattern: "^[A-Z_]" }],
+      "no-console":           ["warn", { allow: ["warn", "error"] }],
+      "no-debugger":          "warn",
+      "no-duplicate-imports": "error",
+      "no-var":               "error",
+      "prefer-const":         "warn",
+      "eqeqeq":               ["error", "always"],
+      "@typescript-eslint/no-explicit-any":         "warn",
+      "@typescript-eslint/consistent-type-imports": "warn",
+
       indent: ["off", 2],
     },
   },
