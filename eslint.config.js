@@ -18,5 +18,9 @@ export default defineConfig([
     languageOptions: {
       globals: globals.browser,
     },
+    rules: {
+      "no-unused-vars": ["warn", { varsIgnorePattern: "^[A-Z_]" }],
+      indent: ["off", 2],
+    },
   },
 ])
