@@ -6,6 +6,7 @@ import { Country, City } from "country-state-city";
 import "@styles/signupPage.css";
 import axios from "@lib/axios";
 import { Spinner } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const initialFormState: SignupFormData = {
   firstName: "",
@@ -720,6 +721,9 @@ const SignupPage: React.FC = () => {
               </div>
             )}
           </form>
+          <div className="form-footer">
+            Already have an acoount? <Link to="/login">Login </Link>
+          </div>
         </div>
       </div>
     </div>
