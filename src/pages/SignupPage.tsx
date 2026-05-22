@@ -3,10 +3,11 @@ import { toast } from "sonner";
 
 import { Role, Level, type SignupFormData } from "@utils/types/user";
 import { Country, City } from "country-state-city";
-import "@styles/signupPage.css";
 import axios from "@lib/axios";
 import { Spinner } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "@store/slices/authSlice";
 
 const initialFormState: SignupFormData = {
   firstName: "",
@@ -15,7 +16,6 @@ const initialFormState: SignupFormData = {
   password: "",
 
   role: Role.STUDENT,
-
   country: "",
   city: "",
   addressLine1: "",
@@ -37,6 +37,9 @@ const initialFormState: SignupFormData = {
 };
 
 const SignupPage: React.FC = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [step, setStep] = useState<number>(1);
   const [formData, setFormData] = useState<SignupFormData>(initialFormState);
   const [errors, setErrors] = useState<
@@ -67,7 +70,7 @@ const SignupPage: React.FC = () => {
       countriesList.find((c) => c.isoCode === selectedCountryIso)?.name || "";
 
     setFormData((prev) => ({ ...prev, country: countryName, city: "" }));
-
+    setErrors((prev) => ({ ...prev, country: undefined }));
     const cities = City.getCitiesOfCountry(selectedCountryIso) || [];
     setCitiesList(cities.map((city) => city.name));
   };
@@ -269,187 +272,247 @@ const SignupPage: React.FC = () => {
     try {
       setSubmitLoading(true);
       const role: string = formData.role;
+      let response;
       if (role === Role.STUDENT) {
-        await axios.post("/auth/register-student", formData);
-      } else if (role === Role.TEACHER) {
-        const finalPayload = setFormData((prev) => ({
-          ...prev,
+        response = await axios.post("/auth/register-student", formData);
+      } else {
+        const payload = {
+          ...formData,
           yearsOfExperience: Number(formData.yearsOfExperience),
-        }));
-
-        await axios.post("/auth/register-teacher", finalPayload);
+        };
+        response = await axios.post("/auth/register-teacher", payload);
       }
       toast.success("Signed up successfully");
+
+      const token = response?.data?.token;
+      const user = response?.data?.data?.user;
+      user.password = null;
+      dispatch(
+        setCredentials({
+          token,
+          user,
+        }),
+      );
+      navigate("/");
     } catch (err: any) {
-      const errorMessage: string =
-        err?.response?.data?.message || "Error submitting form";
-      toast.error("Registration Failed", { description: errorMessage });
+      toast.error("Registration Failed", {
+        description: err?.response?.data?.message || "Error submitting form",
+      });
     } finally {
       setSubmitLoading(false);
     }
   };
 
   return (
-    <div className="main-content signup-wrapper">
+    <div className="flex min-h-screen bg-neutral-900 text-neutral-100 font-sans">
       {/* Visual Identity Side-Pane */}
-      <div className="branding-pane">
-        <div className="branding-content">
-          <div className="logo-placeholder">Noor</div>
-          <h1>Learn the Quran from the best teachers in the world.</h1>{" "}
-          <p>
+      <div className="hidden md:flex flex-1 items-center justify-center bg-gradient-to-br from-neutral-900 to-teal-900 p-12 relative overflow-hidden border-r border-neutral-800">
+        <div className="max-w-md z-10">
+          <div className="text-4xl font-extrabold text-gold-400 mb-8 tracking-tight drop-shadow-[0_2px_10px_rgba(0,183,181,0.15)]">
+            نور{" "}
+            <span className="text-3xl font-extrabold text-gold-400 mb-8 tracking-tight drop-shadow-[0_2px_10px_rgba(0,183,181,0.15)]">
+              Noor
+            </span>
+          </div>
+          <h1 className="text-4xl font-extrabold text-neutral-50 leading-tight mb-4">
+            Learn the Quran from the best teachers in the world.
+          </h1>
+          <p className="text-neutral-300 leading-relaxed">
             Connecting specialized educators with eager students worldwide
-            through an authentic, high-quality, and interactive
-            environment.{" "}
+            through an authentic, high-quality, and interactive environment.
           </p>
         </div>
-        <div className="decorative-glow" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-teal-500/10 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-1/4 right-1/4 w-[350px] h-[350px] bg-gold-500/5 rounded-full blur-[100px] pointer-events-none" />
       </div>
 
       {/* Form Interaction Side-Pane */}
-      <div className="form-pane">
-        <div className="form-container-box">
-          {/* Subtle Progress Bar */}
-          <div className="modern-progress">
-            <div className="progress-text">Step {step} of 3</div>
-            <div className="bar-track">
+      <div className="flex-1 flex items-center justify-center p-8 overflow-y-auto bg-neutral-900">
+        <div className="w-full max-w-lg space-y-6">
+          {/* Progress Tracking Bar */}
+          <div className="space-y-2">
+            <div className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
+              Step {step} of 3
+            </div>
+            <div className="w-full h-1 bg-neutral-800 rounded-full overflow-hidden">
               <div
-                className="bar-fill"
+                className="h-full bg-teal-500 transition-all duration-300"
                 style={{ width: `${(step / 3) * 100}%` }}
               />
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} noValidate>
-            {/* STEP 1: Account Basics & Modern Choice Cards */}
+          <form
+            onSubmit={handleSubmit}
+            noValidate
+            className="space-y-6 animate-fade-in"
+          >
+            {/* STEP 1 */}
             {step === 1 && (
-              <div className="animate-fade-in">
-                <h2>Create Your Account</h2>
-                <p className="step-desc">
-                  Select your identity space and fill in your core credentials.
-                </p>
+              <div className="space-y-5">
+                <div>
+                  <h2 className="text-2xl font-bold text-neutral-50">
+                    Create Your Account
+                  </h2>
+                  <p className="text-sm text-neutral-400 mt-1">
+                    Select your identity space and fill in your core
+                    credentials.
+                  </p>
+                </div>
 
-                <div className="card-selector-group">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div
-                    className={`identity-card ${formData.role === Role.STUDENT ? "selected" : ""}`}
                     onClick={() =>
                       setFormData((p) => ({ ...p, role: Role.STUDENT }))
                     }
+                    className={`p-4 rounded-xl border bg-neutral-800 cursor-pointer transition relative flex flex-col justify-between ${
+                      formData.role === Role.STUDENT
+                        ? "border-teal-500 ring-2 ring-teal-500/20"
+                        : "border-neutral-700 hover:border-neutral-600"
+                    }`}
                   >
-                    <div className="selection-indicator" />
-                    <div className="card-txt">
-                      <span className="title">Student Portal</span>
-                      <span className="desc">
-                        Learn Tajweed, Quran recitation/memorization, and Arabic
-                        from scratch.{" "}
-                      </span>
-                    </div>
+                    <span
+                      className={`font-bold block ${formData.role === Role.STUDENT ? "text-teal-400" : "text-neutral-200"}`}
+                    >
+                      Student Portal
+                    </span>
+                    <span className="text-xs text-neutral-400 mt-1 block">
+                      Learn Tajweed, Quran recitation, and Arabic from scratch.
+                    </span>
                   </div>
 
                   <div
-                    className={`identity-card ${formData.role === Role.TEACHER ? "selected" : ""}`}
                     onClick={() =>
                       setFormData((p) => ({ ...p, role: Role.TEACHER }))
                     }
+                    className={`p-4 rounded-xl border bg-neutral-800 cursor-pointer transition relative flex flex-col justify-between ${
+                      formData.role === Role.TEACHER
+                        ? "border-teal-500 ring-2 ring-teal-500/20"
+                        : "border-neutral-700 hover:border-neutral-600"
+                    }`}
                   >
-                    <div className="selection-indicator" />
-                    <div className="card-txt">
-                      <span className="title">Educator Portal</span>
-                      <span className="desc">
-                        For qualified scholars, Arabic specialists, and holders
-                        of certified Ijazaat.{" "}
-                      </span>
-                    </div>
+                    <span
+                      className={`font-bold block ${formData.role === Role.TEACHER ? "text-teal-400" : "text-neutral-200"}`}
+                    >
+                      Educator Portal
+                    </span>
+                    <span className="text-xs text-neutral-400 mt-1 block">
+                      For qualified scholars and certified educators.
+                    </span>
                   </div>
                 </div>
 
-                <div className="form-grid">
-                  <div className="input-block">
-                    <label>First Name</label>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <label className="text-xs font-medium text-neutral-300">
+                      First Name
+                    </label>
                     <input
                       type="text"
                       name="firstName"
                       value={formData.firstName}
                       onChange={handleInputChange}
-                      className={errors.firstName ? "error" : ""}
-                      placeholder="Mohamed"
+                      className={`w-full px-4 py-2.5 rounded-lg bg-neutral-800 border ${errors.firstName ? "border-error" : "border-neutral-700"} text-neutral-50 focus:outline-none focus:ring-2 focus:ring-teal-500/20`}
+                      placeholder="John"
                     />
                     {errors.firstName && (
-                      <span className="err-msg">{errors.firstName}</span>
+                      <span className="text-xs text-error">
+                        {errors.firstName}
+                      </span>
                     )}
                   </div>
-                  <div className="input-block">
-                    <label>Last Name</label>
+                  <div className="space-y-1">
+                    <label className="text-xs font-medium text-neutral-300">
+                      Last Name
+                    </label>
                     <input
                       type="text"
                       name="lastName"
                       value={formData.lastName}
                       onChange={handleInputChange}
-                      className={errors.lastName ? "error" : ""}
-                      placeholder="Ahmed"
+                      className={`w-full px-4 py-2.5 rounded-lg bg-neutral-800 border ${errors.lastName ? "border-error" : "border-neutral-700"} text-neutral-50 focus:outline-none focus:ring-2 focus:ring-teal-500/20`}
+                      placeholder="Doe"
                     />
                     {errors.lastName && (
-                      <span className="err-msg">{errors.lastName}</span>
+                      <span className="text-xs text-error">
+                        {errors.lastName}
+                      </span>
                     )}
                   </div>
                 </div>
 
-                <div className="input-block">
-                  <label>Email Address</label>
+                <div className="space-y-1">
+                  <label className="text-xs font-medium text-neutral-300">
+                    Email Address
+                  </label>
                   <input
                     type="email"
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    className={errors.email ? "error" : ""}
-                    placeholder="ahmed@example.com"
+                    className={`w-full px-4 py-2.5 rounded-lg bg-neutral-800 border ${errors.email ? "border-error" : "border-neutral-700"} text-neutral-50 focus:outline-none focus:ring-2 focus:ring-teal-500/20`}
+                    placeholder="john@example.com"
                   />
                   {errors.email && (
-                    <span className="err-msg">{errors.email}</span>
+                    <span className="text-xs text-error">{errors.email}</span>
                   )}
                 </div>
 
-                <div className="input-block">
-                  <label>Secure Password</label>
+                <div className="space-y-1">
+                  <label className="text-xs font-medium text-neutral-300">
+                    Secure Password
+                  </label>
                   <input
                     type="password"
                     name="password"
                     value={formData.password}
                     onChange={handleInputChange}
-                    className={errors.password ? "error" : ""}
+                    className={`w-full px-4 py-2.5 rounded-lg bg-neutral-800 border ${errors.password ? "border-error" : "border-neutral-700"} text-neutral-50 focus:outline-none focus:ring-2 focus:ring-teal-500/20`}
                     placeholder="••••••••"
                   />
                   {errors.password && (
-                    <span className="err-msg">{errors.password}</span>
+                    <span className="text-xs text-error">
+                      {errors.password}
+                    </span>
                   )}
                 </div>
 
                 <button
                   type="button"
-                  className="btn-action primary"
                   onClick={handleNext}
+                  className="w-full py-3 bg-teal-600 hover:bg-teal-500 font-semibold text-neutral-50 rounded-lg shadow-lg shadow-teal-900/20 transition duration-200 cursor-pointer"
                 >
                   Continue
                 </button>
               </div>
             )}
 
-            {/* STEP 2: Unified Location & Demographics Profile */}
+            {/* STEP 2 */}
             {step === 2 && (
-              <div className="animate-fade-in">
-                <h2>Profile Basics</h2>
-                <p className="step-desc">
-                  Help us map your timezone and localized records correctly.
-                </p>
+              <div className="space-y-5">
+                <div>
+                  <h2 className="text-2xl font-bold text-neutral-50">
+                    Profile Basics
+                  </h2>
+                  <p className="text-sm text-neutral-400 mt-1">
+                    Help us map your timezone and localized records correctly.
+                  </p>
+                </div>
 
-                <div className="form-grid">
-                  <div className="input-block">
-                    <label>Country</label>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <label className="text-xs font-medium text-neutral-300">
+                      Country
+                    </label>
                     <select
                       name="countryIso"
                       onChange={handleCountryChange}
-                      className={errors.country ? "error" : ""}
+                      value={formData.country}
+                      className={`w-full px-4 py-2.5 rounded-lg bg-neutral-800 border ${errors.country ? "border-error" : "border-neutral-700"} text-neutral-50 focus:outline-none focus:ring-2 focus:ring-teal-500/20`}
                     >
-                      <option value="">Select Country</option>
+                      <option value="">
+                        {formData.country ? formData.country : "Select Country"}
+                      </option>
                       {countriesList.map((c) => (
                         <option key={c.isoCode} value={c.isoCode}>
                           {c.name}
@@ -457,101 +520,121 @@ const SignupPage: React.FC = () => {
                       ))}
                     </select>
                     {errors.country && (
-                      <span className="err-msg">{errors.country}</span>
+                      <span className="text-xs text-error">
+                        {errors.country}
+                      </span>
                     )}
                   </div>
-
-                  <div className="input-block">
-                    <label>City</label>
+                  <div className="space-y-1">
+                    <label className="text-xs font-medium text-neutral-300">
+                      City
+                    </label>
                     <select
                       name="city"
                       value={formData.city}
                       onChange={handleInputChange}
                       disabled={!formData.country}
-                      className={errors.city ? "error" : ""}
+                      className="w-full px-4 py-2.5 rounded-lg bg-neutral-800 border border-neutral-700 text-neutral-50 focus:outline-none disabled:opacity-40"
                     >
                       <option value="">Select City</option>
-                      {citiesList.map((cityName) => (
-                        <option key={cityName} value={cityName}>
-                          {cityName}
+                      {citiesList.map((city) => (
+                        <option key={crypto.randomUUID()} value={city}>
+                          {city}
                         </option>
                       ))}
                     </select>
                     {errors.city && (
-                      <span className="err-msg">{errors.city}</span>
+                      <span className="text-xs text-error">{errors.city}</span>
                     )}
                   </div>
                 </div>
 
-                <div className="input-block">
-                  <label>Street Address Line 1</label>
+                <div className="space-y-1">
+                  <label className="text-xs font-medium text-neutral-300">
+                    Street Address Line 1
+                  </label>
                   <input
                     type="text"
                     name="addressLine1"
                     value={formData.addressLine1}
                     onChange={handleInputChange}
-                    placeholder="123 El Horreya St."
+                    className="w-full px-4 py-2.5 rounded-lg bg-neutral-800 border border-neutral-700 text-neutral-50 focus:outline-none"
                   />
                   {errors.addressLine1 && (
-                    <span className="err-msg">{errors.addressLine1}</span>
+                    <span className="text-xs text-error">
+                      {errors.addressLine1}
+                    </span>
                   )}
                 </div>
-                <div className="input-block">
-                  <label>Street Address Line 2</label>
+
+                <div className="space-y-1">
+                  <label className="text-xs font-medium text-neutral-300">
+                    Street Address Line 2
+                  </label>
                   <input
                     type="text"
                     name="addressLine2"
                     value={formData.addressLine2}
                     onChange={handleInputChange}
-                    placeholder="123 El Horreya St."
+                    className="w-full px-4 py-2.5 rounded-lg bg-neutral-800 border border-neutral-700 text-neutral-50 focus:outline-none"
                   />
                   {errors.addressLine2 && (
-                    <span className="err-msg">{errors.addressLine2}</span>
+                    <span className="text-xs text-error">
+                      {errors.addressLine2}
+                    </span>
                   )}
                 </div>
 
-                <div className="form-grid">
-                  <div className="input-block">
-                    <label>Contact Phone</label>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <label className="text-xs font-medium text-neutral-300">
+                      Contact Phone
+                    </label>
                     <input
                       type="tel"
                       name="phoneNumber"
                       value={formData.phoneNumber}
                       onChange={handleInputChange}
-                      className={errors.phoneNumber ? "error" : ""}
+                      className="w-full px-4 py-2.5 rounded-lg bg-neutral-800 border border-neutral-700 text-neutral-50 focus:outline-none"
                       placeholder="+20 1..."
                     />
                     {errors.phoneNumber && (
-                      <span className="err-msg">{errors.phoneNumber}</span>
+                      <span className="text-xs text-error">
+                        {errors.phoneNumber}
+                      </span>
                     )}
                   </div>
-                  <div className="input-block">
-                    <label>Date of Birth</label>
+                  <div className="space-y-1">
+                    <label className="text-xs font-medium text-neutral-300">
+                      Date of Birth
+                    </label>
                     <input
                       type="date"
                       name="dateOfBirth"
                       value={formData.dateOfBirth}
                       onChange={handleInputChange}
-                      className={errors.dateOfBirth ? "error" : ""}
+                      className="w-full px-4 py-2.5 rounded-lg bg-neutral-800 border border-neutral-700 text-neutral-400 focus:outline-none"
                     />
                     {errors.dateOfBirth && (
-                      <span className="err-msg">{errors.dateOfBirth}</span>
+                      <span className="text-xs text-error">
+                        {errors.dateOfBirth}
+                      </span>
                     )}
                   </div>
                 </div>
 
-                <div className="footer-actions">
+                <div className="flex justify-between gap-4 pt-2">
                   <button
                     type="button"
-                    className="btn-action secondary"
                     onClick={handleBack}
+                    className="flex-1 py-3 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 font-semibold rounded-lg transition duration-200 cursor-pointer"
                   >
                     Back
                   </button>
                   <button
                     type="button"
-                    className="btn-action primary"
                     onClick={handleNext}
+                    className="flex-1 py-3 bg-teal-600 hover:bg-teal-500 text-neutral-50 font-semibold rounded-lg transition duration-200 cursor-pointer"
                   >
                     Continue
                   </button>
@@ -559,47 +642,57 @@ const SignupPage: React.FC = () => {
               </div>
             )}
 
-            {/* STEP 3: Role-Isolated Complex Custom Profiles */}
+            {/* STEP 3 */}
             {step === 3 && (
-              <div className="animate-fade-in">
+              <div className="space-y-5">
                 {formData.role === Role.TEACHER ? (
                   <>
-                    <h2>Professional Profile</h2>
-                    <p className="step-desc">
-                      Highlight your domain capabilities for student vetting.
-                    </p>
-
-                    <div className="input-block">
-                      <label>Total Years of Experience</label>
+                    <div>
+                      <h2 className="text-2xl font-bold text-neutral-50">
+                        Professional Profile
+                      </h2>
+                      <p className="text-sm text-neutral-400 mt-1">
+                        Highlight your teaching tiers for platform vetting.
+                      </p>
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-xs font-medium text-neutral-300">
+                        Total Years of Experience
+                      </label>
                       <input
                         type="number"
                         name="yearsOfExperience"
                         value={formData.yearsOfExperience}
                         onChange={handleInputChange}
-                        placeholder="5"
+                        className="w-full px-4 py-2.5 rounded-lg bg-neutral-800 border border-neutral-700 text-neutral-50 focus:outline-none"
                       />
                       {errors.yearsOfExperience && (
-                        <span className="err-msg">
+                        <span className="text-xs text-error">
                           {errors.yearsOfExperience}
                         </span>
                       )}
                     </div>
-
-                    <div className="input-block">
-                      <label>Target Teaching Tiers (Select Multiples)</label>
-                      <div className="chips-row">
+                    <div className="space-y-2">
+                      <label className="text-xs font-medium text-neutral-300 block">
+                        Target Teaching Tiers (Select Multiples)
+                      </label>
+                      <div className="flex flex-wrap gap-2">
                         {Object.values(Level).map((lvl) => (
                           <button
                             type="button"
                             key={lvl}
-                            className={`chip ${formData.teachingLevels.includes(lvl) ? "active" : ""}`}
                             onClick={() => handleToggleLevel(lvl)}
+                            className={`px-3 py-1.5 rounded-full text-xs font-medium transition duration-150 ${
+                              formData.teachingLevels.includes(lvl)
+                                ? "bg-gold-500 text-neutral-900 font-bold"
+                                : "bg-neutral-800 text-neutral-300 hover:bg-neutral-700"
+                            }`}
                           >
                             {lvl}
                           </button>
                         ))}
                         {errors.teachingLevels && (
-                          <span className="err-msg">
+                          <span className="text-xs text-error">
                             {errors.teachingLevels}
                           </span>
                         )}
@@ -608,17 +701,23 @@ const SignupPage: React.FC = () => {
                   </>
                 ) : (
                   <>
-                    <h2>Current Capabilities</h2>
-                    <p className="step-desc">
-                      Pick your entry experience level down below.
-                    </p>
-
-                    <div className="input-block">
-                      <label>Your Starting Tier</label>
+                    <div>
+                      <h2 className="text-2xl font-bold text-neutral-50">
+                        Current Capabilities
+                      </h2>
+                      <p className="text-sm text-neutral-400 mt-1">
+                        Pick your entry experience tier down below.
+                      </p>
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-xs font-medium text-neutral-300">
+                        Your Starting Tier
+                      </label>
                       <select
                         name="level"
                         value={formData.level}
                         onChange={handleInputChange}
+                        className="w-full px-4 py-2.5 rounded-lg bg-neutral-800 border border-neutral-700 text-neutral-50 focus:outline-none"
                       >
                         <option value={Level.BEGINNER}>Beginner Level</option>
                         <option value={Level.INTERMEDIATE}>
@@ -626,84 +725,95 @@ const SignupPage: React.FC = () => {
                         </option>
                         <option value={Level.ADVANCED}>Advanced Track</option>
                       </select>
+                      {errors.level && (
+                        <span className="text-xs text-error">
+                          {errors.level}
+                        </span>
+                      )}
                     </div>
-
-                    <div className="sub-relation-card">
-                      <h4>Parent / Guardian Access (For Minor Accounts)</h4>{" "}
-                      <p>
-                        Enables progress reporting, session scheduling
-                        oversight, and dedicated parental monitoring dashboards.
+                    <div className="p-4 bg-neutral-800/60 border border-neutral-700 rounded-xl space-y-3">
+                      <h4 className="text-sm font-bold text-gold-400">
+                        Parent / Guardian Access (Optional)
+                      </h4>
+                      <p className="text-xs text-neutral-400">
+                        Enables progress monitoring dashboards and session
+                        overview features.
                       </p>
-                      <div className="input-block">
-                        <label>Parent Full Name</label>
+                      <input
+                        type="text"
+                        name="parentName"
+                        value={formData.parentName}
+                        onChange={handleInputChange}
+                        placeholder="Guardian Full Name"
+                        className="w-full px-4 py-2 rounded-lg bg-neutral-800 border border-neutral-700 text-xs text-neutral-50 focus:outline-none"
+                      />
+                      {errors.parentName && (
+                        <span className="text-xs text-error">
+                          {errors.parentName}
+                        </span>
+                      )}
+                      <div className="grid grid-cols-2 gap-2">
                         <input
-                          type="text"
-                          name="parentName"
-                          value={formData.parentName}
+                          type="tel"
+                          name="parentPhone"
+                          value={formData.parentPhone}
                           onChange={handleInputChange}
-                          placeholder="Guardian Name"
+                          placeholder="Guardian Phone"
+                          className="w-full px-4 py-2 rounded-lg bg-neutral-800 border border-neutral-700 text-xs text-neutral-50 focus:outline-none"
                         />
-                        {errors.parentName && (
-                          <span className="err-msg">{errors.parentName}</span>
+                        {errors.parentPhone && (
+                          <span className="text-xs text-error">
+                            {errors.parentPhone}
+                          </span>
                         )}
-                      </div>
-                      <div className="form-grid">
-                        <div className="input-block">
-                          <label>Parent Phone</label>
-                          <input
-                            type="tel"
-                            name="parentPhone"
-                            value={formData.parentPhone}
-                            onChange={handleInputChange}
-                            placeholder="Guardian Phone"
-                          />
-                          {errors.parentPhone && (
-                            <span className="err-msg">
-                              {errors.parentPhone}
-                            </span>
-                          )}
-                        </div>
-                        <div className="input-block">
-                          <label>Parent Email</label>
-                          <input
-                            type="email"
-                            name="parentEmail"
-                            value={formData.parentEmail}
-                            onChange={handleInputChange}
-                            placeholder="guardian@mail.com"
-                          />
-                          {errors.parentEmail && (
-                            <span className="err-msg">
-                              {errors.parentEmail}
-                            </span>
-                          )}
-                        </div>
+                        <input
+                          type="email"
+                          name="parentEmail"
+                          value={formData.parentEmail}
+                          onChange={handleInputChange}
+                          placeholder="Guardian Email"
+                          className="w-full px-4 py-2 rounded-lg bg-neutral-800 border border-neutral-700 text-xs text-neutral-50 focus:outline-none"
+                        />
+                        {errors.parentEmail && (
+                          <span className="text-xs text-error">
+                            {errors.parentEmail}
+                          </span>
+                        )}
                       </div>
                     </div>
                   </>
                 )}
 
-                <div className="input-block">
-                  <label>Introduce Yourself (Bio)</label>
+                <div className="space-y-1">
+                  <label className="text-xs font-medium text-neutral-300">
+                    Introduce Yourself (Bio)
+                  </label>
                   <textarea
                     name="bio"
                     rows={3}
                     value={formData.bio}
                     onChange={handleInputChange}
                     placeholder="Tell us a little about yourself..."
+                    className="w-full px-4 py-2.5 rounded-lg bg-neutral-800 border border-neutral-700 text-neutral-50 focus:outline-none text-sm"
                   />
-                  {errors.bio && <span className="err-msg">{errors.bio}</span>}
+                  {errors.bio && (
+                    <span className="text-xs text-error">{errors.bio}</span>
+                  )}
                 </div>
 
-                <div className="footer-actions">
+                <div className="flex justify-between gap-4 pt-2">
                   <button
                     type="button"
-                    className="btn-action secondary"
                     onClick={handleBack}
+                    className="flex-1 py-3 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 font-semibold rounded-lg transition duration-200 cursor-pointer"
                   >
                     Back
                   </button>
-                  <button type="submit" className="btn-action submit-button">
+                  <button
+                    type="submit"
+                    disabled={submitLoading}
+                    className="flex-1 py-3 bg-teal-600 hover:bg-teal-500 text-neutral-50 font-semibold rounded-lg transition duration-200 flex items-center justify-center cursor-pointer"
+                  >
                     {submitLoading ? (
                       <>
                         <Spinner
@@ -721,8 +831,14 @@ const SignupPage: React.FC = () => {
               </div>
             )}
           </form>
-          <div className="form-footer">
-            Already have an acoount? <Link to="/login">Login </Link>
+          <div className="text-center text-sm text-neutral-400">
+            Already have an acoount?{" "}
+            <Link
+              to="/login"
+              className="text-teal-400 hover:text-teal-300 hover:underline font-medium"
+            >
+              Create one here
+            </Link>
           </div>
         </div>
       </div>
