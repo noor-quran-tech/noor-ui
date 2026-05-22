@@ -211,7 +211,7 @@ const SignupPage: React.FC = () => {
 
     if (role === "TEACHER") {
       if (
-        yearsOfExperience === "" ||
+        yearsOfExperience ||
         yearsOfExperience < 0 ||
         yearsOfExperience > 60
       ) {
@@ -304,37 +304,37 @@ const SignupPage: React.FC = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-neutral-900 text-neutral-100 font-sans">
+    <div className="flex min-h-screen bg-neutral-50 text-neutral-800 font-sans">
       {/* Visual Identity Side-Pane */}
-      <div className="hidden md:flex flex-1 items-center justify-center bg-gradient-to-br from-neutral-900 to-teal-900 p-12 relative overflow-hidden border-r border-neutral-800">
+      <div className="hidden md:flex flex-1 items-center justify-center bg-gradient-to-br from-teal-50 to-teal-100 p-12 relative overflow-hidden border-r border-neutral-200">
         <div className="max-w-md z-10">
-          <div className="text-4xl font-extrabold text-gold-400 mb-8 tracking-tight drop-shadow-[0_2px_10px_rgba(0,183,181,0.15)]">
+          <div className="text-4xl font-extrabold text-gold-600 mb-8 tracking-tight drop-shadow-[0_2px_10px_rgba(0,183,181,0.05)]">
             نور{" "}
-            <span className="text-3xl font-extrabold text-gold-400 mb-8 tracking-tight drop-shadow-[0_2px_10px_rgba(0,183,181,0.15)]">
+            <span className="text-3xl font-extrabold text-gold-600 mb-8 tracking-tight drop-shadow-[0_2px_10px_rgba(0,183,181,0.05)]">
               Noor
             </span>
           </div>
-          <h1 className="text-4xl font-extrabold text-neutral-50 leading-tight mb-4">
+          <h1 className="text-4xl font-extrabold text-neutral-900 leading-tight mb-4">
             Learn the Quran from the best teachers in the world.
           </h1>
-          <p className="text-neutral-300 leading-relaxed">
+          <p className="text-neutral-600 leading-relaxed">
             Connecting specialized educators with eager students worldwide
             through an authentic, high-quality, and interactive environment.
           </p>
         </div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-teal-500/10 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-1/4 right-1/4 w-[350px] h-[350px] bg-gold-500/5 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-teal-300/20 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-1/4 right-1/4 w-[350px] h-[350px] bg-gold-300/10 rounded-full blur-[100px] pointer-events-none" />
       </div>
 
       {/* Form Interaction Side-Pane */}
-      <div className="flex-1 flex items-center justify-center p-8 overflow-y-auto bg-neutral-900">
+      <div className="flex-1 flex items-center justify-center p-8 overflow-y-auto bg-neutral-50">
         <div className="w-full max-w-lg space-y-6">
           {/* Progress Tracking Bar */}
           <div className="space-y-2">
-            <div className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
+            <div className="text-xs font-semibold uppercase tracking-wider text-neutral-500">
               Step {step} of 3
             </div>
-            <div className="w-full h-1 bg-neutral-800 rounded-full overflow-hidden">
+            <div className="w-full h-1 bg-neutral-200 rounded-full overflow-hidden">
               <div
                 className="h-full bg-teal-500 transition-all duration-300"
                 style={{ width: `${(step / 3) * 100}%` }}
@@ -351,10 +351,10 @@ const SignupPage: React.FC = () => {
             {step === 1 && (
               <div className="space-y-5">
                 <div>
-                  <h2 className="text-2xl font-bold text-neutral-50">
+                  <h2 className="text-2xl font-bold text-neutral-900">
                     Create Your Account
                   </h2>
-                  <p className="text-sm text-neutral-400 mt-1">
+                  <p className="text-sm text-neutral-500 mt-1">
                     Select your identity space and fill in your core
                     credentials.
                   </p>
@@ -365,18 +365,18 @@ const SignupPage: React.FC = () => {
                     onClick={() =>
                       setFormData((p) => ({ ...p, role: Role.STUDENT }))
                     }
-                    className={`p-4 rounded-xl border bg-neutral-800 cursor-pointer transition relative flex flex-col justify-between ${
+                    className={`p-4 rounded-xl border bg-white cursor-pointer transition relative flex flex-col justify-between ${
                       formData.role === Role.STUDENT
-                        ? "border-teal-500 ring-2 ring-teal-500/20"
-                        : "border-neutral-700 hover:border-neutral-600"
+                        ? "border-teal-500 ring-2 ring-teal-500/10"
+                        : "border-neutral-200 hover:border-neutral-300"
                     }`}
                   >
                     <span
-                      className={`font-bold block ${formData.role === Role.STUDENT ? "text-teal-400" : "text-neutral-200"}`}
+                      className={`font-bold block ${formData.role === Role.STUDENT ? "text-teal-600" : "text-neutral-800"}`}
                     >
                       Student Portal
                     </span>
-                    <span className="text-xs text-neutral-400 mt-1 block">
+                    <span className="text-xs text-neutral-500 mt-1 block">
                       Learn Tajweed, Quran recitation, and Arabic from scratch.
                     </span>
                   </div>
@@ -385,18 +385,18 @@ const SignupPage: React.FC = () => {
                     onClick={() =>
                       setFormData((p) => ({ ...p, role: Role.TEACHER }))
                     }
-                    className={`p-4 rounded-xl border bg-neutral-800 cursor-pointer transition relative flex flex-col justify-between ${
+                    className={`p-4 rounded-xl border bg-white cursor-pointer transition relative flex flex-col justify-between ${
                       formData.role === Role.TEACHER
-                        ? "border-teal-500 ring-2 ring-teal-500/20"
-                        : "border-neutral-700 hover:border-neutral-600"
+                        ? "border-teal-500 ring-2 ring-teal-500/10"
+                        : "border-neutral-200 hover:border-neutral-300"
                     }`}
                   >
                     <span
-                      className={`font-bold block ${formData.role === Role.TEACHER ? "text-teal-400" : "text-neutral-200"}`}
+                      className={`font-bold block ${formData.role === Role.TEACHER ? "text-teal-600" : "text-neutral-800"}`}
                     >
                       Educator Portal
                     </span>
-                    <span className="text-xs text-neutral-400 mt-1 block">
+                    <span className="text-xs text-neutral-500 mt-1 block">
                       For qualified scholars and certified educators.
                     </span>
                   </div>
@@ -404,7 +404,7 @@ const SignupPage: React.FC = () => {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <label className="text-xs font-medium text-neutral-300">
+                    <label className="text-xs font-medium text-neutral-600">
                       First Name
                     </label>
                     <input
@@ -412,7 +412,7 @@ const SignupPage: React.FC = () => {
                       name="firstName"
                       value={formData.firstName}
                       onChange={handleInputChange}
-                      className={`w-full px-4 py-2.5 rounded-lg bg-neutral-800 border ${errors.firstName ? "border-error" : "border-neutral-700"} text-neutral-50 focus:outline-none focus:ring-2 focus:ring-teal-500/20`}
+                      className={`w-full px-4 py-2.5 rounded-lg bg-white border ${errors.firstName ? "border-error bg-error-bg" : "border-neutral-200"} text-neutral-900 focus:outline-none focus:ring-2 focus:ring-teal-500/10`}
                       placeholder="John"
                     />
                     {errors.firstName && (
@@ -422,7 +422,7 @@ const SignupPage: React.FC = () => {
                     )}
                   </div>
                   <div className="space-y-1">
-                    <label className="text-xs font-medium text-neutral-300">
+                    <label className="text-xs font-medium text-neutral-600">
                       Last Name
                     </label>
                     <input
@@ -430,7 +430,7 @@ const SignupPage: React.FC = () => {
                       name="lastName"
                       value={formData.lastName}
                       onChange={handleInputChange}
-                      className={`w-full px-4 py-2.5 rounded-lg bg-neutral-800 border ${errors.lastName ? "border-error" : "border-neutral-700"} text-neutral-50 focus:outline-none focus:ring-2 focus:ring-teal-500/20`}
+                      className={`w-full px-4 py-2.5 rounded-lg bg-white border ${errors.lastName ? "border-error bg-error-bg" : "border-neutral-200"} text-neutral-900 focus:outline-none focus:ring-2 focus:ring-teal-500/10`}
                       placeholder="Doe"
                     />
                     {errors.lastName && (
@@ -442,7 +442,7 @@ const SignupPage: React.FC = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-medium text-neutral-300">
+                  <label className="text-xs font-medium text-neutral-600">
                     Email Address
                   </label>
                   <input
@@ -450,7 +450,7 @@ const SignupPage: React.FC = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    className={`w-full px-4 py-2.5 rounded-lg bg-neutral-800 border ${errors.email ? "border-error" : "border-neutral-700"} text-neutral-50 focus:outline-none focus:ring-2 focus:ring-teal-500/20`}
+                    className={`w-full px-4 py-2.5 rounded-lg bg-white border ${errors.email ? "border-error bg-error-bg" : "border-neutral-200"} text-neutral-900 focus:outline-none focus:ring-2 focus:ring-teal-500/10`}
                     placeholder="john@example.com"
                   />
                   {errors.email && (
@@ -459,7 +459,7 @@ const SignupPage: React.FC = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-medium text-neutral-300">
+                  <label className="text-xs font-medium text-neutral-600">
                     Secure Password
                   </label>
                   <input
@@ -467,7 +467,7 @@ const SignupPage: React.FC = () => {
                     name="password"
                     value={formData.password}
                     onChange={handleInputChange}
-                    className={`w-full px-4 py-2.5 rounded-lg bg-neutral-800 border ${errors.password ? "border-error" : "border-neutral-700"} text-neutral-50 focus:outline-none focus:ring-2 focus:ring-teal-500/20`}
+                    className={`w-full px-4 py-2.5 rounded-lg bg-white border ${errors.password ? "border-error bg-error-bg" : "border-neutral-200"} text-neutral-900 focus:outline-none focus:ring-2 focus:ring-teal-500/10`}
                     placeholder="••••••••"
                   />
                   {errors.password && (
@@ -480,7 +480,7 @@ const SignupPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleNext}
-                  className="w-full py-3 bg-teal-600 hover:bg-teal-500 font-semibold text-neutral-50 rounded-lg shadow-lg shadow-teal-900/20 transition duration-200 cursor-pointer"
+                  className="w-full py-3 bg-teal-600 hover:bg-teal-500 font-semibold text-white rounded-lg shadow-lg shadow-teal-600/10 transition duration-200 cursor-pointer"
                 >
                   Continue
                 </button>
@@ -491,24 +491,24 @@ const SignupPage: React.FC = () => {
             {step === 2 && (
               <div className="space-y-5">
                 <div>
-                  <h2 className="text-2xl font-bold text-neutral-50">
+                  <h2 className="text-2xl font-bold text-neutral-900">
                     Profile Basics
                   </h2>
-                  <p className="text-sm text-neutral-400 mt-1">
+                  <p className="text-sm text-neutral-500 mt-1">
                     Help us map your timezone and localized records correctly.
                   </p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <label className="text-xs font-medium text-neutral-300">
+                    <label className="text-xs font-medium text-neutral-600">
                       Country
                     </label>
                     <select
                       name="countryIso"
                       onChange={handleCountryChange}
                       value={formData.country}
-                      className={`w-full px-4 py-2.5 rounded-lg bg-neutral-800 border ${errors.country ? "border-error" : "border-neutral-700"} text-neutral-50 focus:outline-none focus:ring-2 focus:ring-teal-500/20`}
+                      className={`w-full px-4 py-2.5 rounded-lg bg-white border ${errors.country ? "border-error bg-error-bg" : "border-neutral-200"} text-neutral-900 focus:outline-none focus:ring-2 focus:ring-teal-500/10`}
                     >
                       <option value="">
                         {formData.country ? formData.country : "Select Country"}
@@ -526,7 +526,7 @@ const SignupPage: React.FC = () => {
                     )}
                   </div>
                   <div className="space-y-1">
-                    <label className="text-xs font-medium text-neutral-300">
+                    <label className="text-xs font-medium text-neutral-600">
                       City
                     </label>
                     <select
@@ -534,7 +534,7 @@ const SignupPage: React.FC = () => {
                       value={formData.city}
                       onChange={handleInputChange}
                       disabled={!formData.country}
-                      className="w-full px-4 py-2.5 rounded-lg bg-neutral-800 border border-neutral-700 text-neutral-50 focus:outline-none disabled:opacity-40"
+                      className="w-full px-4 py-2.5 rounded-lg bg-white border border-neutral-200 text-neutral-900 focus:outline-none disabled:opacity-50 disabled:bg-neutral-100"
                     >
                       <option value="">Select City</option>
                       {citiesList.map((city) => (
@@ -550,7 +550,7 @@ const SignupPage: React.FC = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-medium text-neutral-300">
+                  <label className="text-xs font-medium text-neutral-600">
                     Street Address Line 1
                   </label>
                   <input
@@ -558,7 +558,7 @@ const SignupPage: React.FC = () => {
                     name="addressLine1"
                     value={formData.addressLine1}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2.5 rounded-lg bg-neutral-800 border border-neutral-700 text-neutral-50 focus:outline-none"
+                    className="w-full px-4 py-2.5 rounded-lg bg-white border border-neutral-200 text-neutral-900 focus:outline-none"
                   />
                   {errors.addressLine1 && (
                     <span className="text-xs text-error">
@@ -568,7 +568,7 @@ const SignupPage: React.FC = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-medium text-neutral-300">
+                  <label className="text-xs font-medium text-neutral-600">
                     Street Address Line 2
                   </label>
                   <input
@@ -576,7 +576,7 @@ const SignupPage: React.FC = () => {
                     name="addressLine2"
                     value={formData.addressLine2}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2.5 rounded-lg bg-neutral-800 border border-neutral-700 text-neutral-50 focus:outline-none"
+                    className="w-full px-4 py-2.5 rounded-lg bg-white border border-neutral-200 text-neutral-900 focus:outline-none"
                   />
                   {errors.addressLine2 && (
                     <span className="text-xs text-error">
@@ -587,7 +587,7 @@ const SignupPage: React.FC = () => {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <label className="text-xs font-medium text-neutral-300">
+                    <label className="text-xs font-medium text-neutral-600">
                       Contact Phone
                     </label>
                     <input
@@ -595,7 +595,7 @@ const SignupPage: React.FC = () => {
                       name="phoneNumber"
                       value={formData.phoneNumber}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-2.5 rounded-lg bg-neutral-800 border border-neutral-700 text-neutral-50 focus:outline-none"
+                      className="w-full px-4 py-2.5 rounded-lg bg-white border border-neutral-200 text-neutral-900 focus:outline-none"
                       placeholder="+20 1..."
                     />
                     {errors.phoneNumber && (
@@ -605,7 +605,7 @@ const SignupPage: React.FC = () => {
                     )}
                   </div>
                   <div className="space-y-1">
-                    <label className="text-xs font-medium text-neutral-300">
+                    <label className="text-xs font-medium text-neutral-600">
                       Date of Birth
                     </label>
                     <input
@@ -613,7 +613,7 @@ const SignupPage: React.FC = () => {
                       name="dateOfBirth"
                       value={formData.dateOfBirth}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-2.5 rounded-lg bg-neutral-800 border border-neutral-700 text-neutral-400 focus:outline-none"
+                      className="w-full px-4 py-2.5 rounded-lg bg-white border border-neutral-200 text-neutral-600 focus:outline-none"
                     />
                     {errors.dateOfBirth && (
                       <span className="text-xs text-error">
@@ -627,14 +627,14 @@ const SignupPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={handleBack}
-                    className="flex-1 py-3 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 font-semibold rounded-lg transition duration-200 cursor-pointer"
+                    className="flex-1 py-3 bg-neutral-100 hover:bg-neutral-200 text-neutral-700 font-semibold rounded-lg transition duration-200 cursor-pointer"
                   >
                     Back
                   </button>
                   <button
                     type="button"
                     onClick={handleNext}
-                    className="flex-1 py-3 bg-teal-600 hover:bg-teal-500 text-neutral-50 font-semibold rounded-lg transition duration-200 cursor-pointer"
+                    className="flex-1 py-3 bg-teal-600 hover:bg-teal-500 text-white font-semibold rounded-lg transition duration-200 cursor-pointer"
                   >
                     Continue
                   </button>
@@ -648,15 +648,15 @@ const SignupPage: React.FC = () => {
                 {formData.role === Role.TEACHER ? (
                   <>
                     <div>
-                      <h2 className="text-2xl font-bold text-neutral-50">
+                      <h2 className="text-2xl font-bold text-neutral-900">
                         Professional Profile
                       </h2>
-                      <p className="text-sm text-neutral-400 mt-1">
+                      <p className="text-sm text-neutral-500 mt-1">
                         Highlight your teaching tiers for platform vetting.
                       </p>
                     </div>
                     <div className="space-y-1">
-                      <label className="text-xs font-medium text-neutral-300">
+                      <label className="text-xs font-medium text-neutral-600">
                         Total Years of Experience
                       </label>
                       <input
@@ -664,7 +664,7 @@ const SignupPage: React.FC = () => {
                         name="yearsOfExperience"
                         value={formData.yearsOfExperience}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-2.5 rounded-lg bg-neutral-800 border border-neutral-700 text-neutral-50 focus:outline-none"
+                        className="w-full px-4 py-2.5 rounded-lg bg-white border border-neutral-200 text-neutral-900 focus:outline-none"
                       />
                       {errors.yearsOfExperience && (
                         <span className="text-xs text-error">
@@ -673,7 +673,7 @@ const SignupPage: React.FC = () => {
                       )}
                     </div>
                     <div className="space-y-2">
-                      <label className="text-xs font-medium text-neutral-300 block">
+                      <label className="text-xs font-medium text-neutral-600 block">
                         Target Teaching Tiers (Select Multiples)
                       </label>
                       <div className="flex flex-wrap gap-2">
@@ -684,8 +684,8 @@ const SignupPage: React.FC = () => {
                             onClick={() => handleToggleLevel(lvl)}
                             className={`px-3 py-1.5 rounded-full text-xs font-medium transition duration-150 ${
                               formData.teachingLevels.includes(lvl)
-                                ? "bg-gold-500 text-neutral-900 font-bold"
-                                : "bg-neutral-800 text-neutral-300 hover:bg-neutral-700"
+                                ? "bg-gold-500 text-white font-bold"
+                                : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200"
                             }`}
                           >
                             {lvl}
@@ -702,22 +702,22 @@ const SignupPage: React.FC = () => {
                 ) : (
                   <>
                     <div>
-                      <h2 className="text-2xl font-bold text-neutral-50">
+                      <h2 className="text-2xl font-bold text-neutral-900">
                         Current Capabilities
                       </h2>
-                      <p className="text-sm text-neutral-400 mt-1">
+                      <p className="text-sm text-neutral-500 mt-1">
                         Pick your entry experience tier down below.
                       </p>
                     </div>
                     <div className="space-y-1">
-                      <label className="text-xs font-medium text-neutral-300">
+                      <label className="text-xs font-medium text-neutral-600">
                         Your Starting Tier
                       </label>
                       <select
                         name="level"
                         value={formData.level}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-2.5 rounded-lg bg-neutral-800 border border-neutral-700 text-neutral-50 focus:outline-none"
+                        className="w-full px-4 py-2.5 rounded-lg bg-white border border-neutral-200 text-neutral-900 focus:outline-none"
                       >
                         <option value={Level.BEGINNER}>Beginner Level</option>
                         <option value={Level.INTERMEDIATE}>
@@ -731,11 +731,11 @@ const SignupPage: React.FC = () => {
                         </span>
                       )}
                     </div>
-                    <div className="p-4 bg-neutral-800/60 border border-neutral-700 rounded-xl space-y-3">
-                      <h4 className="text-sm font-bold text-gold-400">
+                    <div className="p-4 bg-neutral-50 border border-neutral-200 rounded-xl space-y-3">
+                      <h4 className="text-sm font-bold text-gold-600">
                         Parent / Guardian Access (Optional)
                       </h4>
-                      <p className="text-xs text-neutral-400">
+                      <p className="text-xs text-neutral-500">
                         Enables progress monitoring dashboards and session
                         overview features.
                       </p>
@@ -745,7 +745,7 @@ const SignupPage: React.FC = () => {
                         value={formData.parentName}
                         onChange={handleInputChange}
                         placeholder="Guardian Full Name"
-                        className="w-full px-4 py-2 rounded-lg bg-neutral-800 border border-neutral-700 text-xs text-neutral-50 focus:outline-none"
+                        className="w-full px-4 py-2 rounded-lg bg-white border border-neutral-200 text-xs text-neutral-900 focus:outline-none"
                       />
                       {errors.parentName && (
                         <span className="text-xs text-error">
@@ -759,7 +759,7 @@ const SignupPage: React.FC = () => {
                           value={formData.parentPhone}
                           onChange={handleInputChange}
                           placeholder="Guardian Phone"
-                          className="w-full px-4 py-2 rounded-lg bg-neutral-800 border border-neutral-700 text-xs text-neutral-50 focus:outline-none"
+                          className="w-full px-4 py-2 rounded-lg bg-white border border-neutral-200 text-xs text-neutral-900 focus:outline-none"
                         />
                         {errors.parentPhone && (
                           <span className="text-xs text-error">
@@ -772,7 +772,7 @@ const SignupPage: React.FC = () => {
                           value={formData.parentEmail}
                           onChange={handleInputChange}
                           placeholder="Guardian Email"
-                          className="w-full px-4 py-2 rounded-lg bg-neutral-800 border border-neutral-700 text-xs text-neutral-50 focus:outline-none"
+                          className="w-full px-4 py-2 rounded-lg bg-white border border-neutral-200 text-xs text-neutral-900 focus:outline-none"
                         />
                         {errors.parentEmail && (
                           <span className="text-xs text-error">
@@ -785,7 +785,7 @@ const SignupPage: React.FC = () => {
                 )}
 
                 <div className="space-y-1">
-                  <label className="text-xs font-medium text-neutral-300">
+                  <label className="text-xs font-medium text-neutral-600">
                     Introduce Yourself (Bio)
                   </label>
                   <textarea
@@ -794,7 +794,7 @@ const SignupPage: React.FC = () => {
                     value={formData.bio}
                     onChange={handleInputChange}
                     placeholder="Tell us a little about yourself..."
-                    className="w-full px-4 py-2.5 rounded-lg bg-neutral-800 border border-neutral-700 text-neutral-50 focus:outline-none text-sm"
+                    className="w-full px-4 py-2.5 rounded-lg bg-white border border-neutral-200 text-neutral-900 focus:outline-none text-sm"
                   />
                   {errors.bio && (
                     <span className="text-xs text-error">{errors.bio}</span>
@@ -805,14 +805,14 @@ const SignupPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={handleBack}
-                    className="flex-1 py-3 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 font-semibold rounded-lg transition duration-200 cursor-pointer"
+                    className="flex-1 py-3 bg-neutral-100 hover:bg-neutral-200 text-neutral-700 font-semibold rounded-lg transition duration-200 cursor-pointer"
                   >
                     Back
                   </button>
                   <button
                     type="submit"
                     disabled={submitLoading}
-                    className="flex-1 py-3 bg-teal-600 hover:bg-teal-500 text-neutral-50 font-semibold rounded-lg transition duration-200 flex items-center justify-center cursor-pointer"
+                    className="flex-1 py-3 bg-teal-600 hover:bg-teal-500 text-white font-semibold rounded-lg transition duration-200 flex items-center justify-center cursor-pointer"
                   >
                     {submitLoading ? (
                       <>
@@ -831,11 +831,11 @@ const SignupPage: React.FC = () => {
               </div>
             )}
           </form>
-          <div className="text-center text-sm text-neutral-400">
+          <div className="text-center text-sm text-neutral-500">
             Already have an acoount?{" "}
             <Link
               to="/login"
-              className="text-teal-400 hover:text-teal-300 hover:underline font-medium"
+              className="text-teal-600 hover:text-teal-500 hover:underline font-medium"
             >
               Create one here
             </Link>
