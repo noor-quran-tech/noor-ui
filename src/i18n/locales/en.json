@@ -1,1 +1,22 @@
-{}
+{
+  "navbar": {
+    "brand": "Noor",
+    "edu": "Edu",
+    "links": {
+      "Home": "Home",
+      "About": "About",
+      "Contact": "Contact"
+    },
+    "login": "Login",
+    "profile": "Profile",
+    "studentPortal": "Student Portal",
+    "teacherDashboard": "Teacher Dashboard",
+    "logout": "Logout",
+    "logoutSuccess": "Logged out successfully"
+  },
+
+  "language": {
+    "en": "EN",
+    "ar": "AR"
+  }
+}
