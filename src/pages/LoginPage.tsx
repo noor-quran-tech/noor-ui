@@ -2,7 +2,7 @@ import React, { useState, type ChangeEvent } from "react";
 import { toast } from "sonner";
 import { Spinner } from "react-bootstrap";
 import axios from "@lib/axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "@store/slices/authSlice";
 
@@ -50,9 +50,7 @@ const LoginPage: React.FC = () => {
     try {
       setLoading(true);
       const response = await axios.post("/auth/login", { email, password });
-      if (response.data?.token) {
-        localStorage.setItem("token", response.data.token);
-      }
+
       toast.success("Welcome back!", {
         description: `Successfully signed in as ${response.data?.data?.user?.firstName || "User"}.`,
       });
@@ -196,12 +194,12 @@ const LoginPage: React.FC = () => {
 
           <div className="text-center text-sm text-neutral-400">
             Don't have an account?{" "}
-            <a
-              href="/signup"
+            <Link
+              to="/signup"
               className="text-teal-400 hover:text-teal-300 hover:underline font-medium"
             >
               Create one here
-            </a>
+            </Link>
           </div>
         </div>
       </div>
