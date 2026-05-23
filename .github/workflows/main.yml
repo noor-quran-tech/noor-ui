@@ -1,21 +1,44 @@
-name: First Workflow
+name: Frontend CI
 
 on:
-  push: 
+  pull_request:
+    branches:
+      - main
+
+  push:
     branches:
       - main
       # - Staging
       # - development
 jobs:
-  example-job:
+  quality-checks:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node-version: [22]
+
     steps:
-      - name: Print welcome message
-        run: echo "This is my first GitHub Actions workflow!"
-
       - name: Checkout repo
-        uses: actions/checkout@v6.0.2 
+        uses: actions/checkout@v4
 
-      - name: List all repo files
-        run: ls -la
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{matrix.node-version}}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Run Prettier check
+        run: npm run format:check
+
+      - name: Run TypeScript check
+        run: npm run type-check
+
+      - name: Run build project
+        run: npm run build

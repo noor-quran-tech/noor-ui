@@ -4,14 +4,15 @@ import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Dropdown from "react-bootstrap/Dropdown";
 
-import "@styles/appNavbar.css";
+import type { RootState } from "@store/store";
+
 import { logout } from "@store/slices/authSlice";
+import "@styles/appNavbar.css";
 import i18n from "@/i18n";
 
 function AppNavbar() {
-  const loggedInUser = useSelector((state: any) => state.auth.user);
+  const loggedInUser = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);

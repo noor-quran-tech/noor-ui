@@ -1,9 +1,11 @@
 import React, { useState, type ChangeEvent } from "react";
+import axios from "axios";
 import { toast } from "sonner";
 import { Spinner } from "react-bootstrap";
-import axios from "@lib/axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+
+import axiosAPI from "@lib/axios";
 import { setCredentials } from "@store/slices/authSlice";
 
 const LoginPage: React.FC = () => {
@@ -49,7 +51,7 @@ const LoginPage: React.FC = () => {
 
     try {
       setLoading(true);
-      const response = await axios.post("/auth/login", { email, password });
+      const response = await axiosAPI.post("/auth/login", { email, password });
 
       toast.success("Welcome back!", {
         description: `Successfully signed in as ${response.data?.data?.user?.firstName || "User"}.`,
@@ -74,9 +76,14 @@ const LoginPage: React.FC = () => {
       );
 
       navigate("/");
-    } catch (err: any) {
-      const errorMessage =
-        err?.response?.data?.message || "Incorrect email or password";
+    } catch (err) {
+      let errorMessage = "Incorrect email or password";
+      if (axios.isAxiosError(err)) {
+        errorMessage =
+          err?.response?.data?.message || err.message || errorMessage;
+      } else if (err instanceof Error) {
+        errorMessage = err.message;
+      }
       toast.error("Authentication Failed", { description: errorMessage });
     } finally {
       setLoading(false);
