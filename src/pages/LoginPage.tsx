@@ -93,29 +93,24 @@ const LoginPage: React.FC = () => {
   return (
     <div className="flex min-h-screen bg-neutral-50 text-neutral-800 font-sans">
       {/* Branding Side-Pane (Light-Mode Luxury Design) */}
-      <div className="hidden md:flex flex-1 items-center justify-center bg-gradient-to-br from-teal-800 to-teal-950 p-12 relative overflow-hidden">
-        <div className="max-w-md z-10 space-y-6">
-          <div className="text-4xl font-extrabold text-gold-300 tracking-tight flex items-center gap-3 drop-shadow-sm">
-            <span className="font-arabic">نور</span>{" "}
-            <span className="text-3xl font-light text-neutral-50 tracking-wide border-l border-teal-600 pl-3">
+      <div className="hidden md:flex flex-1 items-center justify-center bg-gradient-to-br from-teal-50 to-teal-100 p-12 relative overflow-hidden border-r border-neutral-200">
+        <div className="max-w-md z-10">
+          <div className="text-4xl font-extrabold text-gold-600 mb-8 tracking-tight drop-shadow-[0_2px_10px_rgba(0,183,181,0.05)]">
+            نور{" "}
+            <span className="text-3xl font-extrabold text-gold-600 mb-8 tracking-tight drop-shadow-[0_2px_10px_rgba(0,183,181,0.05)]">
               Noor
             </span>
           </div>
-          <h1 className="text-4xl font-extrabold text-white leading-tight tracking-tight">
+          <h1 className="text-4xl font-extrabold text-neutral-900 leading-tight mb-4">
             Learn the Quran from the best teachers in the world.
           </h1>
-          <p className="text-teal-100/90 text-base leading-relaxed font-medium">
-            Welcome back to your authentic space for learning Tajweed, Quran
-            recitation, and Arabic pedagogical tracks.
+          <p className="text-neutral-600 leading-relaxed">
+            Connecting specialized educators with eager students worldwide
+            through an authentic, high-quality, and interactive environment.
           </p>
         </div>
-
-        {/* Dynamic Light Theme Decorative Highlights */}
-        <div className="absolute -top-10 -left-10 w-[400px] h-[400px] bg-gold-400/10 rounded-full blur-[100px] pointer-events-none" />
-        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-teal-500/20 rounded-full blur-[120px] pointer-events-none" />
-
-        {/* Subtle geometric background graphic for high-end feel */}
-        <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-teal-300/20 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-1/4 right-1/4 w-[350px] h-[350px] bg-gold-300/10 rounded-full blur-[100px] pointer-events-none" />
       </div>
 
       {/* Login Interaction Pane (Clean, Modern Light Frame) */}

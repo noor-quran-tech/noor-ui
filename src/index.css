@@ -62,5 +62,6 @@
 
 /* --- Base Layout / Custom Utility Fallbacks --- */
 @utility main-content {
+  padding-top: 70px;
   min-height: calc(100vh - 80px);
 }

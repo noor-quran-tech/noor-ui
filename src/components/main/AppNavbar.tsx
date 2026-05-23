@@ -1,11 +1,7 @@
 import { toast } from "sonner";
-import { useTranslation } from "react-i18next";
-import Nav from "react-bootstrap/Nav";
-import { Link, useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
-import Container from "react-bootstrap/Container";
-import Navbar from "react-bootstrap/Navbar";
-import Dropdown from "react-bootstrap/Dropdown";
+import { useTranslation } from "react-i18next";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -33,145 +29,126 @@ function AppNavbar() {
   };
 
   return (
-    <Navbar
-      expand="lg"
-      fixed="top"
-      className="py-3 navbar-bg bg-gradient-primary transition"
-      style={{ fontWeight: "600" }}
-    >
-      <Container>
-        {/* Brand Logo Identity */}
-        <Navbar.Brand
-          as={Link}
-          to="/"
-          className="d-flex align-items-center gap-2"
-        >
-          <span className="fs-3 logo-icon">🕌</span>
-          <span className="fw-bold fs-4 text-gold-400">
+    <nav className="fixed top-0 z-50 w-full bg-gradient-to-r from-teal-800 via-teal-700 to-teal-600 py-4 text-white shadow-lg">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6">
+        {/* BRAND */}
+        <Link to="/" className="flex items-center gap-2">
+          <span className="text-3xl">🕌</span>
+
+          <span className="text-xl font-black text-white">
             {t("navbar.brand")}
           </span>
-          <span className="edu badge bg-light text-dark mb-3">
+
+          <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white">
             {t("navbar.edu")}
           </span>
-        </Navbar.Brand>
+        </Link>
 
-        {/* The Native Hamburger Toggle Button */}
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        {/* NAV LINKS */}
+        <div className="hidden items-center gap-6 md:flex">
+          {navLinks.map((link) => (
+            <Link
+              key={link.path}
+              to={link.path}
+              className="text-sm font-semibold text-white/90 transition hover:text-white"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </div>
 
-        {/* Everything inside Collapse hides behind the hamburger menu on small screens */}
-        <Navbar.Collapse id="basic-navbar-nav">
-          {/* Middle Section: Navigation Links */}
-          <Nav className="mx-auto gap-2 text-center text-lg-start my-3 my-lg-0">
-            {navLinks.map((link) => (
-              <Nav.Item key={link.path}>
-                <Nav.Link as={Link} to={link.path}>
-                  {link.label}
-                </Nav.Link>
-              </Nav.Item>
-            ))}
-          </Nav>
-
-          {/* Right Section: Profile State & Language Changer Stack */}
-          <div className="d-flex flex-column flex-lg-row align-items-center justify-content-center gap-3 ms-lg-auto">
-            {!loggedInUser ? (
-              <Link
-                to="/login"
-                className="btn btn-outline-dark w-100 w-lg-auto px-4"
-                style={{ fontWeight: "600" }}
+        {/* RIGHT SIDE */}
+        <div className="flex items-center gap-4">
+          {/* LOGIN / USER */}
+          {!loggedInUser ? (
+            <Link
+              to="/login"
+              className="rounded-full border border-white/30 bg-white/10 px-5 py-2 text-sm font-semibold text-white transition hover:bg-white/20"
+            >
+              🔑 {t("navbar.login")}
+            </Link>
+          ) : (
+            <div className="relative">
+              <button
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="flex items-center gap-2 rounded-full bg-white/10 px-3 py-2 text-white cursor-pointer"
               >
-                <span className="key-icon me-1">🔑</span>
-                {t("navbar.login")}
-              </Link>
-            ) : (
-              <div className="user-dropdown-simple">
-                <Dropdown
-                  show={isDropdownOpen}
-                  onToggle={() => setIsDropdownOpen(!isDropdownOpen)}
-                  align="end"
-                >
-                  <Dropdown.Toggle
-                    as="button"
-                    className="user-toggle d-flex align-items-center gap-2 btn btn-transparent p-2 rounded mx-auto"
+                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white/20 font-bold ">
+                  {loggedInUser.firstName?.charAt(0)}
+                </div>
+
+                <span className="text-sm font-semibold">
+                  {loggedInUser.firstName}
+                </span>
+              </button>
+
+              {isDropdownOpen && (
+                <div className="absolute right-0 mt-3 w-48 rounded-xl bg-white p-2 shadow-xl border border-neutral-200 z-50">
+                  <Link
+                    to="/profile"
+                    className="block text-black rounded-lg px-3 py-2 text-sm hover:bg-neutral-100"
                   >
-                    <div
-                      className="rounded-circle d-flex justify-content-center align-items-center"
-                      style={{
-                        width: "36px",
-                        height: "36px",
-                        background:
-                          "linear-gradient(135deg,var(--dark2-color),var(--dark1-color))",
-                        color: "white",
-                        fontWeight: "600",
-                      }}
-                    ></div>
-                    <span style={{ fontWeight: "600" }}>
-                      {loggedInUser.firstName.substring(0, 20)}
-                    </span>
-                  </Dropdown.Toggle>
+                    👤 Profile
+                  </Link>
 
-                  <Dropdown.Menu className="shadow-sm rounded border-0 position-absolute text-center text-lg-start">
-                    <Dropdown.Item
-                      as={Link}
-                      to="/profile"
-                      onClick={() => setIsDropdownOpen(false)}
-                    >
-                      👤 {t("navbar.profile")}
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                      as={Link}
-                      to={
-                        loggedInUser?.role === "student"
-                          ? "/student-portal"
-                          : "/teacher-dashboard"
-                      }
-                      onClick={() => setIsDropdownOpen(false)}
-                    >
-                      {loggedInUser?.role === "student"
-                        ? `🪪 ${t("navbar.studentPortal")}`
-                        : `📊 ${t("navbar.teacherDashboard")}`}
-                    </Dropdown.Item>
-                    <Dropdown.Divider />
-                    <Dropdown.Item
-                      onClick={() => {
-                        dispatch(logout());
-                        setIsDropdownOpen(false);
-                        toast.success(t("navbar.logoutSuccess"));
-                        navigate("/login");
-                      }}
-                      className="text-danger"
-                    >
-                      🚪 {t("navbar.logout")}
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              </div>
-            )}
+                  <Link
+                    to={
+                      loggedInUser?.role === "student"
+                        ? "/student-portal"
+                        : "/teacher-dashboard"
+                    }
+                    className="block text-black rounded-lg px-3 py-2 text-sm hover:bg-neutral-100"
+                  >
+                    📊 Dashboard
+                  </Link>
 
-            {/* Language Switcher Button Group */}
-            <div className="d-flex align-items-center gap-1 p-1 rounded-pill bg-light border shadow-sm language-container">
-              <Button
-                variant={i18n.language === "en" ? "dark" : "transparent"}
-                size="sm"
-                className={`rounded-pill px-3 py-1 border-0 transition-all ${i18n.language === "en" ? "text-white" : "text-muted"}`}
-                style={{ fontSize: "12px", fontWeight: "700" }}
-                onClick={() => changeLanguage("en")}
-              >
-                {t("language.en")}
-              </Button>
-              <Button
-                variant={i18n.language === "ar" ? "dark" : "transparent"}
-                size="sm"
-                className={`rounded-pill px-3 py-1 border-0 transition-all ${i18n.language === "ar" ? "text-white" : "text-muted"}`}
-                style={{ fontSize: "12px", fontWeight: "700" }}
-                onClick={() => changeLanguage("ar")}
-              >
-                {t("language.ar")}
-              </Button>
+                  <hr className="my-1 text-black" />
+
+                  <button
+                    onClick={() => {
+                      dispatch(logout());
+                      toast.success(t("navbar.logoutSuccess"));
+                      setIsDropdownOpen(false);
+                      navigate("/login");
+                    }}
+                    className="block w-full rounded-lg px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 cursor-pointer"
+                  >
+                    🚪 Logout
+                  </button>
+                </div>
+              )}
             </div>
+          )}
+
+          {/* LANGUAGE SWITCHER */}
+          <div className="flex items-center gap-1 rounded-full border border-white/20 bg-white/10 p-1">
+            <Button
+              onClick={() => changeLanguage("en")}
+              size="sm"
+              className={`border-0 px-3 py-1 text-xs font-bold cursor-pointer ${
+                i18n.language === "en"
+                  ? "rounded-full bg-white text-teal-700"
+                  : "text-white/70"
+              }`}
+            >
+              {t("language.en")}
+            </Button>
+
+            <Button
+              onClick={() => changeLanguage("ar")}
+              size="sm"
+              className={`border-0 px-3 py-1 text-xs font-bold cursor-pointer ${
+                i18n.language === "ar"
+                  ? "rounded-full bg-white text-teal-700"
+                  : "text-white/70"
+              }`}
+            >
+              {t("language.ar")}
+            </Button>
           </div>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+        </div>
+      </div>
+    </nav>
   );
 }
 
