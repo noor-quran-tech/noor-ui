@@ -32,7 +32,6 @@
       "@utils/*": ["src/utils/*"],
       "@/*": ["src/*"]
     }
-
   },
   "include": ["src"]
 }
