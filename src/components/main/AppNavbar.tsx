@@ -1,19 +1,22 @@
-import Container from "react-bootstrap/Container";
+import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 import Nav from "react-bootstrap/Nav";
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "react-bootstrap";
+import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import Dropdown from "react-bootstrap/Dropdown";
-import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import "@styles/appNavbar.css";
+
+import type { RootState } from "@store/store";
+
 import { logout } from "@store/slices/authSlice";
-import { toast } from "sonner";
-import { Button } from "react-bootstrap";
+import "@styles/appNavbar.css";
 import i18n from "@/i18n";
-import { useTranslation } from "react-i18next";
 
 function AppNavbar() {
-  const loggedInUser = useSelector((state: any) => state.auth.user);
+  const loggedInUser = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);

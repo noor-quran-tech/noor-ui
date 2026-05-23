@@ -6,9 +6,6 @@
   ],
   "compilerOptions": {
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-  
-  
-  
+    "forceConsistentCasingInFileNames": true
   }
 }

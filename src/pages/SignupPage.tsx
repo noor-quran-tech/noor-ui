@@ -1,13 +1,21 @@
-import React, { useEffect, useState, type ChangeEvent } from "react";
+import React, { useState, type ChangeEvent } from "react";
 import { toast } from "sonner";
+import axios from "axios";
 
 import { Role, Level, type SignupFormData } from "@utils/types/user";
 import { Country, City } from "country-state-city";
-import axios from "@lib/axios";
+import axiosAPI from "@lib/axios";
 import { Spinner } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "@store/slices/authSlice";
+
+const STATIC_COUNTRIES_LIST = Country.getAllCountries().map((c) => ({
+  isoCode: c.isoCode,
+  name: c.name,
+}));
+
+const DETECTED_TIME_ZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 const initialFormState: SignupFormData = {
   firstName: "",
@@ -29,7 +37,7 @@ const initialFormState: SignupFormData = {
   teachingLevels: [],
 
   level: Level.BEGINNER,
-  timeZone: "",
+  timeZone: DETECTED_TIME_ZONE,
 
   parentName: "",
   parentPhone: "",
@@ -47,22 +55,11 @@ const SignupPage: React.FC = () => {
   >({});
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
 
-  const [countriesList, setCountriesList] = useState<
-    { isoCode: string; name: string }[]
-  >([]);
+  const [countriesList] = useState<{ isoCode: string; name: string }[]>(
+    STATIC_COUNTRIES_LIST,
+  );
+
   const [citiesList, setCitiesList] = useState<string[]>([]);
-
-  useEffect(() => {
-    const allCountries = Country.getAllCountries().map((c) => ({
-      isoCode: c.isoCode,
-      name: c.name,
-    }));
-
-    setCountriesList(allCountries);
-
-    const detectedTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    setFormData((prev) => ({ ...prev, timeZone: detectedTimeZone }));
-  }, []);
 
   const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedCountryIso = e.target.value;
@@ -197,7 +194,7 @@ const SignupPage: React.FC = () => {
       role,
       yearsOfExperience,
       teachingLevels,
-      languages,
+      // languages,
       bio,
       parentName,
       parentPhone,
@@ -274,13 +271,13 @@ const SignupPage: React.FC = () => {
       const role: string = formData.role;
       let response;
       if (role === Role.STUDENT) {
-        response = await axios.post("/auth/register-student", formData);
+        response = await axiosAPI.post("/auth/register-student", formData);
       } else {
         const payload = {
           ...formData,
           yearsOfExperience: Number(formData.yearsOfExperience),
         };
-        response = await axios.post("/auth/register-teacher", payload);
+        response = await axiosAPI.post("/auth/register-teacher", payload);
       }
       toast.success("Signed up successfully");
 
@@ -294,9 +291,17 @@ const SignupPage: React.FC = () => {
         }),
       );
       navigate("/");
-    } catch (err: any) {
+    } catch (err) {
+      let errorMessage = "Error submitting form";
+      if (axios.isAxiosError(err)) {
+        errorMessage =
+          err?.response?.data?.message || err.message || errorMessage;
+      } else if (err instanceof Error) {
+        errorMessage = err.message;
+      }
+
       toast.error("Registration Failed", {
-        description: err?.response?.data?.message || "Error submitting form",
+        description: errorMessage,
       });
     } finally {
       setSubmitLoading(false);
