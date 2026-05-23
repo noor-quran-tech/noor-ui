@@ -94,7 +94,7 @@ const LoginPage: React.FC = () => {
               Noor
             </span>
           </div>
-          <h1 className="text-4xl font-extrabold text-neutral-50 leading-tight tracking-tight">
+          <h1 className="text-4xl font-extrabold text-white leading-tight tracking-tight">
             Learn the Quran from the best teachers in the world.
           </h1>
           <p className="text-teal-100/90 text-base leading-relaxed font-medium">
@@ -169,12 +169,12 @@ const LoginPage: React.FC = () => {
                 >
                   Password
                 </label>
-                <a
-                  href="#forgot"
-                  className="text-xs font-semibold text-teal-600 hover:text-teal-500 hover:underline transition duration-150"
+                <Link
+                  to="#forgot"
+                  className="text-xs font-semibold text-teal-600 hover:text-teal-500 hover:underline transition duration-150 text-decoration-none"
                 >
                   Forgot Password?
-                </a>
+                </Link>
               </div>
               <input
                 id="password"
@@ -209,7 +209,7 @@ const LoginPage: React.FC = () => {
                   Authenticating...
                 </>
               ) : (
-                "Sign In to Your Space"
+                "Sign In"
               )}
             </button>
           </form>
@@ -219,7 +219,7 @@ const LoginPage: React.FC = () => {
             Don't have an account?{" "}
             <Link
               to="/signup"
-              className="text-teal-400 hover:text-teal-300 hover:underline font-medium"
+              className="text-teal-400 text-decoration-none hover:text-teal-300 hover:underline font-medium "
             >
               Create one here
             </Link>

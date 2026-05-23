@@ -832,12 +832,12 @@ const SignupPage: React.FC = () => {
             )}
           </form>
           <div className="text-center text-sm text-neutral-500">
-            Already have an acoount?{" "}
+            Already have an account?{" "}
             <Link
               to="/login"
-              className="text-teal-600 hover:text-teal-500 hover:underline font-medium"
+              className="text-teal-600 hover:text-teal-500 font-medium text-decoration-none"
             >
-              Create one here
+              Login
             </Link>
           </div>
         </div>
