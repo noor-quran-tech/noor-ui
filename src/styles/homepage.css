@@ -1,0 +1,34 @@
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes spin-slow {
+  0%,
+  50%,
+  100% {
+    transform: rotate(0deg);
+    color: var(--color-teal-400);
+  }
+  25% {
+    transform: rotate(5deg);
+    color: var(--color-teal-900);
+  }
+  75% {
+    transform: rotate(-5deg);
+    color: var(--color-teal-400);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 12s linear infinite;
+}
