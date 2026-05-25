@@ -1,10 +1,11 @@
 import { Route, Routes } from "react-router-dom";
 
-import HomePage from "@pages/HomePage";
-import SignupPage from "@pages/SignupPage";
-import LoginPage from "@pages/LoginPage";
-import ContactPage from "@pages/ContactPage";
-import AboutPage from "@pages/AboutPage";
+import HomePage from "@pages/static/HomePage";
+import SignupPage from "@pages/auth/SignupPage";
+import LoginPage from "@pages/auth/LoginPage";
+import ContactPage from "@pages/static/ContactPage";
+import AboutPage from "@pages/static/AboutPage";
+import NotFoundPage from "@pages/static/NotFoundPage";
 
 const AppRoutes = () => {
   return (
@@ -15,6 +16,8 @@ const AppRoutes = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/about" element={<AboutPage />} />
+
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </main>
   );
