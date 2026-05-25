@@ -3,7 +3,9 @@ import axios from "axios";
 import { toast } from "sonner";
 import { Spinner } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
+import type { RootState } from "@store/store";
 
 import axiosAPI from "@lib/axios";
 import { setCredentials } from "@store/slices/authSlice";
@@ -11,6 +13,7 @@ import { setCredentials } from "@store/slices/authSlice";
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const loggedInUser = useSelector((state: RootState) => state.auth.user);
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -18,6 +21,13 @@ const LoginPage: React.FC = () => {
     {},
   );
   const [loading, setLoading] = useState<boolean>(false);
+
+  if (loggedInUser) {
+    setTimeout(() => {
+      navigate("/");
+    }, 500);
+    return;
+  }
 
   const validateForm = (): boolean => {
     const tempErrors: { email?: string; password?: string } = {};

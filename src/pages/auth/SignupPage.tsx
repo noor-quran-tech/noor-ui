@@ -3,11 +3,13 @@ import { toast } from "sonner";
 import axios from "axios";
 
 import { Role, Level, type SignupFormData } from "@utils/types/user";
+import type { RootState } from "@store/store";
+
 import { Country, City } from "country-state-city";
 import axiosAPI from "@lib/axios";
 import { Spinner } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCredentials } from "@store/slices/authSlice";
 
 const STATIC_COUNTRIES_LIST = Country.getAllCountries().map((c) => ({
@@ -47,6 +49,7 @@ const initialFormState: SignupFormData = {
 const SignupPage: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const loggedInUser = useSelector((state: RootState) => state.auth.user);
 
   const [step, setStep] = useState<number>(1);
   const [formData, setFormData] = useState<SignupFormData>(initialFormState);
@@ -60,6 +63,13 @@ const SignupPage: React.FC = () => {
   );
 
   const [citiesList, setCitiesList] = useState<string[]>([]);
+
+  if (loggedInUser) {
+    setTimeout(() => {
+      navigate("/");
+    }, 500);
+    return;
+  }
 
   const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedCountryIso = e.target.value;
