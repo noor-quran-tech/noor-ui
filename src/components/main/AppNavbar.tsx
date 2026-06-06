@@ -74,7 +74,7 @@ function AppNavbar() {
                 className="flex items-center gap-2 rounded-full bg-white/10 px-3 py-2 text-white cursor-pointer"
               >
                 <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white/20 font-bold ">
-                  {loggedInUser.firstName?.charAt(0)}
+                  {loggedInUser.firstName?.charAt(0).toUpperCase()}
                 </div>
 
                 <span className="text-sm font-semibold">
