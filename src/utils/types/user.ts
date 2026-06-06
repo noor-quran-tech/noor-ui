@@ -60,3 +60,41 @@ export interface User {
   email: string;
   role: Role;
 }
+
+export interface UserProfileData {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  profileImage: string | null;
+  role: Role;
+  isActive: boolean;
+  deletedAt: string | null;
+  passwordChangedAt: string | null;
+  student: StudentDetails | null;
+  teacher: TeacherDetails | null;
+}
+
+export interface BaseProfileDetails {
+  id: string;
+  country: string;
+  city: string;
+  addressLine1: string;
+  addressLine2: string;
+  timeZone: string | null;
+  bio: string | null;
+  phoneNumber: string;
+  dateOfBirth: string;
+  verificationStatus: VerificationStatus;
+  isApproved: boolean;
+}
+
+export interface StudentDetails extends BaseProfileDetails {
+  level: Level;
+}
+
+export interface TeacherDetails extends BaseProfileDetails {
+  yearsOfExperience: number | null;
+  languages: string[];
+  teachingLevels: Level[];
+}

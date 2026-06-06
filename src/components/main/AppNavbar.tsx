@@ -33,8 +33,6 @@ function AppNavbar() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6">
         {/* BRAND */}
         <Link to="/" className="flex items-center gap-2">
-          <span className="text-3xl">🕌</span>
-
           <span className="text-xl font-black text-white">
             {t("navbar.brand")}
           </span>

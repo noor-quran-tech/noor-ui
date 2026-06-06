@@ -6,6 +6,7 @@ import LoginPage from "@pages/auth/LoginPage";
 import ContactPage from "@pages/static/ContactPage";
 import AboutPage from "@pages/static/AboutPage";
 import NotFoundPage from "@pages/static/NotFoundPage";
+import ProfilePage from "@pages/account/ProfilePage";
 
 const AppRoutes = () => {
   return (
@@ -16,6 +17,7 @@ const AppRoutes = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
 
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
