@@ -9,6 +9,7 @@ import type { RootState } from "@store/store";
 
 import axiosAPI from "@lib/axios";
 import { setCredentials } from "@store/slices/authSlice";
+import { Role } from "@utils/types/user";
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -66,9 +67,10 @@ const LoginPage: React.FC = () => {
       toast.success("Welcome back!", {
         description: `Successfully signed in as ${response.data?.data?.user?.firstName || "User"}.`,
       });
-
       const token = response?.data?.token;
       const user = response?.data?.data?.user;
+      const teacherId = response?.data?.data?.teacherId;
+      const studentId = response?.data?.data?.studentId;
       if (user) {
         delete user.password;
         delete user.createdAt;
@@ -82,6 +84,14 @@ const LoginPage: React.FC = () => {
         setCredentials({
           token,
           user,
+          profile: {
+            id: teacherId || studentId,
+            type: teacherId
+              ? Role.TEACHER
+              : studentId
+                ? Role.STUDENT
+                : Role.ADMIN,
+          },
         }),
       );
 
