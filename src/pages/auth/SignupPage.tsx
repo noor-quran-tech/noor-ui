@@ -218,9 +218,8 @@ const SignupPage: React.FC = () => {
 
     if (role === "TEACHER") {
       if (
-        yearsOfExperience ||
-        yearsOfExperience < 0 ||
-        yearsOfExperience > 60
+        yearsOfExperience &&
+        (yearsOfExperience < 0 || yearsOfExperience > 60)
       ) {
         newErrors.yearsOfExperience =
           "Years of experience must be between 0 and 60";
@@ -228,9 +227,6 @@ const SignupPage: React.FC = () => {
       if (teachingLevels.length === 0) {
         newErrors.teachingLevels = "At least one teaching level is required";
       }
-      // if (languages.length === 0) {
-      //   newErrors.languages = "At least one language is required";
-      // }
     }
 
     if (role === "STUDENT") {
