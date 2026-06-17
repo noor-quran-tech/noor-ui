@@ -7,20 +7,41 @@ import ContactPage from "@pages/static/ContactPage";
 import AboutPage from "@pages/static/AboutPage";
 import NotFoundPage from "@pages/static/NotFoundPage";
 import ProfilePage from "@pages/account/ProfilePage";
-import RequestSubjectPage from "@pages/dashboard/request-subject";
+import RequestSubjectPage from "@pages/dashboard/RequestSubject";
+import Dashboard from "@pages/dashboard/Dashboard";
+import { GuestRoute, ProtectedRoute } from "@components/guards/AuthGuards";
 
 const AppRoutes = () => {
   return (
     <main className="main-content">
       <Routes>
+        {/* ====================================================
+            PUBLIC ROUTES (Anyone can access)
+           ==================================================== */}
         <Route path="/" element={<HomePage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/login" element={<LoginPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/about" element={<AboutPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/request-subject" element={<RequestSubjectPage />} />
 
+        {/* ====================================================
+            GUEST-ONLY ROUTES (Logged-in users get redirected)
+           ==================================================== */}
+        <Route element={<GuestRoute />}>
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/login" element={<LoginPage />} />
+        </Route>
+
+        {/* ====================================================
+            PROTECTED ROUTES (Requires authentication)
+           ==================================================== */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/request-subject" element={<RequestSubjectPage />} />
+          <Route path="/dashboard" element={<Dashboard />}>
+            {" "}
+          </Route>
+        </Route>
+
+        {/* FALLBACK 404 */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </main>

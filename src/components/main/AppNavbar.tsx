@@ -90,11 +90,7 @@ function AppNavbar() {
                   </Link>
 
                   <Link
-                    to={
-                      loggedInUser?.role === "student"
-                        ? "/student-portal"
-                        : "/teacher-dashboard"
-                    }
+                    to="dashboard"
                     className="block text-black rounded-lg px-3 py-2 text-sm hover:bg-neutral-100"
                   >
                     📊 Dashboard

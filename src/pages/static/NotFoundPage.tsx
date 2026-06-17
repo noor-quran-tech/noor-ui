@@ -43,13 +43,6 @@ const NotFoundPage: React.FC = () => {
           </div>
         </div>
       </main>
-
-      {/* Footer Interface Tracker */}
-      <footer className="bg-white border-t border-slate-200 py-6 text-center">
-        <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
-          Noor Platform • هدىً ونور
-        </p>
-      </footer>
     </div>
   );
 };
