@@ -12,6 +12,11 @@ interface NavItem {
 }
 
 const DASHBOARD_NAV_ITEMS: NavItem[] = [
+  {
+    label: "Overview",
+    path: "/dashboard",
+    roles: [Role.STUDENT, Role.TEACHER, Role.ADMIN],
+  },
   // Admin Only Routes
   { label: "User Management", path: "/dashboard/users", roles: [Role.ADMIN] },
   { label: "Inquiries", path: "/dashboard/inquiries", roles: [Role.ADMIN] },
@@ -87,14 +92,14 @@ const Dashboard = () => {
         {/* User Quick Info & Footer Escape Action */}
         <div className="p-4 border-t border-neutral-100 bg-neutral-50/50 flex items-center justify-between">
           <div className="flex items-center gap-2.5 overflow-hidden">
-            <div className="h-8 w-8 rounded-full bg-neutral-200 shrink-0 flex items-center justify-center font-bold text-xs uppercase text-neutral-600">
-              {user?.name?.charAt(0) || "U"}
+            <div className="h-8 w-8 rounded-full bg-neutral-200 shrink-0 flex items-center justify-center font-bold text-s uppercase text-neutral-600">
+              {user?.firstName?.charAt(0) || "U"}
             </div>
             <div className="truncate">
-              <p className="text-xs font-bold text-neutral-900 truncate">
+              <p className="text-s font-bold text-neutral-900 truncate">
                 {user?.firstName} {user?.lastName}
               </p>
-              <p className="text-[10px] text-neutral-400 truncate">
+              <p className="text-xs text-neutral-400 truncate">
                 {user?.email || "user@email.com"}
               </p>
             </div>
