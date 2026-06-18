@@ -275,33 +275,26 @@ const SignupPage: React.FC = () => {
     try {
       setSubmitLoading(true);
       const role: string = formData.role;
-      let response;
       if (role === Role.STUDENT) {
-        response = await axiosAPI.post("/auth/register-student", formData);
+        await axiosAPI.post("/auth/register-student", formData);
       } else {
         const payload = {
           ...formData,
           yearsOfExperience: Number(formData.yearsOfExperience),
         };
-        response = await axiosAPI.post("/auth/register-teacher", payload);
+        await axiosAPI.post("/auth/register-teacher", payload);
       }
       toast.success("Signed up successfully");
 
-      const token = response?.data?.token;
-      const user = response?.data?.data?.user;
-      user.password = null;
-      dispatch(
-        setCredentials({
-          token,
-          user,
-        }),
-      );
-      navigate("/");
+      navigate("/login");
     } catch (err) {
       let errorMessage = "Error submitting form";
       if (axios.isAxiosError(err)) {
+        console.warn("err.response", err.response);
         errorMessage =
-          err?.response?.data?.message || err.message || errorMessage;
+          err?.response?.data?.errors?.[0].message ||
+          err.message ||
+          errorMessage;
       } else if (err instanceof Error) {
         errorMessage = err.message;
       }
@@ -317,7 +310,7 @@ const SignupPage: React.FC = () => {
   return (
     <div className="flex min-h-screen bg-neutral-50 text-neutral-800 font-sans">
       {/* Visual Identity Side-Pane */}
-      <div className="hidden md:flex flex-1 items-center justify-center bg-gradient-to-br from-teal-50 to-teal-100 p-12 relative overflow-hidden border-r border-neutral-200">
+      <div className="hidden md:flex flex-1 items-center justify-center bg-linear-to-br` from-teal-50 to-teal-100 p-12 relative overflow-hidden border-r border-neutral-200">
         <div className="max-w-md z-10">
           <div className="text-4xl font-extrabold text-gold-600 mb-8 tracking-tight drop-shadow-[0_2px_10px_rgba(0,183,181,0.05)]">
             نور{" "}
@@ -333,8 +326,8 @@ const SignupPage: React.FC = () => {
             through an authentic, high-quality, and interactive environment.
           </p>
         </div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-teal-300/20 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-1/4 right-1/4 w-[350px] h-[350px] bg-gold-300/10 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-125 h-125 bg-teal-300/20 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-1/4 right-1/4 w-87.5 h-87.5 bg-gold-300/10 rounded-full blur-[100px] pointer-events-none" />
       </div>
 
       {/* Form Interaction Side-Pane */}

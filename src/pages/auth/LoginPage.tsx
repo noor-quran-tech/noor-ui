@@ -75,7 +75,6 @@ const LoginPage: React.FC = () => {
         delete user.password;
         delete user.createdAt;
         delete user.deletedAt;
-        delete user.isActive;
         delete user.lastLogin;
         delete user.updatedAt;
       }

@@ -187,6 +187,7 @@ const ContactPage: React.FC = () => {
                 <option value="">Select a topic...</option>
                 <option value="General Inquiry">General Inquiry</option>
                 <option value="Technical Support">Technical Support</option>
+                <option value="Account Deactivated">Account Deactivated</option>
                 <option value="Billing & Accounts">Billing & Accounts</option>
                 <option value="Feedback">Feedback</option>
               </select>
