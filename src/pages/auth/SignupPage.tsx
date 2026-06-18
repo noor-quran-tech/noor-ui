@@ -9,8 +9,7 @@ import { Country, City } from "country-state-city";
 import axiosAPI from "@lib/axios";
 import { Spinner } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { setCredentials } from "@store/slices/authSlice";
+import { useSelector } from "react-redux";
 
 const STATIC_COUNTRIES_LIST = Country.getAllCountries().map((c) => ({
   isoCode: c.isoCode,
@@ -47,7 +46,6 @@ const initialFormState: SignupFormData = {
 };
 
 const SignupPage: React.FC = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const loggedInUser = useSelector((state: RootState) => state.auth.user);
 
