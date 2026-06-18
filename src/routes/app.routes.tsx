@@ -10,6 +10,8 @@ import ProfilePage from "@pages/account/ProfilePage";
 import RequestSubjectPage from "@pages/dashboard/RequestSubject";
 import Dashboard from "@pages/dashboard/Dashboard";
 import { GuestRoute, ProtectedRoute } from "@components/guards/AuthGuards";
+import UserManagement from "@pages/dashboard/UserManagement";
+import UserProfilePage from "@pages/dashboard/UserProfilePage";
 
 const AppRoutes = () => {
   return (
@@ -37,7 +39,9 @@ const AppRoutes = () => {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/request-subject" element={<RequestSubjectPage />} />
           <Route path="/dashboard" element={<Dashboard />}>
-            {" "}
+            <Route path="users" element={<UserManagement />} />
+            <Route path="users/students/:id" element={<UserProfilePage />} />
+            <Route path="users/teachers/:id" element={<UserProfilePage />} />
           </Route>
         </Route>
 
