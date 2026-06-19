@@ -40,5 +40,8 @@ jobs:
       - name: Run TypeScript check
         run: npm run type-check
 
+      - name: Run Knip check
+        run: npx knip
+
       - name: Run build project
         run: npm run build
