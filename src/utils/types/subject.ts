@@ -27,12 +27,12 @@ export interface SubjectRequest {
   updatedAt: string;
 }
 
-interface TeacherSubjectRequest extends SubjectRequest {
-  teacherId: string;
-}
-interface StudentSubjectRequest extends SubjectRequest {
-  studentId: string;
-}
+// interface TeacherSubjectRequest extends SubjectRequest {
+//   teacherId: string;
+// }
+// interface StudentSubjectRequest extends SubjectRequest {
+//   studentId: string;
+// }
 
 export interface CreateSubjectRequest {
   studentId?: string;
