@@ -75,7 +75,7 @@ export interface UserProfileData {
   teacher: TeacherDetails | null;
 }
 
-export interface BaseProfileDetails {
+interface BaseProfileDetails {
   id: string;
   country: string;
   city: string;
