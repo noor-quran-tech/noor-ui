@@ -73,7 +73,7 @@ const testimonials = [
   {
     name: "Nour El-Din",
     role: "Student, Grade 10",
-    text: "Noor helped me improve my mathematics level dramatically in just one semester.",
+    text: "Noor helped me to memorize the quran in a simple way",
   },
   {
     name: "Dr. Amira Shalaby",
@@ -91,10 +91,10 @@ export default function HomePage() {
   return (
     <div className="min-h-screen overflow-x-hidden bg-neutral-50 text-neutral-900 py-5">
       {/* HERO */}
-      <section className="relative overflow-hidden border-b border-neutral-100 bg-gradient-to-br from-neutral-50 via-teal-50 to-gold-50">
+      <section className="relative overflow-hidden border-b border-neutral-100 bg-linear-to-br from-neutral-50 via-teal-50 to-gold-50">
         {/* Background Blur */}
-        <div className="absolute -right-32 -top-32 h-[420px] w-[420px] rounded-full bg-teal-200/30 blur-3xl" />
-        <div className="absolute -bottom-24 -left-24 h-[320px] w-[320px] rounded-full bg-gold-200/30 blur-3xl" />
+        <div className="absolute -right-32 -top-32 h-105 w-105 rounded-full bg-teal-200/30 blur-3xl" />
+        <div className="absolute -bottom-24 -left-24 h-80 w-80 rounded-full bg-gold-200/30 blur-3xl" />
 
         <div className="mx-auto grid min-h-screen max-w-7xl grid-cols-1 items-center gap-16 px-6 py-20 lg:grid-cols-2 lg:px-12">
           {/* LEFT */}
@@ -145,7 +145,7 @@ export default function HomePage() {
           {/* RIGHT */}
           <div className="relative z-10 flex justify-center">
             {/* Floating container */}
-            <div className="flex items-center justify-center rounded-full bg-gradient-to-br p-10 shadow-xl animate-float">
+            <div className="flex items-center justify-center rounded-full bg-linear-to-br p-10 shadow-xl animate-float">
               {/* Rotating icon */}
               <BookOpen
                 size={140}
@@ -218,8 +218,8 @@ export default function HomePage() {
 
       {/* CTA */}
       <section className="px-6 pb-24 lg:px-12">
-        <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[40px] bg-gradient-to-r from-teal-800 via-teal-700 to-teal-600 px-8 py-20 shadow-2xl lg:px-16">
-          <div className="absolute -right-20 -top-20 h-[260px] w-[260px] rounded-full bg-white/10 blur-2xl" />
+        <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[40px] bg-linear-to-r from-teal-800 via-teal-700 to-teal-600 px-8 py-20 shadow-2xl lg:px-16">
+          <div className="absolute -right-20 -top-20 h-65 w-65 rounded-full bg-white/10 blur-2xl" />
 
           <div className="relative z-10 flex flex-col items-start justify-between gap-10 lg:flex-row lg:items-center">
             <div>
