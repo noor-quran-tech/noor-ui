@@ -746,7 +746,7 @@ const SignupPage: React.FC = () => {
                         name="parentName"
                         value={formData.parentName}
                         onChange={handleInputChange}
-                        placeholder="Guardian Full Name"
+                        placeholder="Parent Full Name"
                         className="w-full px-4 py-2 rounded-lg bg-white border border-neutral-200 text-xs text-neutral-900 focus:outline-none"
                       />
                       {errors.parentName && (
@@ -760,7 +760,7 @@ const SignupPage: React.FC = () => {
                           name="parentPhone"
                           value={formData.parentPhone}
                           onChange={handleInputChange}
-                          placeholder="Guardian Phone"
+                          placeholder="Parent Phone"
                           className="w-full px-4 py-2 rounded-lg bg-white border border-neutral-200 text-xs text-neutral-900 focus:outline-none"
                         />
                         {errors.parentPhone && (
@@ -773,7 +773,7 @@ const SignupPage: React.FC = () => {
                           name="parentEmail"
                           value={formData.parentEmail}
                           onChange={handleInputChange}
-                          placeholder="Guardian Email"
+                          placeholder="Parent Email"
                           className="w-full px-4 py-2 rounded-lg bg-white border border-neutral-200 text-xs text-neutral-900 focus:outline-none"
                         />
                         {errors.parentEmail && (

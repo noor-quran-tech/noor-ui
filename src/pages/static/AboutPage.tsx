@@ -65,7 +65,7 @@ const rules: Rule[] = [
   },
   {
     title1: "Family-First Environment",
-    title2: "Comprehensive Guardian Control",
+    title2: "Comprehensive Parent Control",
     description:
       "Parents have complete visibility via administrative dashboards to track class records, text messaging streams, and technical progress maps for minors under 16.",
   },
