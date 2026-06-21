@@ -91,6 +91,12 @@ interface BaseProfileDetails {
 
 export interface StudentDetails extends BaseProfileDetails {
   level: Level;
+
+  parent?: {
+    name: string;
+    email: string;
+    phoneNumber: string;
+  };
 }
 
 export interface TeacherDetails extends BaseProfileDetails {
