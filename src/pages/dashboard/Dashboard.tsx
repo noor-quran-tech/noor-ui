@@ -1,11 +1,4 @@
-import {
-  Link,
-  NavLink,
-  Outlet,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
 import type { RootState } from "@store/store";
@@ -14,9 +7,10 @@ import { Role } from "@utils/types/user";
 import axiosAPI from "@lib/axios";
 import { isAxiosError } from "axios";
 import { toast } from "sonner";
-import { logout } from "@store/slices/authSlice";
+import SideNav from "@components/dashboard/SideNav";
+import DashboardMainContent from "@components/dashboard/DashboardMainContent";
 
-interface NavItem {
+export interface NavItem {
   label: string;
   path: string;
   roles: Role[];
@@ -44,9 +38,6 @@ const DASHBOARD_NAV_ITEMS: NavItem[] = [
 ];
 
 const Dashboard = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { user } = useSelector((state: RootState) => state.auth);
   const currentRole = user?.role || Role.STUDENT;
 
@@ -100,145 +91,17 @@ const Dashboard = () => {
       {/* ====================================================
           SIDEBAR NAVIGATION SHELL
           ==================================================== */}
-      <aside className="w-64 bg-white border-r border-neutral-200 flex flex-col justify-between">
-        <div className="p-6">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="h-8 w-8 bg-teal-500 rounded-lg flex items-center justify-center text-white font-black">
-              Ω
-            </div>
-            <div>
-              <h1 className="text-sm font-bold text-neutral-900 tracking-tight">
-                EduPortal
-              </h1>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-teal-600 bg-teal-50 px-1.5 py-0.5 rounded-md">
-                {currentRole} Panel
-              </span>
-            </div>
-          </div>
-
-          {/* Sidebar Links - Block interactions if deactivated */}
-          <nav className="space-y-1">
-            {filteredNavItems.map((item) => (
-              <NavLink
-                key={item.path}
-                to={isUserActive ? item.path : "#"} // ✅ Block navigate paths if deactivated
-                end={item.path === "/dashboard"}
-                onClick={(e) => {
-                  if (!isUserActive) {
-                    e.preventDefault();
-                    toast.error("Access Denied", {
-                      description: "Reactivate account to open tabs.",
-                    });
-                  }
-                }}
-                className={({ isActive }) =>
-                  `flex items-center px-4 py-2.5 text-xs font-bold uppercase tracking-wider rounded-xl transition duration-150 ${
-                    isActive && isUserActive
-                      ? "bg-teal-50 text-teal-600"
-                      : "text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900"
-                  } ${!isUserActive ? "opacity-50 cursor-not-allowed" : ""}`
-                }
-              >
-                {item.label}
-              </NavLink>
-            ))}
-          </nav>
-        </div>
-
-        {/* Footer Area with clear Logout action access */}
-        <div className="p-4 border-t border-neutral-100 bg-neutral-50/50 flex items-center justify-between">
-          <div className="flex items-center gap-2.5 overflow-hidden w-full justify-between">
-            <div className="flex items-center gap-2 truncate">
-              <div className="h-8 w-8 rounded-full bg-neutral-200 shrink-0 flex items-center justify-center font-bold text-xs uppercase text-neutral-600">
-                {user?.firstName?.charAt(0) || "U"}
-              </div>
-              <div className="truncate">
-                <p className="text-xs font-bold text-neutral-900 truncate">
-                  {user?.firstName}
-                </p>
-                <p className="text-[10px] text-neutral-400 truncate">
-                  {user?.email}
-                </p>
-              </div>
-            </div>
-
-            {/* Added an escape sign-out hook right here for security compliance */}
-            <button
-              onClick={() => {
-                dispatch(logout());
-                // Trigger your custom red-dispatch auth logout slice handler here
-                toast.success("Logged out successfully");
-                navigate("/login");
-              }}
-              className="text-[11px] font-bold text-red-500 hover:text-red-700 hover:bg-red-50 px-2 py-1 rounded-md cursor-pointer transition"
-            >
-              Log out
-            </button>
-          </div>
-        </div>
-      </aside>
+      <SideNav
+        currentRole={currentRole}
+        filteredNavItems={filteredNavItems}
+        isUserActive={isUserActive}
+        user={user}
+      />
 
       {/* ====================================================
           MAIN ROUTE CONTENT WINDOW HOLDER
           ==================================================== */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        <header className="h-16 bg-white border-b border-neutral-200 flex items-center justify-between px-6 z-10 shrink-0">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-neutral-500">
-            {!isUserActive
-              ? "Account Suspended"
-              : location.pathname === "/dashboard"
-                ? "Overview"
-                : "Workspace"}
-          </h2>
-        </header>
-
-        <main className="flex-1 overflow-y-auto p-6 md:p-8 bg-neutral-50 flex flex-col justify-start">
-          {/* ✅ CONDITION A: ACCOUNT SUSPENDED BANNER MODULE */}
-          {!isUserActive ? (
-            <div className="bg-white border border-red-200 rounded-2xl p-6 shadow-xs max-w-lg space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="h-8 w-8 rounded-full bg-red-50 text-red-500 flex items-center justify-center text-sm font-black">
-                  ✕
-                </div>
-                <div>
-                  <h3 className="text-sm font-bold text-neutral-900">
-                    Your Account is Currently Deactivated
-                  </h3>
-                  <p className="text-xs text-neutral-400">
-                    Access privileges have been restricted by systems
-                    administration.
-                  </p>
-                </div>
-              </div>
-              <p className="text-xs text-neutral-500 leading-relaxed border-t border-neutral-100 pt-3">
-                Your account has been restricted by an administrator. Please
-                reach out to our{" "}
-                <Link
-                  to="/contact"
-                  className="text-teal-600 hover:text-teal-700 font-bold underline decoration-teal-500/30 hover:decoration-teal-700 transition-all duration-150"
-                >
-                  Support Team
-                </Link>{" "}
-                or contact your manager directly to request reactivation.
-              </p>
-            </div>
-          ) : location.pathname === "/dashboard" ? (
-            /* CONDITION B: ACTIVE OVERVIEW DEFAULT ROOT */
-            <div className="bg-white border border-neutral-200 rounded-2xl p-6 shadow-sm max-w-md">
-              <h3 className="text-base font-bold text-neutral-900 mb-1">
-                Welcome Back, {user?.firstName || "User"}!
-              </h3>
-              <p className="text-xs text-neutral-500 leading-relaxed">
-                Select an application resource action pane from the dashboard
-                navigation panel menu options to review data modules.
-              </p>
-            </div>
-          ) : (
-            /* CONDITION C: STANDARD ACTIVE NESTED ROUTE VIEW */
-            <Outlet />
-          )}
-        </main>
-      </div>
+      <DashboardMainContent isUserActive={isUserActive} user={user} />
     </div>
   );
 };
