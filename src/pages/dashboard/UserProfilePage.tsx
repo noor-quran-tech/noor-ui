@@ -1,8 +1,11 @@
-import { Role } from "@utils/types/user";
-import { useEffect, useState } from "react";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
-import axiosAPI from "@lib/axios";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
+
+import type { SessionStatus } from "@utils/types/session";
+
+import axiosAPI from "@lib/axios";
+import { Role } from "@utils/types/user";
 
 interface UserProfileData {
   id: string;
@@ -16,7 +19,7 @@ interface UserProfileData {
   yearsOfExperience?: number;
   languages?: string[];
   teachingLevels?: string[];
-  level?: string; // For Students (e.g., BEGINNER)
+  level?: string;
   verificationStatus: string;
   isApproved: boolean;
   user: {
@@ -36,6 +39,51 @@ interface UserProfileData {
   } | null;
 }
 
+interface SessionData {
+  id: string;
+  title: string;
+  status: SessionStatus;
+  startTime: string;
+  externalLink?: string | null;
+  subject?: {
+    name: string;
+  };
+}
+
+const statusStyles: Record<string, string> = {
+  SCHEDULED: "bg-teal-50 text-teal-700",
+  COMPLETED: "bg-success-bg text-success",
+  CANCELLED: "bg-error-bg text-error",
+  MISSED: "bg-warning-bg text-warning",
+  RUNNING: "bg-neutral-bg text-neutral",
+};
+
+const getStatusStyle = (status: string) =>
+  statusStyles[status?.toLowerCase()] || "bg-neutral-100 text-neutral-600";
+
+const formatDate = (value?: string) => {
+  if (!value) return "—";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "—";
+  return date.toLocaleDateString(undefined, {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+};
+
+const formatDateTime = (value: string) => {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return date.toLocaleString(undefined, {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};
+
 const UserProfilePage = () => {
   const { id } = useParams();
   const { pathname } = useLocation();
@@ -43,33 +91,51 @@ const UserProfilePage = () => {
 
   const role = pathname.includes("/students") ? Role.STUDENT : Role.TEACHER;
   const [profile, setProfile] = useState<UserProfileData | null>(null);
+  const [sessions, setSessions] = useState<SessionData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    async function getUser() {
+    async function fetchData() {
+      if (!id) return;
       setLoading(true);
-      try {
-        const endpoint =
-          role === Role.STUDENT ? `students/${id}` : `teachers/${id}`;
-        const response = await axiosAPI.get(endpoint);
-        setProfile(response.data.data);
-      } catch {
+
+      const profileEndpoint =
+        role === Role.STUDENT ? `students/${id}` : `teachers/${id}`;
+      const sessionsEndpoint =
+        role === Role.STUDENT
+          ? `students/${id}/sessions`
+          : `teachers/${id}/sessions`;
+
+      const [profileRes, sessionsRes] = await Promise.allSettled([
+        axiosAPI.get(profileEndpoint),
+        axiosAPI.get(sessionsEndpoint),
+      ]);
+
+      if (profileRes.status === "fulfilled") {
+        setProfile(profileRes.value.data.data);
+      } else {
         toast.error("Failed to load profile details.");
-      } finally {
-        setLoading(false);
       }
+
+      if (sessionsRes.status === "fulfilled") {
+        setSessions(sessionsRes.value.data.data || []);
+      } else {
+        toast.error("Failed to load user sessions.");
+      }
+
+      setLoading(false);
     }
 
-    if (id) getUser();
+    fetchData();
   }, [id, role]);
 
   if (loading) {
     return (
-      <div className="max-w-6xl mx-auto space-y-6 animate-pulse p-4">
-        <div className="h-5 w-32 bg-neutral-200 rounded-lg" />
+      <div className="max-w-6xl mx-auto space-y-6 animate-pulse p-6">
+        <div className="h-6 w-32 bg-neutral-200 rounded-lg" />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="h-125 bg-white border border-neutral-100 rounded-2xl" />
-          <div className="md:col-span-2 h-125 bg-white border border-neutral-100 rounded-2xl" />
+          <div className="h-96 bg-white border border-neutral-100 rounded-2xl" />
+          <div className="md:col-span-2 h-96 bg-white border border-neutral-100 rounded-2xl" />
         </div>
       </div>
     );
@@ -77,19 +143,21 @@ const UserProfilePage = () => {
 
   if (!profile) {
     return (
-      <div>
+      <div className="max-w-2xl mx-auto mt-20 p-6">
         <button
           onClick={() => navigate(-1)}
-          className="text-xs font-semibold text-neutral-500 hover:text-neutral-900 transition-colors flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-neutral-100 focus:outline-hidden focus:ring-2 focus:ring-teal-500/20 cursor-pointer"
+          className="text-xs font-semibold text-neutral-500 hover:text-neutral-900 transition-colors flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-neutral-100 focus:outline-hidden focus:ring-2 focus:ring-teal-500/20 cursor-pointer mb-6"
         >
-          <span className="text-neutral-400 text-[10px]">◀</span> Back to
-          Directory
+          <span>←</span> Back to Dashboard
         </button>
-        <div className="p-16 text-center text-sm font-medium text-neutral-500 bg-white border border-neutral-100 rounded-2xl max-w-2xl mx-auto shadow-xs mt-12">
-          <p className="text-base font-semibold text-neutral-800 mb-1">
+        <div className="p-12 text-center bg-white border border-neutral-100 rounded-2xl shadow-xs">
+          <div className="w-12 h-12 bg-error-bg text-error rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">
+            !
+          </div>
+          <h3 className="text-base font-bold text-neutral-900 mb-1">
             No profile record located
-          </p>
-          <p className="text-neutral-400 text-xs">
+          </h3>
+          <p className="text-neutral-500 text-xs">
             Verify the workspace link or user parameters identifier.
           </p>
         </div>
@@ -98,236 +166,279 @@ const UserProfilePage = () => {
   }
 
   const isStudent = profile.user.role === Role.STUDENT;
+  const fullName = `${profile.user.firstName} ${profile.user.lastName}`;
+  const initials = `${profile.user.firstName?.[0] ?? ""}${
+    profile.user.lastName?.[0] ?? ""
+  }`.toUpperCase();
+  const addressParts = [
+    profile.addressLine1,
+    profile.addressLine2,
+    profile.city,
+    profile.country,
+  ].filter(Boolean);
 
   return (
-    <div className="space-y-6 max-w-6xl mx-auto p-4 animate-fade-in">
-      {/* ====================================================
-          TOP BAR ACTION NAVIGATION
-          ==================================================== */}
-      <div className="flex items-center justify-between pb-2 border-b border-neutral-100">
-        <button
-          onClick={() => navigate(-1)}
-          className="text-xs font-semibold text-neutral-500 hover:text-neutral-900 transition-colors flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-neutral-100 focus:outline-hidden focus:ring-2 focus:ring-teal-500/20 cursor-pointer"
-        >
-          <span className="text-neutral-400 text-[10px]">◀</span> Back to
-          Directory
-        </button>
+    <div className="main-content max-w-6xl mx-auto p-6 space-y-6 animate-fade-in">
+      {/* Back navigation */}
+      <button
+        onClick={() => navigate(-1)}
+        className="text-xs font-semibold text-neutral-500 hover:text-neutral-900 transition-colors flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-neutral-100 focus:outline-hidden focus:ring-2 focus:ring-teal-500/20 cursor-pointer -ml-3"
+      >
+        <span>←</span> Back to Dashboard
+      </button>
 
-        <div className="flex items-center gap-2">
-          <span
-            className={`px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase border ${
-              profile.user.isActive
-                ? "bg-success-bg text-success border-success/10"
-                : "bg-error-bg text-error border-error/10"
-            }`}
-          >
-            {profile.user.isActive ? "Active" : "Inactive"}
-          </span>
-          <span className="px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase bg-neutral-100 text-neutral-600 border border-neutral-200">
-            {profile.user.role}
-          </span>
-        </div>
-      </div>
-
-      {/* ====================================================
-          MAIN SUMMARY PANEL GRID
-          ==================================================== */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
-        {/* LEFT COLUMN: IDENTITY CARD */}
-        <div className="bg-white border border-neutral-100 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.02)] p-6 space-y-6">
-          {/* Avatar Area */}
-          <div className="text-center space-y-3">
-            <div className="h-20 w-20 bg-linear-to-tr from-teal-600 to-teal-400 text-white mx-auto rounded-2xl flex items-center justify-center font-bold text-xl uppercase shadow-md shadow-teal-600/10 tracking-wider">
-              {profile.user.firstName.charAt(0)}
-              {profile.user.lastName.charAt(0)}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* ---------------- LEFT: Identity card ---------------- */}
+        <aside className="bg-white border border-neutral-100 rounded-2xl shadow-xs p-6 h-fit space-y-6">
+          <div className="flex flex-col items-center text-center gap-3">
+            <div className="relative">
+              {profile.user.profileImage ? (
+                <img
+                  src={profile.user.profileImage}
+                  alt={fullName}
+                  className="w-20 h-20 rounded-full object-cover border-2 border-teal-100"
+                />
+              ) : (
+                <div className="w-20 h-20 rounded-full bg-teal-50 text-teal-700 flex items-center justify-center text-xl font-bold border-2 border-teal-100">
+                  {initials || "?"}
+                </div>
+              )}
+              <span
+                className={`absolute -bottom-1 -right-1 w-5 h-5 rounded-full border-2 border-white ${
+                  profile.user.isActive ? "bg-success" : "bg-neutral-300"
+                }`}
+                title={profile.user.isActive ? "Active" : "Inactive"}
+              />
             </div>
+
             <div>
-              <h2 className="text-base font-bold text-neutral-900 tracking-tight capitalize">
-                {profile.user.firstName} {profile.user.lastName}
-              </h2>
-              <p className="text-xs text-neutral-400 font-medium mt-0.5">
-                {profile.user.email}
-              </p>
+              <h1 className="text-lg font-bold text-neutral-900">{fullName}</h1>
+              <p className="text-xs text-neutral-500">{profile.user.email}</p>
             </div>
+
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              <span className="text-[11px] font-semibold uppercase tracking-wide px-2.5 py-1 rounded-full bg-gold-50 text-gold-700">
+                {isStudent ? "Student" : "Teacher"}
+              </span>
+              <span
+                className={`text-[11px] font-semibold uppercase tracking-wide px-2.5 py-1 rounded-full ${
+                  profile.isApproved
+                    ? "bg-success-bg text-success"
+                    : "bg-warning-bg text-warning"
+                }`}
+              >
+                {profile.isApproved ? "Approved" : "Pending approval"}
+              </span>
+            </div>
+
+            <span
+              className={`text-[11px] font-semibold uppercase tracking-wide px-2.5 py-1 rounded-full ${getStatusStyle(
+                profile.verificationStatus,
+              )}`}
+            >
+              {profile.verificationStatus}
+            </span>
           </div>
 
-          {/* Primary Details Block */}
-          <div className="border-t border-neutral-100 pt-5 space-y-4 text-xs">
-            <div>
-              <span className="block text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1">
-                Phone Number
-              </span>
-              <span className="font-semibold text-neutral-800 text-sm">
+          <hr className="border-neutral-100" />
+
+          {/* Quick facts */}
+          <dl className="space-y-3 text-xs">
+            <div className="flex justify-between gap-3">
+              <dt className="text-neutral-500">Phone</dt>
+              <dd className="text-neutral-900 font-medium text-right">
                 {profile.phoneNumber || "—"}
-              </span>
+              </dd>
             </div>
-            <div>
-              <span className="block text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1">
-                Location
-              </span>
-              <span className="font-semibold text-neutral-800 text-sm">
-                {profile.city || "Unknown City"}, {profile.country}
-              </span>
+            <div className="flex justify-between gap-3">
+              <dt className="text-neutral-500">Location</dt>
+              <dd className="text-neutral-900 font-medium text-right">
+                {profile.city}, {profile.country}
+              </dd>
             </div>
-            <div>
-              <span className="block text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1">
-                Biography
-              </span>
-              <p className="text-neutral-600 font-medium leading-relaxed bg-neutral-50 p-3 rounded-xl border border-neutral-100/50">
-                {profile.bio || "No profile biography written yet."}
-              </p>
-            </div>
-          </div>
-
-          {/* TEACHER METADATA */}
-          {!isStudent && (
-            <div className="border-t border-neutral-100 pt-5 space-y-4 text-xs">
-              <div>
-                <span className="block text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1">
-                  Experience
-                </span>
-                <span className="inline-flex items-center px-2.5 py-1 bg-gold-50 text-gold-700 border border-gold-200/40 rounded-md font-bold text-sm">
-                  {profile.yearsOfExperience || 0} Year(s)
-                </span>
+            {profile.dateOfBirth && (
+              <div className="flex justify-between gap-3">
+                <dt className="text-neutral-500">Date of birth</dt>
+                <dd className="text-neutral-900 font-medium text-right">
+                  {formatDate(profile.dateOfBirth)}
+                </dd>
               </div>
-              <div>
-                <span className="block text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1.5">
-                  Teaching Levels
-                </span>
-                <div className="flex flex-wrap gap-1.5">
-                  {profile.teachingLevels?.map((lvl) => (
-                    <span
-                      key={lvl}
-                      className="px-2 py-0.5 bg-teal-50 text-teal-700 rounded-md text-[10px] font-bold uppercase tracking-wide border border-teal-100"
-                    >
-                      {lvl}
-                    </span>
-                  ))}
-                </div>
+            )}
+            {!isStudent && profile.yearsOfExperience !== undefined && (
+              <div className="flex justify-between gap-3">
+                <dt className="text-neutral-500">Experience</dt>
+                <dd className="text-neutral-900 font-medium text-right">
+                  {profile.yearsOfExperience} yrs
+                </dd>
               </div>
-            </div>
-          )}
-
-          {/* STUDENT METADATA */}
-          {isStudent && (
-            <div className="border-t border-neutral-100 pt-5 space-y-4 text-xs">
-              <div>
-                <span className="block text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1">
-                  Current Knowledge Level
-                </span>
-                <span className="inline-block px-2.5 py-1 bg-gold-50 text-gold-700 rounded-md text-xs font-bold uppercase border border-gold-200/40">
-                  {profile.level || "UNASSIGNED"}
-                </span>
+            )}
+            {isStudent && profile.level && (
+              <div className="flex justify-between gap-3">
+                <dt className="text-neutral-500">Level</dt>
+                <dd className="text-neutral-900 font-medium text-right">
+                  {profile.level}
+                </dd>
               </div>
-            </div>
-          )}
-        </div>
+            )}
+          </dl>
 
-        {/* RIGHT COLUMN: WORKSPACE DATA CARDS */}
-        <div className="md:col-span-2 space-y-6">
-          {/* CONDITION: STUDENT PARENT INFORMATION METRICS */}
-          {isStudent && profile.parent && (
-            <div className="bg-white border border-neutral-100 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.02)] p-6">
-              <div className="mb-4">
-                <span className="inline-block bg-neutral-100 text-neutral-700 text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-md">
-                  Emergency Contacts
-                </span>
-                <h3 className="text-sm font-bold text-neutral-800 mt-2">
-                  Primary Parent / Guardian Contact
+          {addressParts.length > 0 && (
+            <>
+              <hr className="border-neutral-100" />
+              <div>
+                <h3 className="text-[11px] font-semibold uppercase tracking-wide text-neutral-400 mb-1.5">
+                  Address
                 </h3>
+                <p className="text-xs text-neutral-700 leading-relaxed">
+                  {addressParts.join(", ")}
+                </p>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-                <div className="bg-neutral-50/60 p-3.5 rounded-xl border border-neutral-100">
-                  <span className="text-[10px] text-neutral-400 font-bold uppercase block tracking-wide">
-                    Guardian Name
-                  </span>
-                  <span className="font-bold text-neutral-800 block mt-1 text-sm capitalize">
-                    {profile.parent.name}
-                  </span>
-                </div>
-                <div className="bg-neutral-50/60 p-3.5 rounded-xl border border-neutral-100">
-                  <span className="text-[10px] text-neutral-400 font-bold uppercase block tracking-wide">
-                    Contact Phone
-                  </span>
-                  <span className="font-semibold text-neutral-700 block mt-1 text-sm">
-                    {profile.parent.phoneNumber}
-                  </span>
-                </div>
-                <div className="bg-neutral-50/60 p-3.5 rounded-xl border border-neutral-100">
-                  <span className="text-[10px] text-neutral-400 font-bold uppercase block tracking-wide">
-                    Email Address
-                  </span>
-                  <span
-                    className="font-semibold text-neutral-700 block mt-1 text-sm truncate"
-                    title={profile.parent.email}
-                  >
-                    {profile.parent.email}
-                  </span>
-                </div>
-              </div>
-            </div>
+            </>
           )}
 
-          {/* SYSTEM MANAGEMENT CARD */}
-          <div className="bg-white border border-neutral-100 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.02)] p-6">
-            <div className="mb-4">
-              <span className="inline-block bg-neutral-100 text-neutral-700 text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-md">
-                Diagnostics
-              </span>
-              <h3 className="text-sm font-bold text-neutral-800 mt-2">
-                Account Registration Diagnostics
-              </h3>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-              <div className="bg-neutral-50/60 p-3.5 rounded-xl border border-neutral-100">
-                <span className="text-[10px] text-neutral-400 font-bold uppercase block tracking-wide">
-                  System Verification Status
-                </span>
-                <span className="inline-block font-bold text-warning bg-warning-bg border border-warning/10 text-[11px] px-2 py-0.5 rounded-md mt-1.5 tracking-wide uppercase">
-                  {profile.verificationStatus}
-                </span>
+          {profile.parent && (
+            <>
+              <hr className="border-neutral-100" />
+              <div>
+                <h3 className="text-[11px] font-semibold uppercase tracking-wide text-neutral-400 mb-2">
+                  Parent / Guardian
+                </h3>
+                <p className="text-xs font-semibold text-neutral-900">
+                  {profile.parent.name}
+                </p>
+                <p className="text-xs text-neutral-500">
+                  {profile.parent.email}
+                </p>
+                <p className="text-xs text-neutral-500">
+                  {profile.parent.phoneNumber}
+                </p>
               </div>
-              <div className="bg-neutral-50/60 p-3.5 rounded-xl border border-neutral-100">
-                <span className="text-[10px] text-neutral-400 font-bold uppercase block tracking-wide">
-                  Communication Languages
-                </span>
-                <span className="font-semibold text-neutral-700 block mt-1 text-sm">
-                  {profile.languages && profile.languages.length > 0
-                    ? profile.languages.join(", ")
-                    : "English (Default)"}
-                </span>
+            </>
+          )}
+        </aside>
+
+        {/* ---------------- RIGHT: Details + Sessions ---------------- */}
+        <section className="md:col-span-2 space-y-6">
+          {/* Bio / about */}
+          <div className="bg-white border border-neutral-100 rounded-2xl shadow-xs p-6">
+            <h2 className="text-sm font-bold text-neutral-900 mb-3">About</h2>
+            {profile.bio ? (
+              <p className="text-sm text-neutral-700 leading-relaxed">
+                {profile.bio}
+              </p>
+            ) : (
+              <p className="text-sm text-neutral-400 italic">
+                No bio has been added yet.
+              </p>
+            )}
+
+            {profile.languages?.length || profile.teachingLevels?.length ? (
+              <div className="mt-5 space-y-4">
+                {profile.languages && profile.languages.length > 0 && (
+                  <div>
+                    <h3 className="text-[11px] font-semibold uppercase tracking-wide text-neutral-400 mb-2">
+                      Languages
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {profile.languages.map((lang) => (
+                        <span
+                          key={lang}
+                          className="text-xs font-medium px-2.5 py-1 rounded-full bg-teal-50 text-teal-700"
+                        >
+                          {lang}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {profile.teachingLevels &&
+                  profile.teachingLevels.length > 0 && (
+                    <div>
+                      <h3 className="text-[11px] font-semibold uppercase tracking-wide text-neutral-400 mb-2">
+                        Teaching levels
+                      </h3>
+                      <div className="flex flex-wrap gap-2">
+                        {profile.teachingLevels.map((level) => (
+                          <span
+                            key={level}
+                            className="text-xs font-medium px-2.5 py-1 rounded-full bg-gold-50 text-gold-700"
+                          >
+                            {level}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
               </div>
-            </div>
+            ) : null}
           </div>
 
-          {/* LIVE USER SESSIONS STUB */}
-          <div className="bg-white border border-neutral-100 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.02)] p-6">
+          {/* Sessions */}
+          <div className="bg-white border border-neutral-100 rounded-2xl shadow-xs p-6">
             <div className="flex items-center justify-between mb-4">
-              <div>
-                <span className="inline-block bg-neutral-100 text-neutral-700 text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-md">
-                  Telemetry
-                </span>
-                <h3 className="text-sm font-bold text-neutral-800 mt-2">
-                  Active Authenticated Sessions
-                </h3>
-              </div>
-              <span className="bg-teal-50 text-teal-600 border border-teal-100/60 text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider animate-pulse">
-                ● Live
+              <h2 className="text-sm font-bold text-neutral-900">Sessions</h2>
+              <span className="text-[11px] font-semibold text-neutral-400">
+                {sessions.length} total
               </span>
             </div>
 
-            <div className="py-10 text-center space-y-2 bg-neutral-50 rounded-xl border border-neutral-100/50 px-4">
-              <p className="text-xs font-bold text-neutral-700">
-                Session metrics pipeline pending compilation
-              </p>
-              <p className="text-xs text-neutral-400 max-w-md mx-auto leading-relaxed">
-                Map browser context arrays, active user hardware definitions,
-                and IP connection telemetry arrays in this dashboard card module
-                container.
-              </p>
-            </div>
+            {sessions.length === 0 ? (
+              <div className="py-10 text-center">
+                <div className="w-10 h-10 bg-neutral-100 text-neutral-400 rounded-full flex items-center justify-center mx-auto mb-3 text-base font-bold">
+                  ·
+                </div>
+                <p className="text-sm font-semibold text-neutral-700">
+                  No sessions yet
+                </p>
+                <p className="text-xs text-neutral-400 mt-1">
+                  Sessions will appear here once scheduled.
+                </p>
+              </div>
+            ) : (
+              <ul className="divide-y divide-neutral-100">
+                {sessions.map((session) => (
+                  <li
+                    key={session.id}
+                    className="py-4 first:pt-0 last:pb-0 flex items-center justify-between gap-4"
+                  >
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold text-neutral-900 truncate">
+                        {session.title}
+                      </p>
+                      <p className="text-xs text-neutral-500 mt-0.5">
+                        {session.subject?.name
+                          ? `${session.subject.name} · `
+                          : ""}
+                        {formatDateTime(session.startTime)}
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-3 shrink-0">
+                      <span
+                        className={`text-[11px] font-semibold uppercase tracking-wide px-2.5 py-1 rounded-full ${getStatusStyle(
+                          session.status,
+                        )}`}
+                      >
+                        {session.status}
+                      </span>
+                      {session.externalLink && (
+                        <a
+                          href={session.externalLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs font-semibold text-teal-600 hover:text-teal-800 transition-colors"
+                        >
+                          Join →
+                        </a>
+                      )}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
-        </div>
+        </section>
       </div>
     </div>
   );
