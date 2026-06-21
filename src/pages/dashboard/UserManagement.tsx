@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import axiosAPI from "@lib/axios";
 import { toast } from "sonner";
 import type { VerificationStatus } from "@utils/types/user";
-import { Link } from "react-router-dom";
 import HeaderTabs from "@components/dashboard/user-management/main/HeaderTabs";
 import UsersTable from "@components/dashboard/user-management/main/UsersTable";
 
