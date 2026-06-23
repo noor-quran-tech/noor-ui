@@ -1,4 +1,7 @@
+import type { RootState } from "@store/store";
 import type { SessionData } from "@utils/types/session";
+import { Role } from "@utils/types/user";
+import { useSelector } from "react-redux";
 
 interface SessionsListComponentProps {
   loading: boolean;
@@ -13,6 +16,8 @@ const SessionsListComponent = ({
   handleOpenEditModal,
   getStatusStyles,
 }: SessionsListComponentProps) => {
+  const loggedInUser = useSelector((state: RootState) => state.auth.user);
+  const loggedInUserRole = loggedInUser.role;
   return (
     <div>
       {" "}
@@ -23,7 +28,10 @@ const SessionsListComponent = ({
         </div>
       ) : sessions.length === 0 ? (
         <div className="text-center py-20 border border-dashed border-neutral-300 bg-white rounded-2xl text-neutral-400 text-sm font-medium">
-          No sessions found. Click the button above to add one.
+          No sessions found.
+          {loggedInUserRole === Role.ADMIN
+            ? "Click the button above to add one."
+            : ""}
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -38,12 +46,14 @@ const SessionsListComponent = ({
                     {session.subject?.name}
                   </span>
                   <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => handleOpenEditModal(session)}
-                      className="text-xs font-bold text-teal-600 hover:text-teal-700 transition mr-2 cursor-pointer"
-                    >
-                      Edit
-                    </button>
+                    {loggedInUserRole === Role.ADMIN ? (
+                      <button
+                        onClick={() => handleOpenEditModal(session)}
+                        className="text-xs font-bold text-teal-600 hover:text-teal-700 transition mr-2 cursor-pointer"
+                      >
+                        Edit
+                      </button>
+                    ) : null}
                     <span
                       className={`text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border ${getStatusStyles(session.status)}`}
                     >

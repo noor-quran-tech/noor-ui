@@ -6,6 +6,10 @@ import axiosAPI from "@lib/axios";
 import { SessionStatus, type SessionData } from "@utils/types/session";
 import SessionsListComponent from "@components/dashboard/sessions/SessionsListComponent";
 import CreateAndUpdateSessionModal from "@components/dashboard/sessions/CreateAndUpdateSessionModal";
+import { useSelector } from "react-redux";
+import type { RootState } from "@store/store";
+import UnauthorizedPage from "@pages/static/Unauthorized";
+import { Role } from "@utils/types/user";
 
 // Types
 export interface RelationOption {
@@ -29,6 +33,9 @@ interface APISubject {
 }
 
 const SessionsPage = () => {
+  const loggedInUser = useSelector((state: RootState) => state.auth.profile);
+  const loggedInUserRole = loggedInUser.type;
+
   const [loading, setLoading] = useState<boolean>(true);
   const [sessions, setSessions] = useState<SessionData[]>([]);
 
@@ -59,7 +66,15 @@ const SessionsPage = () => {
   const fetchSessions = async () => {
     try {
       setLoading(true);
-      const response = await axiosAPI.get("/sessions");
+      let sessionsEndpoint = "/sessions";
+      if (loggedInUserRole !== Role.ADMIN) {
+        sessionsEndpoint =
+          loggedInUserRole === Role.STUDENT
+            ? `students/${loggedInUser.id}/sessions`
+            : `teachers/${loggedInUser.id}/sessions`;
+      }
+
+      const response = await axiosAPI.get(sessionsEndpoint);
       setSessions(response.data.data || []);
     } catch {
       toast.error("Failed to load sessions.");
@@ -234,6 +249,10 @@ const SessionsPage = () => {
     }
   };
 
+  if (!loggedInUser) {
+    return <UnauthorizedPage />;
+  }
+
   return (
     <div className="min-h-screen bg-neutral-50 text-neutral-800 font-sans pb-12 selection:bg-teal-100">
       <div className="max-w-6xl mx-auto px-4 pt-10 space-y-8">
@@ -247,12 +266,14 @@ const SessionsPage = () => {
               View and manage student-teacher sessions
             </p>
           </div>
-          <button
-            onClick={handleOpenCreateModal}
-            className="px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-white bg-teal-600 hover:bg-teal-700 active:bg-teal-800 rounded-xl transition shadow-sm cursor-pointer"
-          >
-            Create New Session
-          </button>
+          {loggedInUserRole === Role.ADMIN ? (
+            <button
+              onClick={handleOpenCreateModal}
+              className="px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-white bg-teal-600 hover:bg-teal-700 active:bg-teal-800 rounded-xl transition shadow-sm cursor-pointer"
+            >
+              Create New Session
+            </button>
+          ) : null}
         </div>
         {/* Loading / Empty / List */}
         <SessionsListComponent
