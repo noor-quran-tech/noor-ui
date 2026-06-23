@@ -11,7 +11,7 @@ import { toast } from "sonner";
 import DashboardMainContent from "@components/dashboard/DashboardMainContent";
 import { logout } from "@store/slices/authSlice";
 
-export interface NavItem {
+interface NavItem {
   label: string;
   path: string;
   roles: Role[];
