@@ -199,8 +199,12 @@ const SessionsPage = () => {
       };
 
       if (editingSessionId) {
+        let endpoint = `/sessions/${editingSessionId}`;
+        if (loggedInUserRole === Role.TEACHER) {
+          endpoint = `/sessions/${editingSessionId}/status`;
+        }
         // Edit Mode: Send update API request
-        await axiosAPI.patch(`/sessions/${editingSessionId}`, payload);
+        await axiosAPI.patch(endpoint, payload);
         toast.success("Session updated successfully!");
       } else {
         // Create Mode: Send save request
