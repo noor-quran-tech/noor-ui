@@ -46,7 +46,7 @@ const SessionsListComponent = ({
                     {session.subject?.name}
                   </span>
                   <div className="flex items-center gap-2">
-                    {loggedInUserRole === Role.ADMIN ? (
+                    {loggedInUserRole !== Role.STUDENT ? (
                       <button
                         onClick={() => handleOpenEditModal(session)}
                         className="text-xs font-bold text-teal-600 hover:text-teal-700 transition mr-2 cursor-pointer"
