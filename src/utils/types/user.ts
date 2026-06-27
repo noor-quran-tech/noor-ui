@@ -87,6 +87,7 @@ interface BaseProfileDetails {
   dateOfBirth: string;
   verificationStatus: VerificationStatus;
   isApproved: boolean;
+  user: UserProfileData;
 }
 
 export interface StudentDetails extends BaseProfileDetails {

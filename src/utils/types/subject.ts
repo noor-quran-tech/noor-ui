@@ -1,4 +1,4 @@
-import type { User } from "./user";
+import type { StudentDetails, TeacherDetails, User } from "@utils/types/user";
 
 export const ReviewStatus = {
   PENDING: "PENDING",
@@ -27,12 +27,15 @@ export interface SubjectRequest {
   updatedAt: string;
 }
 
-// interface TeacherSubjectRequest extends SubjectRequest {
-//   teacherId: string;
-// }
-// interface StudentSubjectRequest extends SubjectRequest {
-//   studentId: string;
-// }
+export interface TeacherSubjectRequest extends SubjectRequest {
+  teacher: TeacherDetails;
+  teacherId: string;
+}
+
+export interface StudentSubjectRequest extends SubjectRequest {
+  student: StudentDetails;
+  studentId: string;
+}
 
 export interface CreateSubjectRequest {
   studentId?: string;

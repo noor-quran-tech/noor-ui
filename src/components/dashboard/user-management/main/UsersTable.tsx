@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
-import type {
-  MetaPagination,
-  UserRecord,
-} from "@pages/dashboard/UserManagement";
+import type { UserRecord } from "@pages/dashboard/UserManagement";
+import type { PaginationParams } from "@utils/types/public";
 
 interface UserTableProps {
   loading: boolean;
@@ -10,7 +8,7 @@ interface UserTableProps {
   activeTab: string;
   handleUserDelete: (account: UserRecord) => void;
   handleActivateUser: (account: UserRecord) => void;
-  pagination: MetaPagination;
+  pagination: PaginationParams;
   handlePageChange: (page: number) => void;
 }
 
