@@ -6,7 +6,6 @@ import type {
   TeacherSubjectRequest,
 } from "@utils/types/subject";
 import { Role } from "@utils/types/user";
-import React, { act } from "react";
 import { useSelector } from "react-redux";
 
 interface TableComponentProps {
