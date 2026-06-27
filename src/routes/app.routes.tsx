@@ -1,5 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 
+import { GuestRoute, ProtectedRoute } from "@components/guards/AuthGuards";
+
 import HomePage from "@pages/static/HomePage";
 import SignupPage from "@pages/auth/SignupPage";
 import LoginPage from "@pages/auth/LoginPage";
@@ -9,10 +11,10 @@ import NotFoundPage from "@pages/static/NotFoundPage";
 import ProfilePage from "@pages/account/ProfilePage";
 import RequestSubjectPage from "@pages/dashboard/RequestSubject";
 import Dashboard from "@pages/dashboard/Dashboard";
-import { GuestRoute, ProtectedRoute } from "@components/guards/AuthGuards";
 import UserManagement from "@pages/dashboard/UserManagement";
 import UserProfilePage from "@pages/dashboard/UserProfilePage";
 import SessionsPage from "@pages/dashboard/SessionsPage";
+import Requests from "@pages/dashboard/Requests";
 
 const AppRoutes = () => {
   return (
@@ -44,6 +46,7 @@ const AppRoutes = () => {
             <Route path="users/students/:id" element={<UserProfilePage />} />
             <Route path="users/teachers/:id" element={<UserProfilePage />} />
             <Route path="sessions" element={<SessionsPage />} />
+            <Route path="requests" element={<Requests />} />
           </Route>
         </Route>
 

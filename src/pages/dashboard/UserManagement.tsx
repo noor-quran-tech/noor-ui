@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import type { VerificationStatus } from "@utils/types/user";
 import HeaderTabs from "@components/dashboard/user-management/main/HeaderTabs";
 import UsersTable from "@components/dashboard/user-management/main/UsersTable";
+import type { PaginationParams } from "@utils/types/public";
 
 // Define strict TypeScript shapes for your data representation
 export interface UserRecord {
@@ -22,13 +23,6 @@ export interface UserRecord {
   verificationStatus: VerificationStatus;
 }
 
-export interface MetaPagination {
-  currentPage: number;
-  totalPages: number;
-  totalUsers: number;
-  limit: number;
-}
-
 const ITEMS_PER_PAGE = 10;
 
 const UserManagement = () => {
@@ -38,10 +32,10 @@ const UserManagement = () => {
   );
   const [users, setUsers] = useState<UserRecord[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [pagination, setPagination] = useState<MetaPagination>({
+  const [pagination, setPagination] = useState<PaginationParams>({
     currentPage: 1,
     totalPages: 1,
-    totalUsers: 0,
+    totalData: 0,
     limit: ITEMS_PER_PAGE,
   });
 
@@ -63,7 +57,7 @@ const UserManagement = () => {
         setPagination((prev) => ({
           ...prev,
           totalPages: response.data.totalPages,
-          totalUsers: response.data.total || response.data.data?.length || 0,
+          totalData: response.data.total || response.data.data?.length || 0,
         }));
       } catch {
         toast.error(`Failed to load ${activeTab}. Please try again.`);
@@ -213,7 +207,7 @@ const UserManagement = () => {
         <div className="bg-neutral-200/60 border border-neutral-300/40 px-2.5 py-1 rounded-full text-xs font-bold text-neutral-600 shadow-2xs">
           Total Accounts:{" "}
           <span className="text-neutral-900 font-black">
-            {pagination.totalUsers}
+            {pagination.totalData}
           </span>
         </div>
       </div>
