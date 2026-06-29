@@ -1,16 +1,21 @@
+import { InqueryTopic } from "@utils/types/inquery";
 import React, { useState, type ChangeEvent, type FormEvent } from "react";
+
+import axiosAPI from "@lib/axios";
+import { isAxiosError } from "axios";
+import { toast } from "sonner";
 
 interface ContactFormData {
   name: string;
   email: string;
-  subject: string;
+  topic: string;
   message: string;
 }
 
 const initialFormState: ContactFormData = {
   name: "",
   email: "",
-  subject: "",
+  topic: "",
   message: "",
 };
 
@@ -19,7 +24,7 @@ const ContactPage: React.FC = () => {
   const [errors, setErrors] = useState<
     Partial<Record<keyof ContactFormData, string>>
   >({});
-  const [isLoading] = useState<boolean>(false);
+  const [isLoading, setLoading] = useState<boolean>(false);
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
@@ -34,12 +39,12 @@ const ContactPage: React.FC = () => {
 
   const validateForm = (): boolean => {
     const newErrors: Partial<Record<keyof ContactFormData, string>> = {};
-    const { name, email, subject, message } = formData;
+    const { name, email, topic, message } = formData;
 
     if (!name.trim()) newErrors.name = "Name is required";
     if (!/^\S+@\S+\.\S+$/.test(email))
       newErrors.email = "Enter a valid email address";
-    if (!subject.trim()) newErrors.subject = "Please select or type a subject";
+    if (!topic.trim()) newErrors.topic = "Please select a topic";
     if (!message.trim()) newErrors.message = "Message cannot be empty";
     else if (message.trim().length < 10)
       newErrors.message = "Message must be at least 10 characters";
@@ -51,15 +56,28 @@ const ContactPage: React.FC = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validateForm()) return;
-
-    alert("Under development");
+    try {
+      setLoading(true);
+      await axiosAPI.post("/inquiries", formData);
+    } catch (err) {
+      let errorMessage = "Error submitting the form";
+      if (isAxiosError(err)) {
+        errorMessage =
+          err?.response?.data?.message || err.message || errorMessage;
+      } else if (err instanceof Error) {
+        errorMessage = err.message;
+      }
+      toast.error("Send Failed", { description: errorMessage });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 font-sans flex items-center justify-center p-6 md:p-12">
       <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-5 gap-12 bg-white rounded-2xl overflow-hidden p-2">
         {/* Info Column (Left Side) */}
-        <div className="lg:col-span-2 flex flex-col justify-between space-y-8 bg-gradient-to-br from-slate-50 to-teal-50/50 p-8 rounded-2xl border border-slate-200">
+        <div className="lg:col-span-2 flex flex-col justify-between space-y-8 bg-linear-to-br from-slate-50 to-teal-50/50 p-8 rounded-2xl border border-slate-200">
           <div className="space-y-4">
             <h1 className="text-4xl font-extrabold tracking-tight text-slate-900">
               Get in Touch
@@ -176,23 +194,23 @@ const ContactPage: React.FC = () => {
 
             <div className="space-y-1.5">
               <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                Subject
+                Topic
               </label>
               <select
-                name="subject"
-                value={formData.subject}
+                name="topic"
+                value={formData.topic}
                 onChange={handleInputChange}
                 className="w-full px-4 py-2.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-700 focus:outline-none focus:border-teal-600 focus:ring-1 focus:ring-teal-600 focus:bg-white transition"
               >
                 <option value="">Select a topic...</option>
-                <option value="General Inquiry">General Inquiry</option>
-                <option value="Technical Support">Technical Support</option>
-                <option value="Account Deactivated">Account Deactivated</option>
-                <option value="Billing & Accounts">Billing & Accounts</option>
-                <option value="Feedback">Feedback</option>
+                {Object.values(InqueryTopic).map((topic) => (
+                  <option key={topic} value={topic}>
+                    {topic.replace(/_/g, " ").toLowerCase()}
+                  </option>
+                ))}
               </select>
-              {errors.subject && (
-                <span className="text-xs text-red-500">{errors.subject}</span>
+              {errors.topic && (
+                <span className="text-xs text-red-500">{errors.topic}</span>
               )}
             </div>
 
@@ -216,7 +234,7 @@ const ContactPage: React.FC = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 bg-teal-600 hover:bg-teal-700 font-semibold text-white rounded-lg shadow-md hover:shadow-lg transition duration-200 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="cursor-pointer w-full py-3 bg-teal-600 hover:bg-teal-700 font-semibold text-white rounded-lg shadow-md hover:shadow-lg transition duration-200 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? (
                 <span>Sending Message...</span>
