@@ -10,8 +10,8 @@ function AppFooter() {
 
         <div className="flex items-center gap-8 text-sm text-neutral-500">
           <a href="#">Privacy</a>
-          <a href="#">Terms</a>
-          <a href="#">Contact</a>
+          <Link to="about">About</Link>
+          <Link to="contact">Contact</Link>
         </div>
 
         <p className="text-sm text-neutral-400">

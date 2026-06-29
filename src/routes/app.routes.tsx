@@ -15,6 +15,7 @@ import UserManagement from "@pages/dashboard/UserManagement";
 import UserProfilePage from "@pages/dashboard/UserProfilePage";
 import SessionsPage from "@pages/dashboard/SessionsPage";
 import Requests from "@pages/dashboard/Requests";
+import Inquiries from "@pages/dashboard/Inquiries";
 
 const AppRoutes = () => {
   return (
@@ -47,6 +48,7 @@ const AppRoutes = () => {
             <Route path="users/teachers/:id" element={<UserProfilePage />} />
             <Route path="sessions" element={<SessionsPage />} />
             <Route path="requests" element={<Requests />} />
+            <Route path="inquiries" element={<Inquiries />} />
           </Route>
         </Route>
 
