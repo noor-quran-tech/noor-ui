@@ -1,0 +1,10 @@
+export const InqueryTopic = {
+  GENERAL_INQUIRY: "GENERAL_INQUIRY",
+  TECHNICAL_SUPPORT: "TECHNICAL_SUPPORT",
+  ACCOUNT_DEACTIVATED: "ACCOUNT_DEACTIVATED",
+  BILLING_AND_ACCOUNTS: "BILLING_AND_ACCOUNTS",
+  FEEDBACK: "FEEDBACK",
+  OTHER: "OTHER",
+};
+
+export type InqueryTopic = (typeof InqueryTopic)[keyof typeof InqueryTopic];
