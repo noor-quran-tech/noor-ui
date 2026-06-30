@@ -1,7 +1,9 @@
+import { useSelector } from "react-redux";
+
 import type { RootState } from "@store/store";
 import type { SessionData } from "@utils/types/session";
+
 import { Role } from "@utils/types/user";
-import { useSelector } from "react-redux";
 
 interface SessionsListComponentProps {
   loading: boolean;

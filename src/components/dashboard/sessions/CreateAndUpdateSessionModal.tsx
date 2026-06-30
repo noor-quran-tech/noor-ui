@@ -1,5 +1,10 @@
+import { useSelector } from "react-redux";
+
 import type { RelationOption } from "@pages/dashboard/SessionsPage";
+import type { RootState } from "@store/store";
 import type React from "react";
+
+import { Role } from "@utils/types/user";
 
 interface FormDataProps {
   title: string;
@@ -43,6 +48,9 @@ const CreateAndUpdateSessionModal = ({
   students,
   isSubmitting,
 }: CreateAndUpdateSessionModalProps) => {
+  const loggedInUserRole = useSelector(
+    (state: RootState) => state.auth.profile,
+  ).type;
   return (
     <div>
       {isModalOpen && (
@@ -76,13 +84,15 @@ const CreateAndUpdateSessionModal = ({
                   Title
                 </label>
                 <input
+                  disabled={loggedInUserRole !== Role.ADMIN}
                   type="text"
                   name="title"
                   required
                   value={formData.title}
                   onChange={handleInputChange}
                   placeholder="Enter session title"
-                  className="w-full text-sm bg-neutral-50 border border-neutral-200 focus:border-teal-500 focus:ring-1 focus:ring-teal-500 rounded-xl px-3 py-2 font-medium text-neutral-900 outline-none transition"
+                  className="w-full text-sm bg-neutral-50 border border-neutral-200 focus:border-teal-500 focus:ring-1 focus:ring-teal-500 rounded-xl px-3 py-2 font-medium text-neutral-900 outline-none transition 
+                      disabled:bg-neutral-100 disabled:text-neutral-500 disabled:border-neutral-300 disabled:cursor-not-allowed disabled:opacity-100"
                 />
               </div>
 
@@ -92,11 +102,19 @@ const CreateAndUpdateSessionModal = ({
                 </label>
                 <textarea
                   name="description"
+                  disabled={loggedInUserRole !== Role.ADMIN}
                   rows={2}
                   value={formData.description}
                   onChange={handleInputChange}
                   placeholder="Enter short description"
-                  className="w-full text-sm bg-neutral-50 border border-neutral-200 focus:border-teal-500 focus:ring-1 focus:ring-teal-500 rounded-xl p-3 text-neutral-800 outline-none transition resize-none"
+                  disabled:bg-neutral-100
+                  disabled:text-neutral-500
+                  disabled:border-neutral-300
+                  disabled:cursor-not-allowed
+                  disabled:opacity-100
+                  className="w-full text-sm bg-neutral-50 border border-neutral-200 focus:border-teal-500 focus:ring-1 focus:ring-teal-500 rounded-xl p-3 text-neutral-800 outline-none transition resize-none 
+                      disabled:bg-neutral-100 disabled:text-neutral-500 disabled:border-neutral-300 disabled:cursor-not-allowed disabled:opacity-100
+                  "
                 />
               </div>
 
@@ -107,10 +125,13 @@ const CreateAndUpdateSessionModal = ({
                   </label>
                   <select
                     name="subjectId"
+                    disabled={loggedInUserRole !== Role.ADMIN}
                     required
                     value={formData.subjectId}
                     onChange={handleInputChange}
-                    className="w-full text-xs bg-neutral-50 border border-neutral-200 rounded-xl p-2 focus:outline-none focus:border-teal-500 font-bold"
+                    className="w-full text-xs bg-neutral-50 border border-neutral-200 rounded-xl p-2 focus:outline-none focus:border-teal-500 font-bold
+                      disabled:bg-neutral-100 disabled:text-neutral-500 disabled:border-neutral-300 disabled:cursor-not-allowed disabled:opacity-100
+                    "
                   >
                     <option value="">Select subject</option>
                     {subjects.map((sub) => (
@@ -127,10 +148,13 @@ const CreateAndUpdateSessionModal = ({
                   </label>
                   <select
                     name="teacherId"
+                    disabled={loggedInUserRole !== Role.ADMIN}
                     required
                     value={formData.teacherId}
                     onChange={handleInputChange}
-                    className="w-full text-xs bg-neutral-50 border border-neutral-200 rounded-xl p-2 focus:outline-none focus:border-teal-500 font-bold"
+                    className="w-full text-xs bg-neutral-50 border border-neutral-200 rounded-xl p-2 focus:outline-none focus:border-teal-500 font-bold
+                      disabled:bg-neutral-100 disabled:text-neutral-500 disabled:border-neutral-300 disabled:cursor-not-allowed disabled:opacity-100
+                    "
                   >
                     <option value="">Select teacher</option>
                     {teachers.map((t) => (
@@ -147,10 +171,13 @@ const CreateAndUpdateSessionModal = ({
                   </label>
                   <select
                     name="studentId"
+                    disabled={loggedInUserRole !== Role.ADMIN}
                     required
                     value={formData.studentId}
                     onChange={handleInputChange}
-                    className="w-full text-xs bg-neutral-50 border border-neutral-200 rounded-xl p-2 focus:outline-none focus:border-teal-500 font-bold"
+                    className="w-full text-xs bg-neutral-50 border border-neutral-200 rounded-xl p-2 focus:outline-none focus:border-teal-500 font-bold
+                      disabled:bg-neutral-100 disabled:text-neutral-500 disabled:border-neutral-300 disabled:cursor-not-allowed disabled:opacity-100
+                    "
                   >
                     <option value="">Select student</option>
                     {students.map((s) => (
@@ -169,11 +196,14 @@ const CreateAndUpdateSessionModal = ({
                   </label>
                   <input
                     type="datetime-local"
+                    disabled={loggedInUserRole !== Role.ADMIN}
                     name="startTime"
                     required
                     value={formData.startTime}
                     onChange={handleInputChange}
-                    className="w-full text-xs bg-neutral-50 border border-neutral-200 rounded-xl p-2 focus:outline-none focus:border-teal-500 font-bold text-neutral-800"
+                    className="w-full text-xs bg-neutral-50 border border-neutral-200 rounded-xl p-2 focus:outline-none focus:border-teal-500 font-bold text-neutral-800
+                      disabled:bg-neutral-100 disabled:text-neutral-500 disabled:border-neutral-300 disabled:cursor-not-allowed disabled:opacity-100
+                    "
                   />
                 </div>
                 <div className="space-y-1">
@@ -182,11 +212,13 @@ const CreateAndUpdateSessionModal = ({
                   </label>
                   <input
                     type="datetime-local"
+                    disabled={loggedInUserRole !== Role.ADMIN}
                     name="endTime"
                     required
                     value={formData.endTime}
                     onChange={handleInputChange}
-                    className="w-full text-xs bg-neutral-50 border border-neutral-200 rounded-xl p-2 focus:outline-none focus:border-teal-500 font-bold text-neutral-800"
+                    className="w-full text-xs bg-neutral-50 border border-neutral-200 rounded-xl p-2 focus:outline-none focus:border-teal-500 font-bold text-neutral-800
+                      disabled:bg-neutral-100 disabled:text-neutral-500 disabled:border-neutral-300 disabled:cursor-not-allowed disabled:opacity-100"
                   />
                 </div>
               </div>

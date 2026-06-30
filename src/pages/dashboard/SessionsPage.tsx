@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { isAxiosError } from "axios";
+import { useSelector } from "react-redux";
+
+import type { RootState } from "@store/store";
 
 import axiosAPI from "@lib/axios";
 import { SessionStatus, type SessionData } from "@utils/types/session";
 import SessionsListComponent from "@components/dashboard/sessions/SessionsListComponent";
 import CreateAndUpdateSessionModal from "@components/dashboard/sessions/CreateAndUpdateSessionModal";
-import { useSelector } from "react-redux";
-import type { RootState } from "@store/store";
 import UnauthorizedPage from "@pages/static/Unauthorized";
 import { Role } from "@utils/types/user";
 
