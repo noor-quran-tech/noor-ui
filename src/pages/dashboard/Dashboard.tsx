@@ -48,6 +48,7 @@ const Dashboard = () => {
 
   const [isUserActive, setIsUserActive] = useState(true);
   const [checkingStatus, setCheckingStatus] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   useEffect(() => {
@@ -89,17 +90,25 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="flex h-screen bg-neutral-100 font-sans text-neutral-800 pt-3">
+    <div className="flex min-h-screen bg-neutral-100 font-sans text-neutral-800 lg:pt-3">
+      {/* Mobile/tablet overlay */}
+      {isSidebarOpen && (
+        <button
+          type="button"
+          aria-label="Close dashboard navigation"
+          className="fixed inset-0 z-40 bg-black/30 lg:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
       {/* ====================================================
           SIDEBAR NAVIGATION SHELL
           ==================================================== */}
-      {/* <SideNav
-        currentRole={currentRole}
-        filteredNavItems={filteredNavItems}
-        isUserActive={isUserActive}
-        user={user}
-      /> */}
-      <aside className="w-64 bg-white border-r border-neutral-200 flex flex-col justify-between">
+      <aside
+        className={`fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-neutral-200 flex flex-col justify-between shadow-xl transition-transform duration-300 lg:static lg:w-64 lg:translate-x-0 lg:shadow-none ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
         <div className="p-6">
           <div className="flex items-center gap-3 mb-8">
             <div className="h-8 w-8 bg-teal-500 rounded-lg flex items-center justify-center text-white font-black">
@@ -128,6 +137,8 @@ const Dashboard = () => {
                     toast.error("Access Denied", {
                       description: "Reactivate account to open tabs.",
                     });
+                  } else {
+                    setIsSidebarOpen(false);
                   }
                 }}
                 className={({ isActive }) =>
@@ -167,6 +178,7 @@ const Dashboard = () => {
                 dispatch(logout());
                 // Trigger your custom red-dispatch auth logout slice handler here
                 toast.success("Logged out successfully");
+                setIsSidebarOpen(false);
                 navigate("/login");
               }}
               className="text-[11px] font-bold text-red-500 hover:text-red-700 hover:bg-red-50 px-2 py-1 rounded-md cursor-pointer transition"
@@ -179,7 +191,11 @@ const Dashboard = () => {
       {/* ====================================================
           MAIN ROUTE CONTENT WINDOW HOLDER
           ==================================================== */}
-      <DashboardMainContent isUserActive={isUserActive} user={user} />
+      <DashboardMainContent
+        isUserActive={isUserActive}
+        user={user}
+        onMenuToggle={() => setIsSidebarOpen((prev) => !prev)}
+      />
     </div>
   );
 };
