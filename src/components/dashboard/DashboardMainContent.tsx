@@ -1,26 +1,43 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 
 interface MainContentProps {
   isUserActive: boolean;
   user: {
     firstName: string;
   };
+  onMenuToggle: () => void;
 }
 
-const DashboardMainContent = ({ isUserActive, user }: MainContentProps) => {
+const DashboardMainContent = ({
+  isUserActive,
+  user,
+  onMenuToggle,
+}: MainContentProps) => {
+  const location = useLocation();
+
   return (
     <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-      <header className="h-16 bg-white border-b border-neutral-200 flex items-center justify-between px-6 z-10 shrink-0">
-        <h2 className="text-xs font-bold uppercase tracking-wider text-neutral-500">
-          {!isUserActive
-            ? "Account Suspended"
-            : location.pathname === "/dashboard"
-              ? "Overview"
-              : "Workspace"}
-        </h2>
+      <header className="h-16 bg-white border-b border-neutral-200 flex items-center justify-between px-4 sm:px-6 z-10 shrink-0">
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            aria-label="Open dashboard navigation"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-neutral-200 text-neutral-600 hover:bg-neutral-50 lg:hidden"
+            onClick={onMenuToggle}
+          >
+            ☰
+          </button>
+          <h2 className="text-xs font-bold uppercase tracking-wider text-neutral-500">
+            {!isUserActive
+              ? "Account Suspended"
+              : location.pathname === "/dashboard"
+                ? "Overview"
+                : "Workspace"}
+          </h2>
+        </div>
       </header>
 
-      <main className="flex-1 overflow-y-auto p-6 md:p-8 bg-neutral-50 flex flex-col justify-start">
+      <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-neutral-50 flex flex-col justify-start">
         {/* ✅ CONDITION A: ACCOUNT SUSPENDED BANNER MODULE */}
         {!isUserActive ? (
           <div className="bg-white border border-red-200 rounded-2xl p-6 shadow-xs max-w-lg space-y-4">
