@@ -107,14 +107,8 @@ const CreateAndUpdateSessionModal = ({
                   value={formData.description}
                   onChange={handleInputChange}
                   placeholder="Enter short description"
-                  disabled:bg-neutral-100
-                  disabled:text-neutral-500
-                  disabled:border-neutral-300
-                  disabled:cursor-not-allowed
-                  disabled:opacity-100
                   className="w-full text-sm bg-neutral-50 border border-neutral-200 focus:border-teal-500 focus:ring-1 focus:ring-teal-500 rounded-xl p-3 text-neutral-800 outline-none transition resize-none 
-                      disabled:bg-neutral-100 disabled:text-neutral-500 disabled:border-neutral-300 disabled:cursor-not-allowed disabled:opacity-100
-                  "
+                      disabled:bg-neutral-100 disabled:text-neutral-500 disabled:border-neutral-300 disabled:cursor-not-allowed disabled:opacity-100"
                 />
               </div>
 
@@ -130,8 +124,7 @@ const CreateAndUpdateSessionModal = ({
                     value={formData.subjectId}
                     onChange={handleInputChange}
                     className="w-full text-xs bg-neutral-50 border border-neutral-200 rounded-xl p-2 focus:outline-none focus:border-teal-500 font-bold
-                      disabled:bg-neutral-100 disabled:text-neutral-500 disabled:border-neutral-300 disabled:cursor-not-allowed disabled:opacity-100
-                    "
+                      disabled:bg-neutral-100 disabled:text-neutral-500 disabled:border-neutral-300 disabled:cursor-not-allowed disabled:opacity-100"
                   >
                     <option value="">Select subject</option>
                     {subjects.map((sub) => (
@@ -153,8 +146,7 @@ const CreateAndUpdateSessionModal = ({
                     value={formData.teacherId}
                     onChange={handleInputChange}
                     className="w-full text-xs bg-neutral-50 border border-neutral-200 rounded-xl p-2 focus:outline-none focus:border-teal-500 font-bold
-                      disabled:bg-neutral-100 disabled:text-neutral-500 disabled:border-neutral-300 disabled:cursor-not-allowed disabled:opacity-100
-                    "
+                      disabled:bg-neutral-100 disabled:text-neutral-500 disabled:border-neutral-300 disabled:cursor-not-allowed disabled:opacity-100"
                   >
                     <option value="">Select teacher</option>
                     {teachers.map((t) => (
@@ -176,8 +168,7 @@ const CreateAndUpdateSessionModal = ({
                     value={formData.studentId}
                     onChange={handleInputChange}
                     className="w-full text-xs bg-neutral-50 border border-neutral-200 rounded-xl p-2 focus:outline-none focus:border-teal-500 font-bold
-                      disabled:bg-neutral-100 disabled:text-neutral-500 disabled:border-neutral-300 disabled:cursor-not-allowed disabled:opacity-100
-                    "
+                      disabled:bg-neutral-100 disabled:text-neutral-500 disabled:border-neutral-300 disabled:cursor-not-allowed disabled:opacity-100"
                   >
                     <option value="">Select student</option>
                     {students.map((s) => (
@@ -202,8 +193,7 @@ const CreateAndUpdateSessionModal = ({
                     value={formData.startTime}
                     onChange={handleInputChange}
                     className="w-full text-xs bg-neutral-50 border border-neutral-200 rounded-xl p-2 focus:outline-none focus:border-teal-500 font-bold text-neutral-800
-                      disabled:bg-neutral-100 disabled:text-neutral-500 disabled:border-neutral-300 disabled:cursor-not-allowed disabled:opacity-100
-                    "
+                      disabled:bg-neutral-100 disabled:text-neutral-500 disabled:border-neutral-300 disabled:cursor-not-allowed disabled:opacity-100"
                   />
                 </div>
                 <div className="space-y-1">
