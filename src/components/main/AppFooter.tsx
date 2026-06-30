@@ -9,7 +9,6 @@ function AppFooter() {
         </Link>
 
         <div className="flex items-center gap-8 text-sm text-neutral-500">
-          <a href="#">Privacy</a>
           <Link to="about">About</Link>
           <Link to="contact">Contact</Link>
         </div>
