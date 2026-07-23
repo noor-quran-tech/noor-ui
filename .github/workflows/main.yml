@@ -4,12 +4,13 @@ on:
   pull_request:
     branches:
       - main
+      - development
 
   push:
     branches:
       - main
       # - Staging
-      # - development
+      - development
 jobs:
   quality-checks:
     runs-on: ubuntu-latest
