@@ -16,7 +16,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^2.12.0",
     "@tailwindcss/vite": "^4.3.0",
-    "axios": "^1.16.1",
+    "axios": "^1.18.0",
     "country-state-city": "^3.2.1",
     "i18next": "^26.2.0",
     "i18next-browser-languagedetector": "^8.2.1",
