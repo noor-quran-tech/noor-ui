@@ -59,6 +59,10 @@ const ContactPage: React.FC = () => {
     try {
       setLoading(true);
       await axiosAPI.post("/inquiries", formData);
+      setFormData(initialFormState);
+      toast.success("Sent successfully!", {
+        description: "Your inquery is recived.",
+      });
     } catch (err) {
       let errorMessage = "Error submitting the form";
       if (isAxiosError(err)) {
