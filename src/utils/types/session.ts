@@ -28,3 +28,15 @@ export interface SessionData {
   teacher: { user: UserProfileData };
   subject: { name: string };
 }
+
+export interface SessionFeedback {
+  id: string;
+  receiverId: string;
+  receiver: UserProfileData;
+  senderId: string;
+  sender: UserProfileData;
+  sessionId: string;
+  session: SessionData;
+  rating: number;
+  comment: string;
+}
