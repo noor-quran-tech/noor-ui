@@ -22,7 +22,7 @@ const StarRating = ({
           onChange?.(idx);
         };
 
-        const handleMouseLeave = (idx: number) => {
+        const handleMouseLeave = () => {
           onChange?.(rate);
         };
 
@@ -37,7 +37,7 @@ const StarRating = ({
             type="button"
             onClick={() => interactive && handleSetRate(i)}
             onMouseEnter={() => handleHover(i)}
-            onMouseLeave={() => handleMouseLeave(i)}
+            onMouseLeave={handleMouseLeave}
             disabled={!interactive}
             className={`text-xl transition-colors ${
               isActive ? "text-teal-500" : "text-neutral-200"
