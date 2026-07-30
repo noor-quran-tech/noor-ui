@@ -8,6 +8,7 @@ import RolesCard from "@components/homePage/RolesCard";
 import StatsCard from "@components/homePage/StatsCard";
 import StepsCard from "@components/homePage/StepsCard";
 import TestimonialCard from "@components/homePage/TestimonialCard";
+import FAQ from "@components/homePage/FAQ";
 
 const stats = [
   { value: "2.4K+", label: "Active Students" },
@@ -215,6 +216,8 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+
+      <FAQ />
 
       {/* CTA */}
       <section className="px-6 pb-24 lg:px-12">
