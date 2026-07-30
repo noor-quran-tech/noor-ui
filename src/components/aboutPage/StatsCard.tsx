@@ -4,7 +4,7 @@ export interface StatItem {
 }
 export default function StatsCard({ stat }: { stat: StatItem }) {
   return (
-    <div className="space-y-1 border-l-2 border-teal-500 pl-4">
+    <div className="space-y-1 pl-4">
       <div className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">
         {stat.value}
       </div>
