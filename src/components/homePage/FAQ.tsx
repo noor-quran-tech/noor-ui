@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const faqItems = [
   {
@@ -88,6 +89,18 @@ const FAQ = () => {
               </div>
             );
           })}
+          <div className="mt-12 text-center">
+            <p className="text-lg font-semibold text-neutral-900">
+              Didn't find the answer you're looking for?
+            </p>
+
+            <Link
+              to="/contact"
+              className="mt-2 inline-block font-medium text-teal-600 transition-colors hover:text-teal-700"
+            >
+              Contact us →
+            </Link>
+          </div>
         </div>
       </div>
     </section>
