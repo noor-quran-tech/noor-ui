@@ -1,20 +1,13 @@
 import { Link } from "react-router-dom";
-import { BookOpen } from "lucide-react";
 
 import "@styles/homepage.css";
 
 import Footer from "@components/main/AppFooter";
 import RolesCard from "@components/homePage/RolesCard";
-import StatsCard from "@components/homePage/StatsCard";
 import StepsCard from "@components/homePage/StepsCard";
 import TestimonialCard from "@components/homePage/TestimonialCard";
 import FAQ from "@components/homePage/FAQ";
-
-const stats = [
-  { value: "2.4K+", label: "Active Students" },
-  { value: "380+", label: "Verified Teachers" },
-  { value: "96%", label: "Satisfaction Rate" },
-];
+import HeroSection from "@components/homePage/HeroSection";
 
 const roles = [
   {
@@ -92,70 +85,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen overflow-x-hidden bg-neutral-50 text-neutral-900 py-5">
       {/* HERO */}
-      <section className="relative overflow-hidden border-b border-neutral-100 bg-linear-to-br from-neutral-50 via-teal-50 to-gold-50">
-        {/* Background Blur */}
-        <div className="absolute -right-32 -top-32 h-105 w-105 rounded-full bg-teal-200/30 blur-3xl" />
-        <div className="absolute -bottom-24 -left-24 h-80 w-80 rounded-full bg-gold-200/30 blur-3xl" />
-
-        <div className="mx-auto grid min-h-screen max-w-7xl grid-cols-1 items-center gap-16 px-6 py-20 lg:grid-cols-2 lg:px-12">
-          {/* LEFT */}
-          <div className="relative z-10 animate-fade-in">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-teal-200 bg-teal-100 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-teal-800">
-              <span className="absolute inline-flex h-3 w-3 rounded-full bg-teal-500" />
-              <span className="relative inline-flex h-3 w-3 rounded-full animate-ping bg-teal-500" />
-              Live Tutoring Platform
-            </div>
-
-            <h1 className="max-w-2xl text-5xl font-black leading-tight tracking-tight text-teal-900 md:text-6xl">
-              Where <span className="text-teal-600">knowledge</span>
-              <br />
-              meets the right
-              <br />
-              <span className="text-gold-500">teacher</span>
-            </h1>
-
-            <p className="mt-7 max-w-xl text-lg leading-8 text-neutral-600">
-              Noor connects students with expert teachers through personalized
-              sessions, intelligent matching, and meaningful feedback.
-            </p>
-
-            <div className="mt-10 flex flex-wrap gap-4">
-              <Link
-                to="/login/"
-                className="rounded-full bg-teal-600 px-7 py-4 text-sm font-semibold text-white shadow-lg shadow-teal-600/20 transition-all duration-300 hover:-translate-y-1 hover:bg-teal-700 no-underline"
-              >
-                Start Learning →
-              </Link>
-
-              <Link
-                to="/signup/"
-                className="rounded-full border border-teal-200 bg-white px-7 py-4 text-sm font-semibold text-teal-600 no-underline transition-all duration-300 hover:-translate-y-1 hover:border-teal-500 hover:text-teal-700"
-              >
-                Teach on Noor
-              </Link>
-            </div>
-
-            {/* Stats */}
-            <div className="mt-16 grid grid-cols-3 gap-6 border-t border-neutral-200 pt-10">
-              {stats.map((stat, idx) => (
-                <StatsCard key={idx} stat={stat} />
-              ))}
-            </div>
-          </div>
-
-          {/* RIGHT */}
-          <div className="relative z-10 flex justify-center">
-            {/* Floating container */}
-            <div className="flex items-center justify-center rounded-full bg-linear-to-br p-10 shadow-xl animate-float">
-              {/* Rotating icon */}
-              <BookOpen
-                size={140}
-                className="text-teal-600 opacity-70 animate-spin-slow"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
+      <HeroSection />
 
       {/* ROLES */}
       <section className="mx-auto max-w-7xl px-6 py-24 lg:px-12">

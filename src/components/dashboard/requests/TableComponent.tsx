@@ -34,7 +34,7 @@ const TableComponent = ({
 }: TableComponentProps) => {
   const loggedInUser = useSelector((state: RootState) => state.auth.user);
   const loggedInUserRole = loggedInUser.role;
-
+  console.log("loggedInUserRole", loggedInUserRole);
   return (
     <div>
       {loading ? (
@@ -206,14 +206,16 @@ const TableComponent = ({
                           </span>
                         )}
                       </td>
-                      <td className="p-4 text-center">
-                        <button
-                          onClick={() => openAuditModal(req, "teacher")}
-                          className="px-3 py-1 text-xs font-semibold rounded-lg border border-teal-200 text-teal-600 bg-teal-50/50 hover:bg-teal-600 hover:text-white transition-all duration-150 cursor-pointer"
-                        >
-                          Review
-                        </button>
-                      </td>
+                      {loggedInUserRole === Role.ADMIN ? (
+                        <td className="p-4 text-center">
+                          <button
+                            onClick={() => openAuditModal(req, "teacher")}
+                            className="px-3 py-1 text-xs font-semibold rounded-lg border border-teal-200 text-teal-600 bg-teal-50/50 hover:bg-teal-600 hover:text-white transition-all duration-150 cursor-pointer"
+                          >
+                            Review
+                          </button>
+                        </td>
+                      ) : null}
                     </tr>
                   ))
                 )}
