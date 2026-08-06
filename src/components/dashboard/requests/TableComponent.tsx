@@ -7,6 +7,7 @@ import type {
 } from "@utils/types/subject";
 import { Role } from "@utils/types/user";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 interface TableComponentProps {
   loading: boolean;
@@ -32,9 +33,16 @@ const TableComponent = ({
   currentPagination,
   handlePageChange,
 }: TableComponentProps) => {
+  const { t, i18n } = useTranslation();
+
   const loggedInUser = useSelector((state: RootState) => state.auth.user);
-  const loggedInUserRole = loggedInUser.role;
-  console.log("loggedInUserRole", loggedInUserRole);
+  const loggedInUserRole = loggedInUser?.role;
+  const isArabic = i18n.language === "ar";
+
+  const formatStatus = (status: ReviewStatus) => {
+    return t(`statuses.${status}` as const, status.replace("_", " "));
+  };
+
   return (
     <div>
       {loading ? (
@@ -44,17 +52,31 @@ const TableComponent = ({
       ) : (
         <div className="bg-white shadow-sm rounded-xl overflow-hidden border border-slate-200">
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
+            <table className="w-full text-start border-collapse">
               <thead>
                 <tr className="bg-slate-50/70 text-slate-600 text-xs font-bold uppercase tracking-wider border-b border-slate-200">
-                  <th className="p-4">Profile</th>
-                  <th className="p-4">Subject</th>
-                  <th className="p-4">Status</th>
-                  <th className="p-4">Date</th>
-                  <th className="p-4">Reviewed By</th>
-                  <th className="p-4">Review Notes</th>
+                  <th className="p-4">
+                    {t("dashboard.requests.table.headers.profile")}
+                  </th>
+                  <th className="p-4">
+                    {t("dashboard.requests.table.headers.subject")}
+                  </th>
+                  <th className="p-4">
+                    {t("dashboard.requests.table.headers.status")}
+                  </th>
+                  <th className="p-4">
+                    {t("dashboard.requests.table.headers.date")}
+                  </th>
+                  <th className="p-4">
+                    {t("dashboard.requests.table.headers.reviewedBy")}
+                  </th>
+                  <th className="p-4">
+                    {t("dashboard.requests.table.headers.reviewNotes")}
+                  </th>
                   {loggedInUserRole === Role.ADMIN ? (
-                    <th className="p-4 text-center">Actions</th>
+                    <th className="p-4 text-center">
+                      {t("dashboard.requests.table.headers.actions")}
+                    </th>
                   ) : null}
                 </tr>
               </thead>
@@ -66,7 +88,7 @@ const TableComponent = ({
                         colSpan={7}
                         className="p-8 text-center text-slate-400 italic"
                       >
-                        No student requests found.
+                        {t("dashboard.requests.table.empty.student")}
                       </td>
                     </tr>
                   ) : (
@@ -84,7 +106,11 @@ const TableComponent = ({
                             {req.student.user.email}
                           </div>
                           <span className="inline-block mt-1.5 text-[10px] bg-slate-100 text-slate-600 font-mono font-medium px-1.5 py-0.5 rounded">
-                            Lvl: {req.student.level}
+                            {t("dashboard.requests.table.labels.level", {
+                              level: t(
+                                `levels.${req.student.level.toLowerCase()}`,
+                              ),
+                            })}
                           </span>
                         </td>
                         <td className="p-4 font-semibold text-teal-600">
@@ -92,12 +118,12 @@ const TableComponent = ({
                         </td>
                         <td className="p-4">
                           <span className={getStatusBadge(req.status)}>
-                            {req.status.replace("_", " ")}
+                            {formatStatus(req.status)}
                           </span>
                         </td>
                         <td className="p-4 text-xs text-slate-500">
                           {new Date(req.createdAt).toLocaleDateString(
-                            undefined,
+                            isArabic ? "ar-EG" : "en-US",
                             { dateStyle: "medium" },
                           )}
                         </td>
@@ -105,7 +131,8 @@ const TableComponent = ({
                           {req.reviewedBy ? (
                             <div>
                               <div className="font-medium text-slate-800">
-                                {req.reviewedBy.firstName}
+                                {req.reviewedBy.firstName}{" "}
+                                {req.reviewedBy.lastName}
                               </div>
                               <div className="text-[11px] text-slate-400">
                                 {req.reviewedBy.email}
@@ -113,17 +140,17 @@ const TableComponent = ({
                             </div>
                           ) : (
                             <span className="text-xs italic text-slate-400">
-                              Not reviewed
+                              {t("dashboard.requests.table.labels.notReviewed")}
                             </span>
                           )}
                         </td>
                         <td
-                          className="p-4 max-w-[250] wrap-break-word text-xs text-slate-500"
+                          className="p-4 max-w-62.5 wrap-break text-xs text-slate-500"
                           title={req.reviewNotes || ""}
                         >
                           {req.reviewNotes || (
                             <span className="italic text-slate-400/70">
-                              No notes
+                              {t("dashboard.requests.table.labels.noNotes")}
                             </span>
                           )}
                         </td>
@@ -133,7 +160,7 @@ const TableComponent = ({
                               onClick={() => openAuditModal(req, "student")}
                               className="px-3 py-1 text-xs font-semibold rounded-lg border border-teal-200 text-teal-600 bg-teal-50/50 hover:bg-teal-600 hover:text-white transition-all duration-150 cursor-pointer"
                             >
-                              Review
+                              {t("dashboard.requests.table.buttons.review")}
                             </button>
                           </td>
                         ) : null}
@@ -146,7 +173,7 @@ const TableComponent = ({
                       colSpan={7}
                       className="p-8 text-center text-slate-400 italic"
                     >
-                      No teacher requests found.
+                      {t("dashboard.requests.table.empty.teacher")}
                     </td>
                   </tr>
                 ) : (
@@ -164,7 +191,9 @@ const TableComponent = ({
                           {req.teacher.user.email}
                         </div>
                         <span className="inline-block mt-1.5 text-[10px] bg-slate-100 text-slate-600 font-mono font-medium px-1.5 py-0.5 rounded">
-                          Exp: {req.teacher.yearsOfExperience ?? 0} yrs
+                          {t("dashboard.requests.table.labels.experience", {
+                            years: req.teacher.yearsOfExperience ?? 0,
+                          })}
                         </span>
                       </td>
                       <td className="p-4 font-semibold text-teal-600">
@@ -172,19 +201,21 @@ const TableComponent = ({
                       </td>
                       <td className="p-4">
                         <span className={getStatusBadge(req.status)}>
-                          {req.status.replace("_", " ")}
+                          {formatStatus(req.status)}
                         </span>
                       </td>
                       <td className="p-4 text-xs text-slate-500">
-                        {new Date(req.createdAt).toLocaleDateString(undefined, {
-                          dateStyle: "medium",
-                        })}
+                        {new Date(req.createdAt).toLocaleDateString(
+                          i18n.language,
+                          { dateStyle: "medium" },
+                        )}
                       </td>
                       <td className="p-4">
                         {req.reviewedBy ? (
                           <div>
                             <div className="font-medium text-slate-800">
-                              {req.reviewedBy.firstName}
+                              {req.reviewedBy.firstName}{" "}
+                              {req.reviewedBy.lastName}
                             </div>
                             <div className="text-[11px] text-slate-400">
                               {req.reviewedBy.email}
@@ -192,7 +223,7 @@ const TableComponent = ({
                           </div>
                         ) : (
                           <span className="text-xs italic text-slate-400">
-                            Not reviewed
+                            {t("dashboard.requests.table.labels.notReviewed")}
                           </span>
                         )}
                       </td>
@@ -202,7 +233,7 @@ const TableComponent = ({
                       >
                         {req.reviewNotes || (
                           <span className="italic text-slate-400/70">
-                            No notes
+                            {t("dashboard.requests.table.labels.noNotes")}
                           </span>
                         )}
                       </td>
@@ -212,7 +243,7 @@ const TableComponent = ({
                             onClick={() => openAuditModal(req, "teacher")}
                             className="px-3 py-1 text-xs font-semibold rounded-lg border border-teal-200 text-teal-600 bg-teal-50/50 hover:bg-teal-600 hover:text-white transition-all duration-150 cursor-pointer"
                           >
-                            Review
+                            {t("dashboard.requests.table.buttons.review")}
                           </button>
                         </td>
                       ) : null}
@@ -227,8 +258,10 @@ const TableComponent = ({
           {currentPagination.totalPages > 1 && (
             <div className="p-4 bg-slate-50/50 flex items-center justify-between border-t border-slate-200">
               <span className="text-xs font-medium text-slate-500">
-                Page {currentPagination.currentPage} of{" "}
-                {currentPagination.totalPages}
+                {t("dashboard.requests.table.pagination.info", {
+                  current: currentPagination.currentPage,
+                  total: currentPagination.totalPages,
+                })}
               </span>
               <div className="flex gap-2">
                 <button
@@ -241,7 +274,7 @@ const TableComponent = ({
                   }
                   className="cursor-pointer px-3 py-1.5 text-xs font-semibold border border-slate-200 rounded-lg shadow-sm bg-white text-slate-700 disabled:opacity-40 transition-opacity hover:bg-slate-50"
                 >
-                  Previous
+                  {t("dashboard.requests.table.buttons.previous")}
                 </button>
                 <button
                   disabled={
@@ -256,7 +289,7 @@ const TableComponent = ({
                   }
                   className="cursor-pointer px-3 py-1.5 text-xs font-semibold border border-slate-200 rounded-lg shadow-sm bg-white text-slate-700 disabled:opacity-40 transition-opacity hover:bg-slate-50"
                 >
-                  Next
+                  {t("dashboard.requests.table.buttons.next")}
                 </button>
               </div>
             </div>

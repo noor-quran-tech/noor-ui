@@ -10,6 +10,7 @@ import type { RootState } from "@store/store";
 import axiosAPI from "@lib/axios";
 import { setCredentials } from "@store/slices/authSlice";
 import { Role } from "@utils/types/user";
+import { useTranslation } from "react-i18next";
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -22,6 +23,7 @@ const LoginPage: React.FC = () => {
     {},
   );
   const [loading, setLoading] = useState<boolean>(false);
+  const { t } = useTranslation();
 
   if (loggedInUser) {
     setTimeout(() => {
@@ -32,28 +34,39 @@ const LoginPage: React.FC = () => {
 
   const validateForm = (): boolean => {
     const tempErrors: { email?: string; password?: string } = {};
+
     if (!email.trim()) {
-      tempErrors.email = "Email address is required";
+      tempErrors.email = t("login.validation.emailRequired");
     } else if (!/^\S+@\S+\.\S+$/.test(email)) {
-      tempErrors.email = "Enter a valid email address";
+      tempErrors.email = t("login.validation.invalidEmail");
     }
+
     if (!password) {
-      tempErrors.password = "Password is required";
+      tempErrors.password = t("login.validation.passwordRequired");
     }
+
     setErrors(tempErrors);
     return Object.keys(tempErrors).length === 0;
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
     if (name === "email") {
       setEmail(value);
-      if (errors.email) setErrors((prev) => ({ ...prev, email: undefined }));
+      if (errors.email) {
+        setErrors((prev) => ({ ...prev, email: undefined }));
+      }
     } else {
       setPassword(value);
-      if (errors.password)
+      if (errors.password) {
         setErrors((prev) => ({ ...prev, password: undefined }));
+      }
     }
+  };
+
+  const backendErrorMap: Record<string, string> = {
+    "Incorrect email or password": "login.messages.incorrectCredentials",
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -62,15 +75,23 @@ const LoginPage: React.FC = () => {
 
     try {
       setLoading(true);
-      const response = await axiosAPI.post("/auth/login", { email, password });
 
-      toast.success("Welcome back!", {
-        description: `Successfully signed in as ${response.data?.data?.user?.firstName || "User"}.`,
+      const response = await axiosAPI.post("/auth/login", {
+        email,
+        password,
       });
+
+      toast.success(t("login.messages.welcome"), {
+        description: t("login.messages.signedIn", {
+          name: response.data?.data?.user?.firstName || "User",
+        }),
+      });
+
       const token = response?.data?.token;
       const user = response?.data?.data?.user;
       const teacherId = response?.data?.data?.teacherId;
       const studentId = response?.data?.data?.studentId;
+
       if (user) {
         delete user.password;
         delete user.createdAt;
@@ -96,59 +117,69 @@ const LoginPage: React.FC = () => {
 
       navigate("/");
     } catch (err) {
-      let errorMessage = "Incorrect email or password";
+      let errorKey = "login.messages.unknownError";
+
       if (axios.isAxiosError(err)) {
-        errorMessage =
-          err?.response?.data?.message || err.message || errorMessage;
-      } else if (err instanceof Error) {
-        errorMessage = err.message;
+        const backendMessage =
+          err.response?.data?.message ??
+          err.response?.data?.errors?.[0]?.message;
+
+        if (backendMessage) {
+          errorKey =
+            backendErrorMap[backendMessage] ?? "login.messages.unknownError";
+        }
       }
-      toast.error("Authentication Failed", { description: errorMessage });
+
+      toast.error(t("login.messages.authenticationFailed"), {
+        description: t(errorKey),
+      });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex min-h-screen bg-neutral-50 text-neutral-800 font-sans">
+    <div className="flex min-h-screen bg-neutral-50 font-sans text-neutral-800">
       {/* Branding Side-Pane (Light-Mode Luxury Design) */}
-      <div className="hidden md:flex flex-1 items-center justify-center bg-gradient-to-br from-teal-50 to-teal-100 p-12 relative overflow-hidden border-r border-neutral-200">
-        <div className="max-w-md z-10">
-          <div className="text-4xl font-extrabold text-gold-600 mb-8 tracking-tight drop-shadow-[0_2px_10px_rgba(0,183,181,0.05)]">
-            نور{" "}
-            <span className="text-3xl font-extrabold text-gold-600 mb-8 tracking-tight drop-shadow-[0_2px_10px_rgba(0,183,181,0.05)]">
+      <div className="relative hidden flex-1 items-center justify-center overflow-hidden border-r border-neutral-200 bg-linear-to-br from-teal-50 to-teal-100 p-12 md:flex">
+        <div className="z-10 max-w-md">
+          <div className="mb-8 text-4xl font-extrabold tracking-tight text-gold-600 drop-shadow-[0_2px_10px_rgba(0,183,181,0.05)]">
+            {t("navbar.brand")}{" "}
+            <span className="mb-8 text-3xl font-extrabold tracking-tight text-gold-600 drop-shadow-[0_2px_10px_rgba(0,183,181,0.05)]">
               Noor
             </span>
           </div>
-          <h1 className="text-4xl font-extrabold text-neutral-900 leading-tight mb-4">
-            Learn the Quran from the best teachers in the world.
+
+          <h1 className="mb-4 text-4xl leading-tight font-extrabold text-neutral-900">
+            {t("login.branding.title")}
           </h1>
-          <p className="text-neutral-600 leading-relaxed">
-            Connecting specialized educators with eager students worldwide
-            through an authentic, high-quality, and interactive environment.
+
+          <p className="leading-relaxed text-neutral-600">
+            {t("login.branding.description")}
           </p>
         </div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-teal-300/20 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-1/4 right-1/4 w-[350px] h-[350px] bg-gold-300/10 rounded-full blur-[100px] pointer-events-none" />
+
+        <div className="pointer-events-none absolute top-1/2 left-1/2 h-125 w-125 -translate-x-1/2 -translate-y-1/2 rounded-full bg-teal-300/20 blur-[120px]" />
+        <div className="pointer-events-none absolute right-1/4 bottom-1/4 h-87.5 w-87.5 rounded-full bg-gold-300/10 blur-[100px]" />
       </div>
 
-      {/* Login Interaction Pane (Clean, Modern Light Frame) */}
-      <div className="flex-1 flex items-center justify-center p-8 bg-neutral-50">
-        <div className="w-full max-w-sm space-y-8 animate-fade-in">
+      {/* Login Interaction Pane */}
+      <div className="flex flex-1 items-center justify-center bg-neutral-50 p-8">
+        <div className="animate-fade-in w-full max-w-sm space-y-8">
           <div>
-            {/* Mobile Branding Header Only */}
-            <div className="md:hidden text-3xl font-bold text-teal-600 mb-6 tracking-tight">
-              نور{" "}
+            {/* Mobile Branding Header */}
+            <div className="mb-6 text-3xl font-bold tracking-tight text-teal-600 md:hidden">
+              {t("navbar.brand")}{" "}
               <span className="text-2xl font-normal text-neutral-400">
                 Noor
               </span>
             </div>
-            <h2 className="text-3xl font-extrabold text-neutral-900 tracking-tight mb-2">
-              Welcome Back
+
+            <h2 className="mb-2 text-3xl font-extrabold tracking-tight text-neutral-900">
+              {t("login.title")}
             </h2>
-            <p className="text-neutral-500 text-sm">
-              Provide your account credentials to access your portal space.
-            </p>
+
+            <p className="text-sm text-neutral-500">{t("login.subtitle")}</p>
           </div>
 
           <form onSubmit={handleSubmit} noValidate className="space-y-6">
@@ -158,24 +189,26 @@ const LoginPage: React.FC = () => {
                 htmlFor="email"
                 className="block text-sm font-semibold text-neutral-700"
               >
-                Email Address
+                {t("login.labels.email")}
               </label>
+
               <input
                 id="email"
                 type="email"
                 name="email"
                 value={email}
                 onChange={handleInputChange}
-                className={`w-full px-4 py-3 rounded-xl bg-white border ${
+                className={`w-full rounded-xl border bg-white px-4 py-3 ${
                   errors.email
-                    ? "border-error focus:ring-error/20 focus:border-error"
+                    ? "border-error focus:border-error focus:ring-error/20"
                     : "border-neutral-200 focus:border-teal-500 focus:ring-teal-500/20"
-                } text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-4 transition duration-200 shadow-xs`}
-                placeholder="john@example.com"
+                } text-neutral-900 placeholder-neutral-400 shadow-xs transition duration-200 focus:ring-4 focus:outline-none`}
+                placeholder={t("login.placeholders.email")}
                 disabled={loading}
               />
+
               {errors.email && (
-                <span className="text-xs font-medium text-error mt-1.5 block px-1">
+                <span className="mt-1.5 block px-1 text-xs font-medium text-error">
                   {errors.email}
                 </span>
               )}
@@ -183,36 +216,39 @@ const LoginPage: React.FC = () => {
 
             {/* Password Field */}
             <div className="space-y-2">
-              <div className="flex justify-between items-center">
+              <div className="flex items-center justify-between">
                 <label
                   htmlFor="password"
                   className="text-sm font-semibold text-neutral-700"
                 >
-                  Password
+                  {t("login.labels.password")}
                 </label>
+
                 <Link
                   to="#forgot"
-                  className="text-xs font-semibold text-teal-600 hover:text-teal-500 hover:underline transition duration-150 text-decoration-none"
+                  className="text-decoration-none text-xs font-semibold text-teal-600 transition duration-150 hover:text-teal-500 hover:underline"
                 >
-                  Forgot Password?
+                  {t("login.actions.forgotPassword")}
                 </Link>
               </div>
+
               <input
                 id="password"
                 type="password"
                 name="password"
                 value={password}
                 onChange={handleInputChange}
-                className={`w-full px-4 py-3 rounded-xl bg-white border ${
+                className={`w-full rounded-xl border bg-white px-4 py-3 ${
                   errors.password
-                    ? "border-error focus:ring-error/20 focus:border-error"
+                    ? "border-error focus:border-error focus:ring-error/20"
                     : "border-neutral-200 focus:border-teal-500 focus:ring-teal-500/20"
-                } text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-4 transition duration-200 shadow-xs`}
-                placeholder="••••••••"
+                } text-neutral-900 placeholder-neutral-400 shadow-xs transition duration-200 focus:ring-4 focus:outline-none`}
+                placeholder={t("login.placeholders.password")}
                 disabled={loading}
               />
+
               {errors.password && (
-                <span className="text-xs font-medium text-error mt-1.5 block px-1">
+                <span className="mt-1.5 block px-1 text-xs font-medium text-error">
                   {errors.password}
                 </span>
               )}
@@ -222,27 +258,27 @@ const LoginPage: React.FC = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 bg-teal-500 hover:bg-teal-600 text-white font-bold rounded-xl shadow-md shadow-teal-500/10 hover:shadow-lg hover:shadow-teal-500/20 active:scale-[0.99] transition-all duration-200 flex items-center justify-center disabled:opacity-50 cursor-pointer"
+              className="flex w-full cursor-pointer items-center justify-center rounded-xl bg-teal-500 py-3.5 font-bold text-white shadow-md shadow-teal-500/10 transition-all duration-200 hover:bg-teal-600 hover:shadow-lg hover:shadow-teal-500/20 active:scale-[0.99] disabled:opacity-50"
             >
               {loading ? (
                 <>
                   <Spinner animation="border" size="sm" className="me-2" />
-                  Authenticating...
+                  {t("login.actions.authenticating")}
                 </>
               ) : (
-                "Sign In"
+                t("login.actions.signIn")
               )}
             </button>
           </form>
 
           {/* Footer Link */}
-          <div className="text-center text-sm text-neutral-500 pt-2">
-            Don't have an account?{" "}
+          <div className="pt-2 text-center text-sm text-neutral-500">
+            {t("login.footer.noAccount")}{" "}
             <Link
               to="/signup"
-              className="text-teal-400 text-decoration-none hover:text-teal-300 hover:underline font-medium "
+              className="text-decoration-none font-medium text-teal-400 hover:text-teal-300 hover:underline"
             >
-              Create one here
+              {t("login.actions.createAccount")}
             </Link>
           </div>
         </div>

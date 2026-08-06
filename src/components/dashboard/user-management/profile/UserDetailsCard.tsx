@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import type {
   SessionData,
   UserProfileData,
@@ -16,18 +17,22 @@ const UserDetailsCard = ({
   formatDateTime,
   getStatusStyle,
 }: UserDetailsCardProps) => {
+  const { t } = useTranslation();
+
   return (
     <section className="md:col-span-2 space-y-6">
       {/* Bio / about */}
       <div className="bg-white border border-neutral-100 rounded-2xl shadow-xs p-6">
-        <h2 className="text-sm font-bold text-neutral-900 mb-3">About</h2>
+        <h2 className="text-sm font-bold text-neutral-900 mb-3">
+          {t("dashboard.userProfile.detailsCard.about.title")}
+        </h2>
         {profile?.bio ? (
           <p className="text-sm text-neutral-700 leading-relaxed">
             {profile?.bio}
           </p>
         ) : (
           <p className="text-sm text-neutral-400 italic">
-            No bio has been added yet.
+            {t("dashboard.userProfile.detailsCard.about.emptyBio")}
           </p>
         )}
 
@@ -36,7 +41,7 @@ const UserDetailsCard = ({
             {profile?.languages && profile?.languages.length > 0 && (
               <div>
                 <h3 className="text-[11px] font-semibold uppercase tracking-wide text-neutral-400 mb-2">
-                  Languages
+                  {t("dashboard.userProfile.detailsCard.about.languages")}
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {profile?.languages.map((lang: string) => (
@@ -54,7 +59,7 @@ const UserDetailsCard = ({
             {profile?.teachingLevels && profile?.teachingLevels.length > 0 && (
               <div>
                 <h3 className="text-[11px] font-semibold uppercase tracking-wide text-neutral-400 mb-2">
-                  Teaching levels
+                  {t("dashboard.userProfile.detailsCard.about.teachingLevels")}
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {profile?.teachingLevels.map((level) => (
@@ -62,7 +67,7 @@ const UserDetailsCard = ({
                       key={level}
                       className="text-xs font-medium px-2.5 py-1 rounded-full bg-gold-50 text-gold-700"
                     >
-                      {level}
+                      {t(`levels.${level.toLowerCase()}`)}
                     </span>
                   ))}
                 </div>
@@ -75,9 +80,13 @@ const UserDetailsCard = ({
       {/* Sessions */}
       <div className="bg-white border border-neutral-100 rounded-2xl shadow-xs p-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-sm font-bold text-neutral-900">Sessions</h2>
+          <h2 className="text-sm font-bold text-neutral-900">
+            {t("dashboard.userProfile.detailsCard.sessions.title")}
+          </h2>
           <span className="text-[11px] font-semibold text-neutral-400">
-            {sessions.length} total
+            {t("dashboard.userProfile.detailsCard.sessions.total", {
+              count: sessions.length,
+            })}
           </span>
         </div>
 
@@ -87,10 +96,10 @@ const UserDetailsCard = ({
               ·
             </div>
             <p className="text-sm font-semibold text-neutral-700">
-              No sessions yet
+              {t("dashboard.userProfile.detailsCard.sessions.emptyTitle")}
             </p>
             <p className="text-xs text-neutral-400 mt-1">
-              Sessions will appear here once scheduled.
+              {t("dashboard.userProfile.detailsCard.sessions.emptyDescription")}
             </p>
           </div>
         ) : (
@@ -116,7 +125,10 @@ const UserDetailsCard = ({
                       session.status,
                     )}`}
                   >
-                    {session.status}
+                    {t(
+                      `dashboard.userProfile.detailsCard.sessions.status.${session.status.toLowerCase()}`,
+                      { defaultValue: session.status },
+                    )}
                   </span>
                   {session.externalLink && (
                     <a
@@ -125,7 +137,7 @@ const UserDetailsCard = ({
                       rel="noopener noreferrer"
                       className="text-xs font-semibold text-teal-600 hover:text-teal-800 transition-colors"
                     >
-                      Join →
+                      {t("dashboard.userProfile.detailsCard.sessions.join")}
                     </a>
                   )}
                 </div>

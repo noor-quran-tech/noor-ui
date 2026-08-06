@@ -9,14 +9,834 @@
     },
     "login": "Login",
     "profile": "Profile",
+    "dashboard": "Dashboard",
     "studentPortal": "Student Portal",
     "teacherDashboard": "Teacher Dashboard",
     "logout": "Logout",
-    "logoutSuccess": "Logged out successfully"
+    "logoutSuccess": "Logged out successfully",
+    "language": "Language"
   },
 
   "language": {
     "en": "EN",
     "ar": "AR"
+  },
+
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Everything you need to know before starting your learning journey.",
+    "items": [
+      {
+        "question": "Do you offer one-on-one lessons or group classes?",
+        "answer": "We offer both options. You can choose one-on-one lessons for personalized attention or join small group classes with no more than 5 students to ensure a high-quality learning experience."
+      },
+      {
+        "question": "How can I choose the most suitable lesson schedule?",
+        "answer": "Our academy operates 24/7 to accommodate students across different time zones. After registering, you can choose the lesson times that best fit your daily schedule."
+      },
+      {
+        "question": "What qualifications do your teachers have?",
+        "answer": "All of our teachers are certified in Quran recitation and memorization by recognized institutions, including Al-Azhar, and have extensive experience teaching both children and adults online."
+      },
+      {
+        "question": "Do you offer a free trial lesson?",
+        "answer": "Yes! We offer a completely free trial lesson for all new students. It allows you to assess your level and experience our teaching approach before subscribing to any plan."
+      },
+      {
+        "question": "What payment methods do you accept?",
+        "answer": "We accept credit and debit cards, PayPal, and direct bank transfers, making it easy for students around the world to subscribe to our programs."
+      }
+    ],
+    "notFound": "Didn't find the answer you're looking for?",
+    "contact": "Contact us"
+  },
+
+  "footer": {
+    "brand": "Noor",
+    "about": "About",
+    "contact": "Contact",
+    "copyright": "© 2026 Noor. All rights reserved."
+  },
+
+  "cta": {
+    "title": "Ready to illuminate your learning journey?",
+    "subtitle": "Join thousands of students and teachers on Noor today.",
+    "join": "Join us"
+  },
+
+  "signup": {
+    "brandTitle": "Learn the Quran from the best teachers in the world",
+    "brandSubtitle": "Connecting specialized educators with eager students worldwide through an authentic, high-quality, and interactive environment.",
+
+    "step": "Step {{current}} of {{total}}",
+
+    "step1": {
+      "title": "Create Your Account",
+      "subtitle": "Select your identity space and fill in your core credentials.",
+      "studentTitle": "Student Portal",
+      "studentDescription": "Learn Tajweed, Quran recitation, and Arabic from scratch.",
+      "teacherTitle": "Educator Portal",
+      "teacherDescription": "For qualified scholars and certified educators.",
+
+      "validation": {
+        "firstNameRequired": "First name is required",
+        "firstNameMin": "First name must be at least 2 characters",
+        "firstNameMax": "First name must not exceed 30 characters",
+
+        "lastNameRequired": "Last name is required",
+        "lastNameMin": "Last name must be at least 2 characters",
+        "lastNameMax": "Last name must not exceed 30 characters",
+
+        "invalidEmail": "Enter a valid email address",
+
+        "passwordMin": "Password must be at least 8 characters",
+        "passwordMax": "Password is too long",
+        "passwordWeak": "Password must contain uppercase, lowercase and number"
+      }
+    },
+
+    "step2": {
+      "title": "Profile Basics",
+      "subtitle": "Help us map your timezone and localized records correctly.",
+      "validation": {
+        "countryRequired": "Country is required",
+        "countryMin": "Country must be at least 2 characters",
+        "countryMax": "Country must not exceed 50 characters",
+
+        "cityRequired": "City is required",
+        "cityMin": "City must be at least 2 characters",
+        "cityMax": "City must not exceed 50 characters",
+
+        "phoneRequired": "Phone number is required",
+        "phoneMin": "Phone number must be at least 10 digits",
+        "phoneMax": "Phone number must not exceed 30 digits",
+
+        "dobRequired": "Date of birth is required",
+        "dobMinAge": "User must be at least 5 years old",
+
+        "addressLength": "Address must be between 3 and 100 characters"
+      }
+    },
+
+    "step3": {
+      "teacherTitle": "Professional Profile",
+      "teacherSubtitle": "Highlight your teaching tiers for platform vetting.",
+      "studentTitle": "Current Capabilities",
+      "studentSubtitle": "Pick your entry experience tier down below.",
+
+      "validation": {
+        "bioMin": "Bio must be at least 10 characters",
+        "experienceRange": "Years of experience must be between 0 and 60",
+        "teachingLevelsRequired": "At least one teaching level is required",
+
+        "parentNameRequired": "Parent name is required",
+        "parentNameShort": "Parent name is too short",
+
+        "parentPhoneRequired": "Parent phone number is required",
+        "parentPhoneShort": "Parent phone is too short",
+
+        "parentEmailInvalid": "Enter a valid parent email address"
+      }
+    },
+
+    "labels": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email Address",
+      "password": "Secure Password",
+      "country": "Country",
+      "city": "City",
+      "address1": "Street Address Line 1",
+      "address2": "Street Address Line 2",
+      "phone": "Contact Phone",
+      "dateOfBirth": "Date of Birth",
+      "yearsOfExperience": "Total Years of Experience",
+      "teachingLevels": "Target Teaching Tiers (Select Multiples)",
+      "level": "Your Starting Tier",
+      "bio": "Introduce Yourself (Bio)"
+    },
+
+    "placeholders": {
+      "firstName": "John",
+      "lastName": "Doe",
+      "email": "john@example.com",
+      "password": "••••••••",
+      "country": "Select Country",
+      "city": "Select City",
+      "phone": "+20 1...",
+      "bio": "Tell us a little about yourself...",
+      "parentName": "Parent Full Name",
+      "parentPhone": "Parent Phone",
+      "parentEmail": "Parent Email"
+    },
+
+    "parent": {
+      "title": "Parent / Guardian Access (Optional)",
+      "description": "Enables progress monitoring dashboards and session overview features."
+    },
+
+    "buttons": {
+      "back": "Back",
+      "continue": "Continue",
+      "submit": "Submit",
+      "submitting": "Submitting..."
+    },
+
+    "footer": {
+      "alreadyHaveAccount": "Already have an account?",
+      "login": "Login"
+    },
+
+    "messages": {
+      "success": "Signed up successfully",
+      "registrationFailed": "Registration Failed",
+      "submitError": "Error submitting form"
+    }
+  },
+
+  "login": {
+    "branding": {
+      "title": "Learn the Quran from the best teachers in the world",
+      "description": "Connecting specialized educators with eager students worldwide through an authentic, high-quality, and interactive environment."
+    },
+    "title": "Welcome Back",
+    "subtitle": "Provide your account credentials to access your portal space.",
+
+    "labels": {
+      "email": "Email Address",
+      "password": "Password"
+    },
+
+    "placeholders": {
+      "email": "john@example.com",
+      "password": "••••••••"
+    },
+
+    "actions": {
+      "forgotPassword": "Forgot Password?",
+      "signIn": "Sign In",
+      "authenticating": "Authenticating...",
+      "createAccount": "Create one here"
+    },
+
+    "footer": {
+      "noAccount": "Don't have an account?"
+    },
+
+    "validation": {
+      "emailRequired": "Email address is required",
+      "passwordRequired": "Password is required",
+      "invalidEmail": "Enter a valid email address"
+    },
+
+    "messages": {
+      "welcome": "Welcome back!",
+      "signedIn": "Successfully signed in as {{name}}.",
+      "authenticationFailed": "Authentication Failed",
+      "incorrectCredentials": "Incorrect email or password",
+      "unknownError": "Something went wrong. Please try again."
+    }
+  },
+
+  "errors": {
+    "EMAIL_ALREADY_EXISTS": "An account with this email already exists.",
+    "UNKNOWN_ERROR": "Something went wrong. Please try again."
+  },
+
+  "contact": {
+    "info": {
+      "title": "Get in Touch",
+      "description": "Have questions or need assistance? Drop us a message, and our dedicated team will respond shortly.",
+      "emailSupport": "Email Support",
+      "headquarters": "Headquarters",
+      "address": "Cairo, Egypt",
+      "copyright": "© 2026 Noor Inc. All rights reserved."
+    },
+    "labels": {
+      "name": "Your Name",
+      "email": "Email Address",
+      "topic": "Topic",
+      "message": "Message"
+    },
+    "placeholders": {
+      "name": "John Doe",
+      "email": "you@example.com",
+      "topicSelect": "Select a topic...",
+      "message": "How can we help you?"
+    },
+    "actions": {
+      "sendMessage": "Send Message",
+      "sendingMessage": "Sending Message..."
+    },
+    "validation": {
+      "nameRequired": "Name is required",
+      "invalidEmail": "Enter a valid email address",
+      "topicRequired": "Please select a topic",
+      "messageEmpty": "Message cannot be empty",
+      "messageMinLength": "Message must be at least 10 characters"
+    },
+    "messages": {
+      "successTitle": "Sent successfully!",
+      "successDesc": "Your inquery is recived.",
+      "errorTitle": "Send Failed",
+      "defaultError": "Error submitting the form"
+    },
+    "topics": {
+      "GENERAL_INQUIRY": "General Inquiry",
+      "TECHNICAL_SUPPORT": "Technical Support",
+      "ACCOUNT_DEACTIVATED": "Account Deactivated",
+      "BILLING_AND_ACCOUNTS": "Billing and Accounts",
+      "FEEDBACK": "Feedback",
+      "OTHER": "Other"
+    }
+  },
+
+  "about": {
+    "badge": "About Noor Platform",
+    "heroTitle": "The global reference for",
+    "heroTitleHighlight": "Quranic Excellence",
+    "heroTitleEnd": "and Arabic learning.",
+    "heroDescription": "Noor Platform is a mission-driven ecosystem built to connect specialized, certified Muslim educators holding traditional authorizations (Ijazah) with eager students worldwide. We offer a safe, structured, and authentic environment that bridges classical Islamic scholarship with state-of-the-art virtual classroom technology.",
+    "stats": {
+      "certifiedTeachers": "Certified Teachers",
+      "globalStudents": "Global Students",
+      "nationalities": "Nationalities",
+      "supportedLanguages": "Supported Languages"
+    },
+    "leadership": {
+      "mohamed": {
+        "bio": "Drives the platform's long-term strategic vision, annual objectives, and institutional growth. Directs day-to-day global operations, financial reporting, and the strict vetting frameworks governing certified Ijazah validation and oral admission testing."
+      },
+      "alHassan": {
+        "bio": "Architects the platform's technical core and virtual classroom features. Orchestrates real-time interactive audio/video engines, automated timezone-shifting calendars, and absolute infrastructure security complying strictly with global GDPR data protection standards."
+      }
+    },
+    "curriculum": {
+      "sectionTitle": "Our Core Curriculum Pathways",
+      "sectionDescription": "A precise, structured curriculum designed to take students from absolute zero foundational rules up to chains of transmission (Isnad) back to the Prophet (ﷺ).",
+      "recitationTitle": "1. Quran Recitation & Tajweed",
+      "recitationDesc": "Master proper articulation points (Makharij), rules of NunSakinah, Madd, and rhythmic recitation styles from certified teachers.",
+      "hifzTitle": "2. Memorization (Hifz)",
+      "hifzDesc": "Structured memorization schedules adapted to your individual capacity, complete with systemic review cycles and performance mapping.",
+      "arabicTitle": "3. Classical Arabic & Grammar",
+      "arabicDesc": "Comprehensive conversational fluency, vocabulary building, and syntax/morphology (Nahw & Sarf) to comprehend Arabic texts directly.",
+      "understandingTitle": "4. Quranic Understanding",
+      "understandingDesc": "Delve into the linguistic analysis of the Quranic text along with essential contextual commentary (Tafsir) to enrich daily practice."
+    },
+    "rules": {
+      "sectionTitle": "Built on Safety & Authenticity",
+      "sectionDesc": "Noor Platform operates under strict structural governance rules to protect both academic truth and the privacy of our global student body.",
+      "academicAuthTitle1": "Academic Authenticity",
+      "academicAuthTitle2": "Strict Sanad & Ijazah Vetting",
+      "academicAuthDesc": "Teachers must undergo strict authentication checks on credentials and an audio recitation assessment by our expert quality team prior to onboarding.",
+      "familyFirstTitle1": "Family-First Environment",
+      "familyFirstTitle2": "Comprehensive Parent Control",
+      "familyFirstDesc": "Parents have complete visibility via administrative dashboards to track class records, text messaging streams, and technical progress maps for minors under 16."
+    },
+    "management": {
+      "title": "Platform Management",
+      "description": "The core management team directing academic guidelines and tech deployment."
+    },
+    "supportedInterfaces": "Supported Interfaces: English • العربية • Français • اردو • Bahasa Melayu",
+    "cta": {
+      "title": "Begin Your Journey to Excellence",
+      "description": "Create a free account to browse verified teacher profiles, negotiate custom schedules, and attend an interactive trial session.",
+      "startNow": "Start Your Journey Now",
+      "contactSupport": "Contact Support"
+    }
+  },
+
+  "notFound": {
+    "title": "Page Not Found",
+    "description": "The pathway you are looking for does not exist or has been relocated within our system. Please check the URL or return to the main platform dashboard.",
+    "returnHome": "Return Home",
+    "contactSupport": "Contact Support"
+  },
+
+  "unauthorized": {
+    "title": "Access Denied",
+    "description": "You do not have active authorization to view this portal. Please log in with a verified account to access your designated platform dashboard.",
+    "login": "Log In",
+    "returnHome": "Return Home",
+    "footerNotice": "Noor Platform • Data Protection & Privacy"
+  },
+
+  "dashboard": {
+    "panelSuffix": "Panel",
+    "eduPortal": "EduPortal",
+
+    "nav": {
+      "overview": "Overview",
+      "userManagement": "User Management",
+      "inquiries": "Inquiries",
+      "statistics": "Statistics",
+      "sessions": "Sessions",
+      "requests": "Requests"
+    },
+    "accessDeniedTitle": "Access Denied",
+    "accessDeniedDesc": "Reactivate account to open tabs.",
+    "errorToastTitle": "Dashboard error.",
+    "logout": "Log out",
+    "logoutSuccess": "Logged out successfully",
+    "ariaCloseNav": "Close dashboard navigation",
+    "mainContent": {
+      "openNavAria": "Open dashboard navigation",
+      "headerTitle": {
+        "suspended": "Account Suspended",
+        "overview": "Overview",
+        "workspace": "Workspace"
+      },
+      "suspended": {
+        "title": "Your Account is Currently Deactivated",
+        "subtitle": "Access privileges have been restricted by systems administration.",
+        "messagePart1": "Your account has been restricted by an administrator. Please reach out to our",
+        "supportLink": "Support Team",
+        "messagePart2": "or contact your manager directly to request reactivation."
+      },
+      "welcome": {
+        "greeting": "Welcome Back, {{name}}!",
+        "defaultName": "User",
+        "message": "Select an application resource action pane from the dashboard navigation panel menu options to review data modules."
+      }
+    },
+
+    "inquiries": {
+      "title": "Support Inquiries",
+      "subtitle": "View and manage messages and requests from users.",
+      "totalMessages": "{{count}} Total Messages",
+      "loading": "Loading messages...",
+      "noMessages": "No messages found.",
+      "table": {
+        "sender": "Sender",
+        "topic": "Topic",
+        "message": "Message",
+        "date": "Date",
+        "actions": "Actions",
+        "viewDetails": "View Details"
+      },
+      "pagination": {
+        "showingPage": "Showing Page",
+        "of": "of",
+        "previous": "Previous",
+        "next": "Next"
+      },
+      "drawer": {
+        "title": "Message Details",
+        "closeAria": "Close details",
+        "name": "Name",
+        "email": "Email",
+        "message": "Message",
+        "details": "Details",
+        "received": "Received:",
+        "close": "Close",
+        "replyViaEmail": "Reply via Email"
+      },
+      "topics": {
+        "GENERAL_INQUIRY": "General Inquiry",
+        "TECHNICAL_SUPPORT": "Technical Support",
+        "ACCOUNT_DEACTIVATED": "Account Deactivated",
+        "BILLING_AND_ACCOUNTS": "Billing & Accounts",
+        "FEEDBACK": "Feedback",
+        "OTHER": "Other"
+      },
+      "toast": {
+        "fetchError": "Failed to load messages. Please try again."
+      }
+    },
+
+    "userManagement": {
+      "loadError": "Failed to load {{tab}}. Please try again.",
+      "totalAccounts": "Total Accounts:",
+      "deleteConfirmation": "Are you sure you want to delete",
+      "activateConfirmation": "Are you sure you want to activate",
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "deleteSuccess": "Deleted successfully",
+      "deleteError": "Failed to delete user",
+      "activateSuccess": "{{name}} reactivated successfully",
+      "activateError": "Failed to activate user",
+      "teachers": "teachers",
+      "students": "students",
+
+      "headerTabs": {
+        "title": "System Users",
+        "subtitle": "View and update users",
+        "teachers": "Teachers",
+        "students": "Students"
+      },
+
+      "usersTable": {
+        "emptyTitle": "No {{tab}} found",
+        "emptyDescription": "There are currently no {{tab}} logged under this database filter category.",
+        "headers": {
+          "image": "Image",
+          "name": "Name",
+          "email": "Email Address",
+          "phone": "Phone Number",
+          "country": "Country",
+          "registrationDate": "Registration Date",
+          "isActive": "Is Active",
+          "actions": "Actions"
+        },
+        "status": {
+          "active": "Active",
+          "inactive": "Inactive"
+        },
+        "actions": {
+          "view": "View",
+          "delete": "Delete",
+          "activate": "Activate"
+        },
+        "pagination": {
+          "page": "Page",
+          "of": "of",
+          "prev": "◀ Prev",
+          "next": "Next ▶"
+        },
+        "na": "N/A"
+      }
+    },
+
+    "userProfile": {
+      "backToDashboard": "Back to Dashboard",
+      "notFound": {
+        "title": "No profile record located",
+        "description": "Verify the workspace link or user parameters identifier."
+      },
+      "errors": {
+        "profileLoadFailed": "Failed to load profile details.",
+        "sessionsLoadFailed": "Failed to load user sessions."
+      },
+      "identityCard": {
+        "status": {
+          "active": "Active",
+          "inactive": "Inactive"
+        },
+        "roles": {
+          "student": "Student",
+          "teacher": "Teacher"
+        },
+        "approval": {
+          "approved": "Approved",
+          "pending": "Pending approval"
+        },
+        "verification": {
+          "VERIFIED": "Verified",
+          "NOT_VERIFIED": "Not Verified"
+        },
+        "labels": {
+          "phone": "Phone",
+          "location": "Location",
+          "dateOfBirth": "Date of birth",
+          "experience": "Experience",
+          "experienceValue": "{{years}} yrs",
+          "level": "Level",
+          "address": "Address",
+          "parentGuardian": "Parent / Guardian"
+        }
+      },
+
+      "detailsCard": {
+        "about": {
+          "title": "About",
+          "emptyBio": "No bio has been added yet.",
+          "languages": "Languages",
+          "teachingLevels": "Teaching levels"
+        },
+        "sessions": {
+          "title": "Sessions",
+          "total": "{{count}} total",
+          "emptyTitle": "No sessions yet",
+          "emptyDescription": "Sessions will appear here once scheduled.",
+          "join": "Join →",
+          "status": {
+            "completed": "Completed",
+            "upcoming": "Upcoming",
+            "cancelled": "Cancelled",
+            "pending": "Pending"
+          }
+        }
+      }
+    },
+
+    "sessions": {
+      "page": {
+        "title": "Sessions",
+        "subtitle": "View and manage student-teacher sessions",
+        "createButton": "Create New Session",
+        "toasts": {
+          "loadSessionsError": "Failed to load sessions.",
+          "loadFormDataError": "Failed to load form data.",
+          "updateSuccess": "Session updated successfully!",
+          "createSuccess": "Session created successfully!",
+          "saveError": "Failed to save session",
+          "fallbackInputError": "Check Your inputs"
+        }
+      },
+
+      "list": {
+        "loading": "Loading sessions...",
+        "empty": "No sessions found.",
+        "adminEmptyHint": "Click the button above to add one.",
+        "actions": {
+          "edit": "Edit",
+          "joinClass": "Join Class",
+          "sessionFeedback": "Session Feedback"
+        },
+        "labels": {
+          "noDescription": "No description provided.",
+          "teacher": "Teacher",
+          "student": "Student",
+          "time": "Time",
+          "notAvailable": "N/A"
+        },
+        "errors": {
+          "feedbackFetchTitle": "Error retreiving session feedback",
+          "feedbackFetchDescription": "Please try refreshing the page"
+        },
+        "status": {
+          "scheduled": "Scheduled",
+          "completed": "Completed",
+          "cancelled": "Cancelled",
+          "pending": "Pending",
+          "missed": "Missed",
+          "running": "Running"
+        }
+      },
+
+      "modal": {
+        "titleEdit": "Edit Session Details",
+        "titleCreate": "Schedule New Session",
+        "subtitle": "Fill in the details below to save the session changes",
+        "fields": {
+          "title": "Title",
+          "titlePlaceholder": "Enter session title",
+          "description": "Description",
+          "descriptionPlaceholder": "Enter short description",
+          "subject": "Subject",
+          "selectSubject": "Select subject",
+          "teacher": "Teacher",
+          "selectTeacher": "Select teacher",
+          "student": "Student",
+          "selectStudent": "Select student",
+          "startTime": "Start Time",
+          "endTime": "End Time",
+          "status": "Status"
+        },
+        "statusOptions": {
+          "scheduled": "Scheduled",
+          "running": "Running",
+          "completed": "Completed",
+          "cancelled": "Cancelled",
+          "missed": "Missed"
+        },
+        "buttons": {
+          "cancel": "Cancel",
+          "saving": "Saving...",
+          "save": "Save Session"
+        }
+      },
+
+      "feedbackModal": {
+        "title": "Feedback",
+        "close": "Close",
+        "sentHeader": "Feedback Sent",
+        "receivedHeader": "Feedback Received",
+        "recipientLabel": "To {{name}}",
+        "addFeedbackBtn": "Add Feedback",
+        "noSentFeedbackAdmin": "No feedback sent yet.",
+        "noReceivedFeedback": "No feedback received yet."
+      },
+
+      "feedbackFormModal": {
+        "title": "Submit Feedback",
+        "close": "Close",
+        "rating": "Rating",
+        "commentLabel": "Comment",
+        "commentPlaceholder": "Share your experience with this session...",
+        "cancel": "Cancel",
+        "submit": "Submit",
+        "toast": {
+          "success": "Feedback Sent Successfully",
+          "errorTitle": "Feedback Form Error",
+          "defaultError": "Error sending feedback"
+        }
+      }
+    },
+
+    "requests": {
+      "header": {
+        "title": "Subject Requests",
+        "subtitle": "Review and manage subject requests",
+        "subtitleAdminSuffix": "from students and teachers.",
+        "requestButton": "Request New Subject",
+        "tabs": {
+          "student": "Student ({{count}})",
+          "teacher": "Teacher ({{count}})"
+        }
+      },
+
+      "page": {
+        "toasts": {
+          "loadError": "Failed to load {{type}} requests.",
+          "updateSuccess": "Request updated successfully.",
+          "defaultErrorTitle": "Invalid input",
+          "defaultErrorMessage": "Failed to update request."
+        }
+      },
+
+      "modal": {
+        "titleStudent": "Review Student Request",
+        "titleTeacher": "Review Teacher Request",
+        "labels": {
+          "status": "Status",
+          "reviewNotes": "Review Notes"
+        },
+        "options": {
+          "pending": "Pending",
+          "underReview": "Under Review",
+          "accepted": "Accepted",
+          "rejected": "Rejected"
+        },
+        "placeholders": {
+          "notes": "Write a note"
+        },
+        "buttons": {
+          "cancel": "Cancel",
+          "save": "Save",
+          "saving": "Saving..."
+        }
+      },
+
+      "table": {
+        "headers": {
+          "profile": "Profile",
+          "subject": "Subject",
+          "status": "Status",
+          "date": "Date",
+          "reviewedBy": "Reviewed By",
+          "reviewNotes": "Review Notes",
+          "actions": "Actions"
+        },
+        "empty": {
+          "student": "No student requests found.",
+          "teacher": "No teacher requests found."
+        },
+        "labels": {
+          "level": "Lvl: {{level}}",
+          "experience": "Exp: {{years}} yrs",
+          "notReviewed": "Not reviewed",
+          "noNotes": "No notes"
+        },
+
+        "buttons": {
+          "review": "Review",
+          "previous": "Previous",
+          "next": "Next"
+        },
+        "pagination": {
+          "info": "Page {{current}} of {{total}}"
+        }
+      }
+    }
+  },
+
+  "profile": {
+    "loading": "Loading profile...",
+    "defaultError": "Profile not available.",
+    "cancel": "Cancel",
+    "saving": "Saving ...",
+    "saveChanges": "Save Changes",
+    "toast": {
+      "loadError": "Failed to load profile.",
+      "updateSuccess": "Updated profile successfully!",
+      "updateErrorTitle": "Failed to update profile",
+      "updateErrorDefault": "Please check your information."
+    },
+    "educationTitle": "Education",
+    "level": "Level",
+    "teachingLevels": "Teaching Levels",
+    "languages": "Languages",
+    "yearsOfExperience": "Years of Experience",
+    "year": "Year",
+    "years": "Years",
+    "languageNames": {
+      "English": "English",
+      "Arabic": "Arabic",
+      "French": "French",
+      "Spanish": "Spanish",
+      "German": "German",
+      "Italian": "Italian",
+      "Portuguese": "Portuguese",
+      "Chinese": "Chinese",
+      "Japanese": "Japanese",
+      "Turkish": "Turkish"
+    },
+    "bioTitle": "Bio",
+    "bioPlaceholder": "Tell us about yourself...",
+    "noBioYet": "No bio added yet.",
+    "contactTitle": "Contact Details",
+    "phoneNumber": "Phone Number",
+    "dateOfBirth": "Date of Birth",
+    "addressLine1": "Primary Address Line 1",
+    "addressLine2": "Secondary Address Line 2",
+    "notAvailable": "N/A",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "approved": "Approved",
+    "pendingApproval": "Pending Approval",
+    "status": "Status",
+    "editProfile": "Edit Profile",
+    "locationTitle": "Location Details",
+    "country": "Country",
+    "city": "City",
+    "selectCountry": "Select Country",
+    "selectCity": "Select City"
+  },
+
+  "subjectRequests": {
+    "title": "Subject Requests",
+    "subtitleStudent": "Submit a subject request and track its status.",
+    "subtitleTeacher": "View and manage subject requests.",
+    "requestNewSubject": "Request New Subject",
+    "activeRequests": "Active Requests",
+    "activeRequestsSubtitle": "Requests that are still being reviewed.",
+    "noActiveRequests": "No currently pending subject found.",
+    "requestHistory": "Request History",
+    "requestHistorySubtitle": "Requests that have already been reviewed.",
+    "noHistoryRequests": "No verified execution histories are stored for this account profile.",
+    "submitted": "Submitted",
+    "reviewed": "Reviewed",
+    "reviewNotes": "Review Notes",
+    "reviewedBy": "Reviewed By",
+    "requestedSubject": "Requested Subject",
+    "modalTitle": "Request a Subject",
+    "modalSubtitle": "Choose a subject and submit your request.",
+    "availableSubjects": "Available Subjects",
+    "selectSubjectPlaceholder": "Select a subject...",
+    "cancel": "Cancel",
+    "submitRequest": "Submit Request",
+    "submitting": "Submitting...",
+    "loading": "Loading...",
+    "failedToCreate": "Failed to create subject request.",
+    "genericError": "An error occurred while creating subject request, please try again"
+  },
+
+  "roles": {
+    "STUDENT": "STUDENT",
+    "TEACHER": "TEACHER",
+    "ADMIN": "ADMIN"
+  },
+
+  "levels": {
+    "beginner": "Beginner",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced"
+  },
+  "statuses": {
+    "PENDING": "Pending",
+    "UNDER_REVIEW": "Under Review",
+    "ACCEPTED": "Accepted",
+    "REJECTED": "Rejected"
   }
 }

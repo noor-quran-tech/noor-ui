@@ -1,5 +1,6 @@
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 import type { SessionStatus } from "@utils/types/session";
@@ -67,20 +68,20 @@ const formatDate = (value?: string) => {
   if (!value) return "—";
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return "—";
-  return date.toLocaleDateString(undefined, {
+  return date.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "2-digit",
     year: "numeric",
-    month: "short",
-    day: "numeric",
   });
 };
 
 const formatDateTime = (value: string) => {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return value;
-  return date.toLocaleString(undefined, {
+  return date.toLocaleString("en-GB", {
+    day: "2-digit",
+    month: "2-digit",
     year: "numeric",
-    month: "short",
-    day: "numeric",
     hour: "2-digit",
     minute: "2-digit",
   });
@@ -90,6 +91,7 @@ const UserProfilePage = () => {
   const { id } = useParams();
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const role = pathname.includes("/students") ? Role.STUDENT : Role.TEACHER;
   const [profile, setProfile] = useState<UserProfileData | null>(null);
@@ -116,20 +118,20 @@ const UserProfilePage = () => {
       if (profileRes.status === "fulfilled") {
         setProfile(profileRes.value.data.data);
       } else {
-        toast.error("Failed to load profile details.");
+        toast.error(t("dashboard.userProfile.errors.profileLoadFailed"));
       }
 
       if (sessionsRes.status === "fulfilled") {
         setSessions(sessionsRes.value.data.data || []);
       } else {
-        toast.error("Failed to load user sessions.");
+        toast.error(t("dashboard.userProfile.errors.sessionsLoadFailed"));
       }
 
       setLoading(false);
     }
 
     fetchData();
-  }, [id, role]);
+  }, [id, role, t]);
 
   if (loading) {
     return (
@@ -150,17 +152,18 @@ const UserProfilePage = () => {
           onClick={() => navigate(-1)}
           className="text-xs font-semibold text-neutral-500 hover:text-neutral-900 transition-colors flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-neutral-100 focus:outline-hidden focus:ring-2 focus:ring-teal-500/20 cursor-pointer mb-6"
         >
-          <span>←</span> Back to Dashboard
+          <span className="rtl:rotate-180">←</span>{" "}
+          {t("dashboard.userProfile.backToDashboard")}
         </button>
         <div className="p-12 text-center bg-white border border-neutral-100 rounded-2xl shadow-xs">
           <div className="w-12 h-12 bg-error-bg text-error rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">
             !
           </div>
           <h3 className="text-base font-bold text-neutral-900 mb-1">
-            No profile record located
+            {t("dashboard.userProfile.notFound.title")}
           </h3>
           <p className="text-neutral-500 text-xs">
-            Verify the workspace link or user parameters identifier.
+            {t("dashboard.userProfile.notFound.description")}
           </p>
         </div>
       </div>
@@ -174,7 +177,8 @@ const UserProfilePage = () => {
         onClick={() => navigate(-1)}
         className="text-xs font-semibold text-neutral-500 hover:text-neutral-900 transition-colors flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-neutral-100 focus:outline-hidden focus:ring-2 focus:ring-teal-500/20 cursor-pointer -ml-3"
       >
-        <span>←</span> Back to Dashboard
+        <span className="rtl:rotate-180">←</span>{" "}
+        {t("dashboard.userProfile.backToDashboard")}
       </button>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { isAxiosError } from "axios";
 
 import type {
   ReviewStatus,
@@ -7,21 +10,21 @@ import type {
   TeacherSubjectRequest,
 } from "@utils/types/subject";
 import type { TabPagination } from "@utils/types/public";
+import type { RootState } from "@store/store";
 
 import axiosAPI from "@lib/axios";
-import { isAxiosError } from "axios";
 import ReviewSubjectRequestModal, {
   type AuditingTarget,
 } from "@components/dashboard/requests/ReviewSubjectRequestModal";
 import HeaderComponent from "@components/dashboard/requests/HeaderComponent";
 import TableComponent from "@components/dashboard/requests/TableComponent";
-import { useSelector } from "react-redux";
-import type { RootState } from "@store/store";
 import { Role } from "@utils/types/user";
 
 const ITEMS_PER_PAGE = 10;
 
 const Requests = () => {
+  const { t } = useTranslation();
+
   const loggedInProfile = useSelector((state: RootState) => state.auth.profile);
   const loggedInProfileRole = loggedInProfile.type;
 
@@ -74,7 +77,7 @@ const Requests = () => {
         });
       } catch (err) {
         console.error(err);
-        toast.error(`Failed to load ${type} requests.`);
+        toast.error(t("dashboard.requests.page.toasts.loadError", { type }));
       } finally {
         setLoading(false);
       }
@@ -96,7 +99,7 @@ const Requests = () => {
         });
       } catch (err) {
         console.error(err);
-        toast.error(`Failed to load ${type} requests.`);
+        toast.error(t("dashboard.requests.page.toasts.loadError", { type }));
       } finally {
         setLoading(false);
       }
@@ -189,15 +192,15 @@ const Requests = () => {
         );
       }
 
-      toast.success("Request updated successfully.");
+      toast.success(t("dashboard.requests.page.toasts.updateSuccess"));
       setAuditTarget(null);
     } catch (err) {
       console.error(err);
-      let errTitle = "Invalid input";
-      let errMsg = "Failed to update request.";
+      let errTitle = t("dashboard.requests.page.toasts.defaultErrorTitle");
+      let errMsg = t("dashboard.requests.page.toasts.defaultErrorMessage");
       if (isAxiosError(err)) {
-        errTitle = err.response?.data?.errors?.[0].field;
-        errMsg = err.response?.data?.errors?.[0].message;
+        errTitle = err.response?.data?.errors?.[0]?.field || errTitle;
+        errMsg = err.response?.data?.errors?.[0]?.message || errMsg;
       }
       toast.error(errTitle, {
         description: errMsg,

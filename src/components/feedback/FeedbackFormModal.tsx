@@ -1,9 +1,10 @@
 import StarRating from "@components/helpers/StarRating";
-import { LoaderCircleIcon } from "lucide-react";
-import { useState, type ChangeEvent } from "react";
-import { toast } from "sonner";
 import axiosAPI from "@lib/axios";
 import { isAxiosError } from "axios";
+import { LoaderCircleIcon } from "lucide-react";
+import { useState, type ChangeEvent } from "react";
+import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 
 interface FeedbackFormData {
   rating: number;
@@ -27,6 +28,7 @@ const FeedbackFormModal = ({
   setShowFeedbackForm,
   showFeedbackForm,
 }: FeedbackFormModalProps) => {
+  const { t } = useTranslation();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedbackFormData, setFeedbackFormData] = useState<FeedbackFormData>(
     initalFeedbackFormState,
@@ -46,11 +48,13 @@ const FeedbackFormModal = ({
         ...feedbackFormData,
       };
       await axiosAPI.post("/feedbacks", body);
-      toast.success("Feedback Sent Successfully");
+      toast.success(t("dashboard.sessions.feedbackFormModal.toast.success"));
       setShowFeedbackForm(false);
       setFeedbackFormData(initalFeedbackFormState);
     } catch (err) {
-      let errMessage = "Error sending feedback";
+      let errMessage = t(
+        "dashboard.sessions.feedbackFormModal.toast.defaultError",
+      );
       if (isAxiosError(err)) {
         console.warn("err.response", err.response);
         errMessage =
@@ -60,7 +64,9 @@ const FeedbackFormModal = ({
       } else if (err instanceof Error) {
         errMessage = err.message;
       }
-      toast.error("Feedback Form Error", { description: errMessage });
+      toast.error(t("dashboard.sessions.feedbackFormModal.toast.errorTitle"), {
+        description: errMessage,
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -74,13 +80,13 @@ const FeedbackFormModal = ({
             {/* Header */}
             <div className="flex items-start justify-between mb-5">
               <h3 className="text-lg font-black text-slate-900 tracking-tight">
-                Submit Feedback
+                {t("dashboard.sessions.feedbackFormModal.title")}
               </h3>
               <button
                 type="button"
                 onClick={() => setShowFeedbackForm(false)}
                 className="text-neutral-400 hover:text-neutral-700 transition text-lg leading-none cursor-pointer"
-                aria-label="Close"
+                aria-label={t("dashboard.sessions.feedbackFormModal.close")}
               >
                 ✕
               </button>
@@ -90,7 +96,7 @@ const FeedbackFormModal = ({
               {/* Rating */}
               <div className="space-y-2">
                 <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">
-                  Rating
+                  {t("dashboard.sessions.feedbackFormModal.rating")}
                 </span>
                 <StarRating
                   value={feedbackFormData.rating}
@@ -107,12 +113,14 @@ const FeedbackFormModal = ({
                   htmlFor="comment"
                   className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block"
                 >
-                  Comment
+                  {t("dashboard.sessions.feedbackFormModal.commentLabel")}
                 </label>
                 <textarea
                   id="comment"
                   rows={4}
-                  placeholder="Share your experience with this session..."
+                  placeholder={t(
+                    "dashboard.sessions.feedbackFormModal.commentPlaceholder",
+                  )}
                   value={feedbackFormData.comment}
                   onChange={handleFeedbackCommentChange}
                   className="w-full text-xs text-neutral-700 border border-neutral-200 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition resize-none placeholder:text-neutral-400"
@@ -126,7 +134,7 @@ const FeedbackFormModal = ({
                 onClick={() => setShowFeedbackForm(false)}
                 className="w-full py-2 text-xs font-semibold border border-neutral-200 rounded-xl hover:bg-neutral-50 text-neutral-600 transition cursor-pointer"
               >
-                Cancel
+                {t("dashboard.sessions.feedbackFormModal.cancel")}
               </button>
               <button
                 type="button"
@@ -137,7 +145,7 @@ const FeedbackFormModal = ({
                 {isSubmitting ? (
                   <LoaderCircleIcon className="w-3.5 h-3.5 animate-spin" />
                 ) : (
-                  "Submit"
+                  t("dashboard.sessions.feedbackFormModal.submit")
                 )}
               </button>
             </div>

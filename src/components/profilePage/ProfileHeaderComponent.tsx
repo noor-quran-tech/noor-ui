@@ -1,4 +1,5 @@
 import type { ChangeEvent } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Role,
   type StudentDetails,
@@ -34,6 +35,8 @@ const ProfileHeaderComponent = ({
   handleEnableEdit,
   loggedInUser,
 }: ProfileHeaderComponentProps) => {
+  const { t } = useTranslation();
+
   return (
     <div className="bg-white border border-neutral-200 rounded-2xl p-6 md:p-8 shadow-sm flex flex-col md:flex-row items-center md:items-start justify-between gap-6">
       <div className="flex flex-col md:flex-row items-center gap-5 text-center md:text-left">
@@ -55,6 +58,7 @@ const ProfileHeaderComponent = ({
                   name="firstName"
                   value={formData.firstName}
                   onChange={handleInputChange}
+                  placeholder={t("profile.firstName")}
                   className="w-fit text-sm bg-neutral-50 border border-neutral-200 focus:border-teal-500 focus:ring-1 focus:ring-teal-500 rounded-xl px-3 py-2 font-bold text-neutral-900 outline-none transition"
                 />
                 <input
@@ -62,12 +66,13 @@ const ProfileHeaderComponent = ({
                   name="lastName"
                   value={formData.lastName}
                   onChange={handleInputChange}
+                  placeholder={t("profile.lastName")}
                   className="w-fit text-sm bg-neutral-50 border border-neutral-200 focus:border-teal-500 focus:ring-1 focus:ring-teal-500 rounded-xl px-3 py-2 font-bold text-neutral-900 outline-none transition"
                 />
               </>
             )}
             <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-neutral-100 text-neutral-700 uppercase tracking-wider border border-neutral-200">
-              {user.role.toLowerCase()}
+              {t(`roles.${user.role.toUpperCase()}` as any)}
             </span>
           </div>
           <p className="text-sm text-neutral-500 font-medium">{user.email}</p>
@@ -83,11 +88,16 @@ const ProfileHeaderComponent = ({
                 : "bg-warning-bg text-warning border-warning/20"
             }`}
           >
-            {profileDetails?.isApproved ? "Approved" : "Pending Approval"}
+            {profileDetails?.isApproved
+              ? t("profile.approved")
+              : t("profile.pendingApproval")}
           </span>
           {loggedInUser.role !== Role.ADMIN ? (
             <span className="text-xs font-semibold text-neutral-400">
-              Status: {profileDetails?.verificationStatus.replace("_", " ")}
+              {t("profile.status")}:{" "}
+              {t(
+                `dashboard.userProfile.identityCard.verification.${profileDetails?.verificationStatus}`,
+              )}
             </span>
           ) : null}
         </div>
@@ -97,7 +107,7 @@ const ProfileHeaderComponent = ({
             onClick={handleEnableEdit}
             className="w-full md:w-auto px-4 py-2 text-xs font-bold uppercase tracking-wider text-white bg-teal-600 hover:bg-teal-700 active:bg-teal-800 rounded-xl transition duration-150 cursor-pointer shadow-sm"
           >
-            Edit Profile
+            {t("profile.editProfile")}
           </button>
         )}
       </div>
