@@ -2,6 +2,7 @@ import StarRating from "@components/helpers/StarRating";
 import type { SessionFeedback } from "@utils/types/session";
 import { Role } from "@utils/types/user";
 import { LoaderCircleIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface FeedbackModalProps {
   setShowFeedbackForm: (value: boolean) => void;
@@ -22,6 +23,8 @@ const FeedbackModal = ({
   loggedInUserRole,
   feedbackReceived,
 }: FeedbackModalProps) => {
+  const { t } = useTranslation();
+
   const handleAddFeedback = () => {
     setShowFeedbackForm(true);
     setIsFeedbackModalOpen(false);
@@ -35,14 +38,14 @@ const FeedbackModal = ({
             <div className="flex items-start justify-between mb-5">
               <div>
                 <h3 className="text-lg font-black text-slate-900 tracking-tight">
-                  Feedback
+                  {t("dashboard.sessions.feedbackModal.title")}
                 </h3>
               </div>
               <button
                 type="button"
                 onClick={() => setIsFeedbackModalOpen(false)}
                 className="text-neutral-400 hover:text-neutral-700 transition text-lg leading-none cursor-pointer"
-                aria-label="Close"
+                aria-label={t("dashboard.sessions.feedbackModal.close")}
               >
                 ✕
               </button>
@@ -53,15 +56,19 @@ const FeedbackModal = ({
                 {/* Sent */}
                 <div className="space-y-2">
                   <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">
-                    Feedback Sent
+                    {t("dashboard.sessions.feedbackModal.sentHeader")}
                   </span>
 
                   {feedbackSent ? (
                     <div className="bg-neutral-50 border border-neutral-200 rounded-xl p-3 space-y-2">
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-bold text-neutral-800">
-                          To {feedbackSent.receiver.firstName}{" "}
-                          {feedbackSent.receiver.lastName}
+                          {t(
+                            "dashboard.sessions.feedbackModal.recipientLabel",
+                            {
+                              name: `${feedbackSent.receiver.firstName} ${feedbackSent.receiver.lastName}`,
+                            },
+                          )}
                         </span>
                         <StarRating value={feedbackSent.rating} />
                       </div>
@@ -75,11 +82,13 @@ const FeedbackModal = ({
                       onClick={handleAddFeedback}
                       className="w-full text-center py-2 text-xs font-bold bg-teal-800 hover:bg-teal-900 text-white rounded-xl transition tracking-wide cursor-pointer"
                     >
-                      Add Feedback
+                      {t("dashboard.sessions.feedbackModal.addFeedbackBtn")}
                     </button>
                   ) : (
                     <p className="text-xs text-neutral-400 italic">
-                      No feedback received yet.
+                      {t(
+                        "dashboard.sessions.feedbackModal.noSentFeedbackAdmin",
+                      )}
                     </p>
                   )}
                 </div>
@@ -89,15 +98,19 @@ const FeedbackModal = ({
                 {/* Received */}
                 <div className="space-y-2">
                   <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">
-                    Feedback Received
+                    {t("dashboard.sessions.feedbackModal.receivedHeader")}
                   </span>
 
                   {feedbackReceived ? (
                     <div className="bg-neutral-50 border border-neutral-200 rounded-xl p-3 space-y-2">
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-bold text-neutral-800">
-                          To {feedbackReceived.receiver.firstName}{" "}
-                          {feedbackReceived.receiver.lastName}
+                          {t(
+                            "dashboard.sessions.feedbackModal.recipientLabel",
+                            {
+                              name: `${feedbackReceived.receiver.firstName} ${feedbackReceived.receiver.lastName}`,
+                            },
+                          )}
                         </span>
                         <StarRating value={feedbackReceived.rating} />
                       </div>
@@ -107,7 +120,7 @@ const FeedbackModal = ({
                     </div>
                   ) : (
                     <p className="text-xs text-neutral-400 italic">
-                      No feedback received yet.
+                      {t("dashboard.sessions.feedbackModal.noReceivedFeedback")}
                     </p>
                   )}
                 </div>
@@ -123,7 +136,7 @@ const FeedbackModal = ({
               onClick={() => setIsFeedbackModalOpen(false)}
               className="w-full mt-6 py-2 text-xs font-semibold border border-neutral-200 rounded-xl hover:bg-neutral-50 text-neutral-600 transition cursor-pointer"
             >
-              Close
+              {t("dashboard.sessions.feedbackModal.close")}
             </button>
           </div>
         </div>

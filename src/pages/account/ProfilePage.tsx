@@ -4,6 +4,7 @@ import { Navigate } from "react-router-dom";
 import { Country, City } from "country-state-city";
 import { toast } from "sonner";
 import { isAxiosError } from "axios";
+import { useTranslation } from "react-i18next";
 
 import type { RootState } from "@store/store";
 
@@ -16,6 +17,7 @@ import ProfileBioComponent from "@components/profilePage/ProfileBioComponent";
 import ProfileContactComponent from "@components/profilePage/ProfileContactComponent";
 
 const ProfilePage: React.FC = () => {
+  const { t } = useTranslation();
   const loggedInUser = useSelector((state: RootState) => state.auth.user);
   const [user, setUser] = useState<UserProfileData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -115,14 +117,14 @@ const ProfilePage: React.FC = () => {
         }
       } catch (err) {
         console.error("Failed to fetch profile details", err);
-        toast.error("Failed to load profile.");
+        toast.error(t("profile.toast.loadError"));
       } finally {
         setLoading(false);
       }
     }
 
     getUserProfile();
-  }, [loggedInUser]);
+  }, [loggedInUser, t]);
 
   // Route protection wrapper guard
   if (!loggedInUser) {
@@ -133,7 +135,7 @@ const ProfilePage: React.FC = () => {
     return (
       <div className="min-h-screen bg-neutral-50 flex items-center justify-center font-sans">
         <div className="text-sm font-medium text-neutral-500 animate-pulse">
-          Loading profile...
+          {t("profile.loading")}
         </div>
       </div>
     );
@@ -143,7 +145,7 @@ const ProfilePage: React.FC = () => {
     return (
       <div className="min-h-screen bg-neutral-50 flex items-center justify-center font-sans">
         <div className="text-sm font-medium text-error bg-error-bg px-4 py-2 rounded-xl border border-error/20">
-          {error || "Profile not available."}
+          {error || t("profile.defaultError")}
         </div>
       </div>
     );
@@ -191,16 +193,16 @@ const ProfilePage: React.FC = () => {
         };
       });
       setIsEditing(false);
-      toast.success("Updated profile successfully!");
+      toast.success(t("profile.toast.updateSuccess"));
     } catch (err: unknown) {
-      let description = "Please check your information.";
+      let description = t("profile.toast.updateErrorDefault");
       if (isAxiosError(err)) {
         description =
           err.response?.data.errors[0].message ||
-          "Please check your information.";
+          t("profile.toast.updateErrorDefault");
       }
 
-      toast.error("Failed to update profile", {
+      toast.error(t("profile.toast.updateErrorTitle"), {
         description,
       });
     } finally {
@@ -258,7 +260,7 @@ const ProfilePage: React.FC = () => {
             </div>
 
             <div className="space-y-6 lg:col-span-2">
-              {/*  Bio */}
+              {/* Bio */}
               <ProfileBioComponent
                 isEditing={isEditing}
                 formData={formData}
@@ -284,14 +286,14 @@ const ProfilePage: React.FC = () => {
                     }}
                     className="px-4 py-2 text-xs font-bold uppercase tracking-wider text-neutral-600 bg-neutral-200 hover:bg-neutral-300 disabled:opacity-50 rounded-xl transition duration-150 cursor-pointer"
                   >
-                    Cancel
+                    {t("profile.cancel")}
                   </button>
                   <button
                     type="submit"
                     disabled={isSaving}
                     className="px-5 py-2 text-xs font-bold uppercase tracking-wider text-white bg-teal-500 hover:bg-teal-600 active:bg-teal-700 disabled:opacity-50 rounded-xl transition duration-150 cursor-pointer shadow-sm flex items-center gap-2"
                   >
-                    {isSaving ? "Saving ..." : "Save Changes"}
+                    {isSaving ? t("profile.saving") : t("profile.saveChanges")}
                   </button>
                 </div>
               )}

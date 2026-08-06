@@ -62,7 +62,7 @@ function AppNavbar() {
                 to={link.path}
                 className="text-sm font-semibold text-white/90 transition hover:text-white"
               >
-                {link.label}
+                {t(`navbar.links.${link.label}`)}
               </Link>
             ))}
           </div>
@@ -97,14 +97,14 @@ function AppNavbar() {
                       to="/profile"
                       className="block rounded-lg px-3 py-2 text-sm text-black hover:bg-neutral-100"
                     >
-                      👤 Profile
+                      👤 {t("navbar.profile")}
                     </Link>
 
                     <Link
                       to="/dashboard"
                       className="block rounded-lg px-3 py-2 text-sm text-black hover:bg-neutral-100"
                     >
-                      📊 Dashboard
+                      📊 {t("navbar.dashboard")}
                     </Link>
 
                     <hr className="my-1 text-black" />
@@ -113,7 +113,7 @@ function AppNavbar() {
                       onClick={handleLogout}
                       className="block w-full cursor-pointer rounded-lg px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50"
                     >
-                      🚪 Logout
+                      🚪 {t("navbar.logout")}
                     </button>
                   </div>
                 )}

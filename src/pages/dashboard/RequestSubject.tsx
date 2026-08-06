@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { isAxiosError } from "axios";
+import { useTranslation } from "react-i18next";
 
 import type { RootState } from "@store/store";
 import {
@@ -15,6 +16,7 @@ import axiosAPI from "@lib/axios";
 import { Role } from "@utils/types/user";
 
 const RequestSubjectPage: React.FC = () => {
+  const { t, i18n } = useTranslation();
   const loggedInUser = useSelector((state: RootState) => state.auth.user);
   const profile = useSelector((state: RootState) => state.auth.profile);
 
@@ -70,7 +72,9 @@ const RequestSubjectPage: React.FC = () => {
   }
 
   // Submit Handler executing your explicit Controller Create rules
-  const handleCreateSubjectRequest = async (e: React.ChangeEvent) => {
+  const handleCreateSubjectRequest = async (
+    e: React.ChangeEvent<HTMLFormElement>,
+  ) => {
     e.preventDefault();
     if (!selectedSubjectId) return;
 
@@ -82,7 +86,6 @@ const RequestSubjectPage: React.FC = () => {
       setSubmitting(true);
       setActionError(null);
 
-      // Uses your exact request body parsing structure: { studentId, subjectId }
       let url = "/student-subject-requests";
       let body: CreateSubjectRequest = {
         studentId: profile?.id,
@@ -102,7 +105,7 @@ const RequestSubjectPage: React.FC = () => {
         ...response.data.data,
         subject: targetedSubject || {
           id: selectedSubjectId,
-          name: "Requested Subject",
+          name: t("subjectRequests.requestedSubject"),
         },
       };
 
@@ -113,12 +116,10 @@ const RequestSubjectPage: React.FC = () => {
     } catch (err: unknown) {
       if (isAxiosError(err)) {
         const errorMessage =
-          err.response?.data?.message || "Failed to create subject request.";
+          err.response?.data?.message || t("subjectRequests.failedToCreate");
         setActionError(errorMessage);
       } else {
-        setActionError(
-          "An error occured while creating subject request, please try again",
-        );
+        setActionError(t("subjectRequests.genericError"));
       }
     } finally {
       setSubmitting(false);
@@ -141,12 +142,12 @@ const RequestSubjectPage: React.FC = () => {
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div className="space-y-1">
             <h1 className="text-2xl font-black text-slate-900 tracking-tight">
-              Subject Requests
+              {t("subjectRequests.title")}
             </h1>
             <p className="text-sm text-slate-500">
               {loggedInUser.role === Role.STUDENT
-                ? "Submit a subject request and track its status."
-                : "View and manage subject requests."}
+                ? t("subjectRequests.subtitleStudent")
+                : t("subjectRequests.subtitleTeacher")}
             </p>
           </div>
 
@@ -158,7 +159,7 @@ const RequestSubjectPage: React.FC = () => {
               }}
               className="px-5 py-2.5 bg-teal-600 hover:bg-teal-700 text-white font-semibold text-sm rounded-lg shadow-sm transition cursor-pointer"
             >
-              Request New Subject
+              {t("subjectRequests.requestNewSubject")}
             </button>
           )}
         </div>
@@ -166,23 +167,23 @@ const RequestSubjectPage: React.FC = () => {
 
       {loading ? (
         <div className="max-w-6xl mx-auto px-6 py-12 text-center text-sm font-medium text-slate-400 animate-pulse">
-          Loading...
+          {t("subjectRequests.loading")}
         </div>
       ) : (
         <main className="max-w-6xl mx-auto px-6 py-10 grid grid-cols-1 lg:grid-cols-2 gap-10">
           <section className="space-y-6">
             <div className="border-b border-slate-200 pb-2">
               <h2 className="text-lg font-bold text-slate-900">
-                Active Requests ({activeRequests.length})
+                {t("subjectRequests.activeRequests")} ({activeRequests.length})
               </h2>
               <p className="text-xs text-slate-500">
-                Requests that are still being reviewed.
+                {t("subjectRequests.activeRequestsSubtitle")}
               </p>
             </div>
 
             {activeRequests.length === 0 ? (
               <div className="bg-white border border-dashed border-slate-200 rounded-xl p-8 text-center text-sm text-slate-400">
-                No currently pending subject found.
+                {t("subjectRequests.noActiveRequests")}
               </div>
             ) : (
               <div className="space-y-4">
@@ -194,11 +195,19 @@ const RequestSubjectPage: React.FC = () => {
                     <div className="flex justify-between items-start">
                       <div>
                         <h4 className="font-bold text-slate-900 text-md">
-                          {req.subject?.name || "Subject"}
+                          {req.subject?.name ||
+                            t("subjectRequests.requestedSubject")}
                         </h4>
                         <p className="text-xs text-slate-400">
-                          Submitted:{" "}
-                          {new Date(req.createdAt).toLocaleDateString()}
+                          {t("subjectRequests.submitted")}:{" "}
+                          {new Date(req.createdAt).toLocaleDateString(
+                            i18n.language === "ar" ? "ar-EG" : "en-US",
+                            {
+                              day: "2-digit",
+                              month: "2-digit",
+                              year: "numeric",
+                            },
+                          )}
                         </p>
                       </div>
 
@@ -209,7 +218,7 @@ const RequestSubjectPage: React.FC = () => {
                             : "bg-blue-50 text-blue-700 border-blue-200"
                         }`}
                       >
-                        {req.status.replace("_", " ")}
+                        {t(`statuses.${req.status.toUpperCase()}`)}
                       </span>
                     </div>
                   </div>
@@ -222,31 +231,42 @@ const RequestSubjectPage: React.FC = () => {
           <section className="space-y-6">
             <div className="border-b border-slate-200 pb-2">
               <h2 className="text-lg font-bold text-slate-900">
-                Request History ({historicRequests.length})
+                {t("subjectRequests.requestHistory")} ({historicRequests.length}
+                )
               </h2>
               <p className="text-xs text-slate-500">
-                Requests that have already been reviewed.
+                {t("subjectRequests.requestHistorySubtitle")}
               </p>
             </div>
 
             {historicRequests.length === 0 ? (
               <div className="bg-white border border-dashed border-slate-200 rounded-xl p-8 text-center text-sm text-slate-400">
-                No verified execution histories are stored for this account
-                profile.
+                {t("subjectRequests.noHistoryRequests")}
               </div>
             ) : (
               <div className="space-y-4">
                 {historicRequests.map((req) => (
-                  <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm space-y-4">
+                  <div
+                    key={req.id}
+                    className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm space-y-4"
+                  >
                     {/* Top Section: Header Title & Status Badge */}
                     <div className="flex justify-between items-start gap-4">
                       <div className="space-y-1">
                         <h4 className="font-bold text-slate-900 text-md">
-                          {req.subject?.name || "Subject"}
+                          {req.subject?.name ||
+                            t("subjectRequests.requestedSubject")}
                         </h4>
                         <p className="text-xs text-slate-400">
-                          Reviewed:{" "}
-                          {new Date(req.updatedAt).toLocaleDateString()}
+                          {t("subjectRequests.reviewed")}:{" "}
+                          {new Date(req.updatedAt).toLocaleDateString(
+                            i18n.language === "ar" ? "ar-EG" : "en-US",
+                            {
+                              day: "2-digit",
+                              month: "2-digit",
+                              year: "numeric",
+                            },
+                          )}
                         </p>
                       </div>
 
@@ -257,7 +277,7 @@ const RequestSubjectPage: React.FC = () => {
                             : "bg-red-50 text-red-700 border-red-200"
                         }`}
                       >
-                        {req.status}
+                        {t(`statuses.${req.status.toUpperCase()}`)}
                       </span>
                     </div>
 
@@ -265,7 +285,7 @@ const RequestSubjectPage: React.FC = () => {
                     {req.reviewNotes && (
                       <div className="pt-3 border-t border-slate-100 space-y-1 bg-slate-50/50 p-3 rounded-lg border">
                         <span className="block text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                          Review Notes
+                          {t("subjectRequests.reviewNotes")}
                         </span>
                         <p className="text-sm text-slate-600 leading-relaxed font-medium">
                           {req.reviewNotes}
@@ -275,7 +295,7 @@ const RequestSubjectPage: React.FC = () => {
                     {req.reviewedBy && (
                       <div className="pt-2 border-t border-slate-100 text-xs text-slate-500 flex justify-between items-center">
                         <span>
-                          Reviewed By:{" "}
+                          {t("subjectRequests.reviewedBy")}:{" "}
                           <strong className="text-slate-700">
                             {req.reviewedBy.firstName} {req.reviewedBy.lastName}
                           </strong>
@@ -299,10 +319,10 @@ const RequestSubjectPage: React.FC = () => {
           <div className="bg-white rounded-2xl border border-slate-200 max-w-md w-full p-6 space-y-6 shadow-xl animate-in fade-in zoom-in-95 duration-150">
             <div>
               <h3 className="text-lg font-black text-slate-900 tracking-tight">
-                Request a Subject
+                {t("subjectRequests.modalTitle")}
               </h3>
               <p className="text-xs text-slate-500">
-                Choose a subject and submit your request.
+                {t("subjectRequests.modalSubtitle")}
               </p>
             </div>
 
@@ -315,7 +335,7 @@ const RequestSubjectPage: React.FC = () => {
             <form onSubmit={handleCreateSubjectRequest} className="space-y-4">
               <div className="space-y-1">
                 <label className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                  Available Subjects
+                  {t("subjectRequests.availableSubjects")}
                 </label>
                 <select
                   value={selectedSubjectId}
@@ -323,7 +343,9 @@ const RequestSubjectPage: React.FC = () => {
                   required
                   className="w-full text-sm font-medium p-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:border-teal-500 cursor-pointer"
                 >
-                  <option value="">Select a subject...</option>
+                  <option value="">
+                    {t("subjectRequests.selectSubjectPlaceholder")}
+                  </option>
                   {availableSubjects.map((subject) => (
                     <option key={subject.id} value={subject.id}>
                       {subject.name}
@@ -339,14 +361,16 @@ const RequestSubjectPage: React.FC = () => {
                   onClick={() => setIsModalOpen(false)}
                   className="px-4 py-2 text-xs font-semibold border border-slate-200 rounded-lg hover:bg-slate-50 text-slate-600 transition cursor-pointer"
                 >
-                  Cancel
+                  {t("subjectRequests.cancel")}
                 </button>
                 <button
                   type="submit"
                   disabled={submitting || !selectedSubjectId}
                   className="px-4 py-2 text-xs font-semibold bg-teal-600 hover:bg-teal-700 text-white rounded-lg shadow-sm transition disabled:opacity-50 cursor-pointer"
                 >
-                  {submitting ? "Submitting..." : "Submit Request"}
+                  {submitting
+                    ? t("subjectRequests.submitting")
+                    : t("subjectRequests.submitRequest")}
                 </button>
               </div>
             </form>

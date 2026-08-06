@@ -1,5 +1,6 @@
 import { Level, Role, type UserProfileData } from "@utils/types/user";
 import type { ChangeEvent } from "react";
+import { useTranslation } from "react-i18next";
 
 interface ProfileEducationComponentProps {
   user: UserProfileData;
@@ -21,16 +22,18 @@ const ProfileEducationComponent = ({
   setFormData,
   handleInputChange,
 }: ProfileEducationComponentProps) => {
+  const { t } = useTranslation();
+
   return (
     <div className="bg-white border border-neutral-200 rounded-2xl p-6 shadow-sm space-y-4">
       <h3 className="text-sm font-bold uppercase tracking-widest text-teal-600">
-        Education
+        {t("profile.educationTitle")}
       </h3>
 
       {user.role === Role.STUDENT && user.student && (
         <div className="space-y-1.5">
           <div className="text-xs text-neutral-400 font-semibold uppercase">
-            Level
+            {t("profile.level")}
           </div>
           {isEditing ? (
             <div className="flex flex-wrap gap-1.5 pt-1">
@@ -52,7 +55,7 @@ const ProfileEducationComponent = ({
                         : "bg-teal-50 text-teal-700 border-teal-100 hover:border-teal-400"
                     }`}
                   >
-                    {lvl.charAt(0) + lvl.slice(1).toLowerCase()}
+                    {t(`levels.${lvl.toLowerCase()}` as any)}
                   </button>
                 );
               })}
@@ -60,7 +63,7 @@ const ProfileEducationComponent = ({
           ) : (
             <div className="flex flex-wrap gap-1.5 pt-1">
               <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-teal-50 text-teal-700 border border-teal-100">
-                {user.student.level}
+                {t(`levels.${user.student.level.toLowerCase()}` as any)}
               </span>
             </div>
           )}
@@ -71,7 +74,7 @@ const ProfileEducationComponent = ({
         <div className="space-y-4">
           <div className="space-y-1.5">
             <div className="text-xs text-neutral-400 font-semibold uppercase">
-              Teaching Levels
+              {t("profile.teachingLevels")}
             </div>
             {isEditing ? (
               <div className="flex flex-wrap gap-1.5 pt-1">
@@ -97,7 +100,7 @@ const ProfileEducationComponent = ({
                           : "bg-teal-50 text-teal-700 border-teal-100 hover:border-teal-400"
                       }`}
                     >
-                      {lvl.charAt(0) + lvl.slice(1).toLowerCase()}
+                      {t(`levels.${lvl.toLowerCase()}` as any)}
                     </button>
                   );
                 })}
@@ -109,7 +112,7 @@ const ProfileEducationComponent = ({
                     key={lvl}
                     className="text-xs font-bold px-2 py-0.5 rounded-md bg-teal-50 text-teal-700 border border-teal-100"
                   >
-                    {lvl}
+                    {t(`levels.${lvl.toLowerCase()}` as any)}
                   </span>
                 ))}
               </div>
@@ -118,7 +121,7 @@ const ProfileEducationComponent = ({
 
           <div className="space-y-1.5 pt-2 border-t border-neutral-100">
             <div className="text-xs text-neutral-400 font-semibold uppercase">
-              Languages
+              {t("profile.languages")}
             </div>
             {isEditing ? (
               <div className="flex flex-wrap gap-1.5 pt-1">
@@ -143,8 +146,10 @@ const ProfileEducationComponent = ({
                         setFormData((prev) => ({
                           ...prev,
                           languages: checked
-                            ? prev.languages.filter((l: string) => l !== lang)
-                            : [...prev.languages, lang],
+                            ? (prev.languages ?? []).filter(
+                                (l: string) => l !== lang,
+                              )
+                            : [...(prev.languages ?? []), lang],
                         }))
                       }
                       className={`text-xs font-medium px-2 py-0.5 rounded-md border transition cursor-pointer ${
@@ -153,7 +158,7 @@ const ProfileEducationComponent = ({
                           : "bg-neutral-100 text-neutral-700 border-neutral-200 hover:border-neutral-400"
                       }`}
                     >
-                      {lang}
+                      {t(`profile.languageNames.${lang}` as any)}
                     </button>
                   );
                 })}
@@ -165,7 +170,7 @@ const ProfileEducationComponent = ({
                     key={lang}
                     className="text-xs font-medium px-2 py-0.5 rounded-md bg-neutral-100 text-neutral-700 border border-neutral-200"
                   >
-                    {lang}
+                    {t(`profile.languageNames.${lang}` as any)}
                   </span>
                 ))}
               </div>
@@ -174,7 +179,7 @@ const ProfileEducationComponent = ({
 
           <div className="space-y-1.5">
             <div className="text-xs text-neutral-400 font-semibold uppercase">
-              Years of Experience
+              {t("profile.yearsOfExperience")}
             </div>
             {isEditing ? (
               <input
@@ -188,7 +193,9 @@ const ProfileEducationComponent = ({
             ) : (
               <div className="text-base font-bold text-neutral-900">
                 {user.teacher.yearsOfExperience ?? 0}{" "}
-                {user.teacher.yearsOfExperience === 1 ? "Year" : "Years"}
+                {user.teacher.yearsOfExperience === 1
+                  ? t("profile.year")
+                  : t("profile.years")}
               </div>
             )}
           </div>

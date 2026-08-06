@@ -1,44 +1,47 @@
-import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 
 import type { RootState } from "@store/store";
 
-import { Role } from "@utils/types/user";
+import DashboardMainContent from "@components/dashboard/DashboardMainContent";
 import axiosAPI from "@lib/axios";
+import { logout } from "@store/slices/authSlice";
+import { Role } from "@utils/types/user";
 import { isAxiosError } from "axios";
 import { toast } from "sonner";
-import DashboardMainContent from "@components/dashboard/DashboardMainContent";
-import { logout } from "@store/slices/authSlice";
+import i18n from "@/i18n";
 
 interface NavItem {
-  label: string;
+  key: string;
   path: string;
   roles: Role[];
 }
 
 const DASHBOARD_NAV_ITEMS: NavItem[] = [
   {
-    label: "Overview",
+    key: "overview",
     path: "/dashboard",
     roles: [Role.STUDENT, Role.TEACHER, Role.ADMIN],
   },
-  { label: "User Management", path: "/dashboard/users", roles: [Role.ADMIN] },
-  { label: "Inquiries", path: "/dashboard/inquiries", roles: [Role.ADMIN] },
-  { label: "Statistics", path: "/dashboard/statistics", roles: [Role.ADMIN] },
+  { key: "userManagement", path: "/dashboard/users", roles: [Role.ADMIN] },
+  { key: "inquiries", path: "/dashboard/inquiries", roles: [Role.ADMIN] },
+  { key: "statistics", path: "/dashboard/statistics", roles: [Role.ADMIN] },
   {
-    label: "Sessions",
+    key: "sessions",
     path: "/dashboard/sessions",
     roles: [Role.TEACHER, Role.STUDENT, Role.ADMIN],
   },
   {
-    label: "Requests",
+    key: "requests",
     path: "/dashboard/requests",
     roles: [Role.TEACHER, Role.STUDENT, Role.ADMIN],
   },
 ];
 
 const Dashboard = () => {
+  const { t } = useTranslation();
   const { user } = useSelector((state: RootState) => state.auth);
   const currentRole = user?.role || Role.STUDENT;
 
@@ -51,6 +54,9 @@ const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const isArabic = i18n.language === "ar";
+
   useEffect(() => {
     async function checkUserActivity() {
       if (!user?.id) return;
@@ -66,7 +72,7 @@ const Dashboard = () => {
             setIsUserActive(false);
           }
         } else if (err instanceof Error) {
-          toast.error("Dashboard error.", {
+          toast.error(t("dashboard.errorToastTitle"), {
             description: err.message,
           });
         }
@@ -76,7 +82,7 @@ const Dashboard = () => {
     }
 
     checkUserActivity();
-  }, [user?.id]);
+  }, [user?.id, t]);
 
   if (checkingStatus) {
     return (
@@ -95,7 +101,7 @@ const Dashboard = () => {
       {isSidebarOpen && (
         <button
           type="button"
-          aria-label="Close dashboard navigation"
+          aria-label={t("dashboard.ariaCloseNav")}
           className="fixed inset-0 z-40 bg-black/30 lg:hidden"
           onClick={() => setIsSidebarOpen(false)}
         />
@@ -116,10 +122,18 @@ const Dashboard = () => {
             </div>
             <div>
               <h1 className="text-sm font-bold text-neutral-900 tracking-tight">
-                EduPortal
+                {t("dashboard.eduPortal")}
               </h1>
               <span className="text-[10px] font-bold uppercase tracking-wider text-teal-600 bg-teal-50 px-1.5 py-0.5 rounded-md">
-                {currentRole} Panel
+                {isArabic ? (
+                  <>
+                    {t("dashboard.panelSuffix")} {t(`roles.${currentRole}`)}
+                  </>
+                ) : (
+                  <>
+                    {t(`roles.${currentRole}`)} {t("dashboard.panelSuffix")}
+                  </>
+                )}
               </span>
             </div>
           </div>
@@ -134,8 +148,8 @@ const Dashboard = () => {
                 onClick={(e) => {
                   if (!isUserActive) {
                     e.preventDefault();
-                    toast.error("Access Denied", {
-                      description: "Reactivate account to open tabs.",
+                    toast.error(t("dashboard.accessDeniedTitle"), {
+                      description: t("dashboard.accessDeniedDesc"),
                     });
                   } else {
                     setIsSidebarOpen(false);
@@ -149,7 +163,7 @@ const Dashboard = () => {
                   } ${!isUserActive ? "opacity-50 cursor-not-allowed" : ""}`
                 }
               >
-                {item.label}
+                {t(`dashboard.nav.${item.key}`)}
               </NavLink>
             ))}
           </nav>
@@ -177,13 +191,13 @@ const Dashboard = () => {
               onClick={() => {
                 dispatch(logout());
                 // Trigger your custom red-dispatch auth logout slice handler here
-                toast.success("Logged out successfully");
+                toast.success(t("dashboard.logoutSuccess"));
                 setIsSidebarOpen(false);
                 navigate("/login");
               }}
               className="text-[11px] font-bold text-red-500 hover:text-red-700 hover:bg-red-50 px-2 py-1 rounded-md cursor-pointer transition"
             >
-              Log out
+              {t("dashboard.logout")}
             </button>
           </div>
         </div>

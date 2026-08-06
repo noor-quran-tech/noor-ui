@@ -1,5 +1,6 @@
 import type { StudentDetails, TeacherDetails } from "@utils/types/user";
 import type { ChangeEvent } from "react";
+import { useTranslation } from "react-i18next";
 
 interface ProfileLocationComponentProps {
   isEditing: boolean;
@@ -27,15 +28,17 @@ const ProfileLocationComponent = ({
   handleInputChange,
   citiesList,
 }: ProfileLocationComponentProps) => {
+  const { t } = useTranslation();
+
   return (
     <div className="bg-white border border-neutral-200 rounded-2xl p-6 shadow-sm space-y-4">
       <h3 className="text-sm font-bold uppercase tracking-widest text-neutral-400 pb-1 border-b border-neutral-100">
-        Location Details
+        {t("profile.locationTitle")}
       </h3>
 
       <div className="flex flex-col gap-1.5 text-xs">
         <span className="font-semibold text-neutral-400 uppercase">
-          Country
+          {t("profile.country")}
         </span>
         {isEditing ? (
           <select
@@ -45,7 +48,7 @@ const ProfileLocationComponent = ({
             className="w-full px-3 py-2 rounded-xl bg-neutral-50 border border-neutral-200 text-neutral-950 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-teal-500/10 cursor-pointer"
           >
             <option value="">
-              {formData.country ? formData.country : "Select Country"}
+              {formData.country ? formData.country : t("profile.selectCountry")}
             </option>
             {countriesList.map((c: { isoCode: string; name: string }) => (
               <option key={c.isoCode} value={c.isoCode}>
@@ -55,14 +58,16 @@ const ProfileLocationComponent = ({
           </select>
         ) : (
           <span className="font-bold text-neutral-900 text-sm">
-            {profileDetails?.country || "N/A"}
+            {profileDetails?.country || t("profile.notAvailable")}
           </span>
         )}
       </div>
 
       {/* City Display / Selection Dropdown */}
       <div className="flex flex-col gap-1.5 text-xs">
-        <span className="font-semibold text-neutral-400 uppercase">City</span>
+        <span className="font-semibold text-neutral-400 uppercase">
+          {t("profile.city")}
+        </span>
         {isEditing ? (
           <select
             name="city"
@@ -71,7 +76,7 @@ const ProfileLocationComponent = ({
             disabled={!selectedCountryIso}
             className="w-full px-3 py-2 rounded-xl bg-neutral-50 border border-neutral-200 text-neutral-950 text-xs font-bold focus:outline-none disabled:opacity-50 disabled:bg-neutral-100 focus:ring-2 focus:ring-teal-500/10 cursor-pointer"
           >
-            <option value="">Select City</option>
+            <option value="">{t("profile.selectCity")}</option>
             {citiesList.map((city: string) => (
               <option key={crypto.randomUUID()} value={city}>
                 {city}
@@ -80,7 +85,7 @@ const ProfileLocationComponent = ({
           </select>
         ) : (
           <span className="font-bold text-neutral-900 text-sm">
-            {profileDetails?.city || "N/A"}
+            {profileDetails?.city || t("profile.notAvailable")}
           </span>
         )}
       </div>

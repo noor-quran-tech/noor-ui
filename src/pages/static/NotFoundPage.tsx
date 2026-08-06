@@ -1,11 +1,14 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 const NotFoundPage: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 font-sans flex flex-col justify-between selection:bg-teal-100 selection:text-teal-900">
       {/* Main Content Card */}
-      <main className="flex-grow flex items-center justify-center px-6 py-16">
+      <main className="grow flex items-center justify-center px-6 py-16">
         <div className="max-w-md w-full bg-white border border-slate-200 rounded-2xl shadow-sm p-8 text-center space-y-6">
           {/* Subtle Visual Indicator */}
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-teal-50 text-teal-600 font-mono text-2xl font-black">
@@ -15,12 +18,10 @@ const NotFoundPage: React.FC = () => {
           {/* Heading Structure */}
           <div className="space-y-2">
             <h1 className="text-2xl font-extrabold tracking-tight text-slate-900">
-              Page Not Found
+              {t("notFound.title")}
             </h1>
             <p className="text-sm text-slate-500 leading-relaxed">
-              The pathway you are looking for does not exist or has been
-              relocated within our system. Please check the URL or return to the
-              main platform dashboard.
+              {t("notFound.description")}
             </p>
           </div>
 
@@ -32,13 +33,13 @@ const NotFoundPage: React.FC = () => {
               to="/"
               className="w-full sm:w-auto px-6 py-2.5 bg-teal-600 hover:bg-teal-700 font-semibold text-white text-sm rounded-lg shadow-sm transition duration-150 text-center"
             >
-              Return Home
+              {t("notFound.returnHome")}
             </Link>
             <Link
               to="/contact"
               className="w-full sm:w-auto px-6 py-2.5 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-semibold text-sm rounded-lg shadow-sm transition duration-150 text-center"
             >
-              Contact Support
+              {t("notFound.contactSupport")}
             </Link>
           </div>
         </div>

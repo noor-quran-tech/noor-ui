@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { isAxiosError } from "axios";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 import type { RootState } from "@store/store";
 
@@ -34,8 +35,10 @@ interface APISubject {
 }
 
 const SessionsPage = () => {
+  const { t } = useTranslation();
+
   const loggedInUser = useSelector((state: RootState) => state.auth.profile);
-  const loggedInUserRole = loggedInUser.type;
+  const loggedInUserRole = loggedInUser?.type;
 
   const [loading, setLoading] = useState<boolean>(true);
   const [sessions, setSessions] = useState<SessionData[]>([]);
@@ -78,7 +81,7 @@ const SessionsPage = () => {
       const response = await axiosAPI.get(sessionsEndpoint);
       setSessions(response.data.data || []);
     } catch {
-      toast.error("Failed to load sessions.");
+      toast.error(t("dashboard.sessions.page.toasts.loadSessionsError"));
     } finally {
       setLoading(false);
     }
@@ -113,7 +116,7 @@ const SessionsPage = () => {
       );
     } catch (err) {
       console.error(err);
-      toast.error("Failed to load form data.");
+      toast.error(t("dashboard.sessions.page.toasts.loadFormDataError"));
     }
   };
 
@@ -206,19 +209,18 @@ const SessionsPage = () => {
         }
         // Edit Mode: Send update API request
         await axiosAPI.patch(endpoint, payload);
-        toast.success("Session updated successfully!");
+        toast.success(t("dashboard.sessions.page.toasts.updateSuccess"));
       } else {
         // Create Mode: Send save request
         await axiosAPI.post("/sessions", payload);
-        toast.success("Session created successfully!");
-        // setSessions((prev) => [res.data.data, ...prev]);
+        toast.success(t("dashboard.sessions.page.toasts.createSuccess"));
       }
       await fetchSessions();
 
       setIsModalOpen(false);
     } catch (err) {
       console.error(err);
-      let errMsg = "Check Your inputs";
+      let errMsg = t("dashboard.sessions.page.toasts.fallbackInputError");
       if (isAxiosError(err) && err.response?.data) {
         const serverData = err?.response?.data;
 
@@ -230,7 +232,7 @@ const SessionsPage = () => {
       } else if (err instanceof Error) {
         errMsg = err.message;
       }
-      toast.error("Failed to save session", {
+      toast.error(t("dashboard.sessions.page.toasts.saveError"), {
         description: errMsg,
       });
     } finally {
@@ -265,10 +267,10 @@ const SessionsPage = () => {
         <div className="flex items-center justify-between border-b border-neutral-200 pb-5">
           <div>
             <h1 className="text-2xl font-black text-neutral-900 tracking-tight">
-              Sessions
+              {t("dashboard.sessions.page.title")}
             </h1>
             <p className="text-sm text-neutral-500 font-medium">
-              View and manage student-teacher sessions
+              {t("dashboard.sessions.page.subtitle")}
             </p>
           </div>
           {loggedInUserRole === Role.ADMIN ? (
@@ -276,7 +278,7 @@ const SessionsPage = () => {
               onClick={handleOpenCreateModal}
               className="px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-white bg-teal-600 hover:bg-teal-700 active:bg-teal-800 rounded-xl transition shadow-sm cursor-pointer"
             >
-              Create New Session
+              {t("dashboard.sessions.page.createButton")}
             </button>
           ) : null}
         </div>
