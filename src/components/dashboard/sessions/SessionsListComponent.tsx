@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 import type { RootState } from "@store/store";
@@ -13,6 +14,7 @@ import axiosAPI from "@lib/axios";
 import { Role } from "@utils/types/user";
 import FeedbackModal from "@components/feedback/FeedbackModal";
 import FeedbackFormModal from "@components/feedback/FeedbackFormModal";
+import i18n from "@/i18n";
 
 interface SessionsListComponentProps {
   loading: boolean;
@@ -27,6 +29,8 @@ const SessionsListComponent = ({
   handleOpenEditModal,
   getStatusStyles,
 }: SessionsListComponentProps) => {
+  const { t } = useTranslation();
+
   const [isFeedbackModalOpen, setIsFeedbackModalOpen] =
     useState<boolean>(false);
   const [isFeedbackLoading, setIsFeedbackLoading] = useState(false);
@@ -42,6 +46,8 @@ const SessionsListComponent = ({
   const [sessionId, setSessionId] = useState<string | null>(null);
 
   const [showFeedbackForm, setShowFeedbackForm] = useState<boolean>(false);
+
+  const isArabic = i18n.language === "ar";
 
   const handleSessionFeedback = async (session: SessionData) => {
     setFeedbackReceived(null);
@@ -63,8 +69,10 @@ const SessionsListComponent = ({
       setFeedbackSent(sessionFeedback.sent);
       setFeedbackReceived(sessionFeedback.received);
     } catch {
-      toast.error("Error retreiving session feedback", {
-        description: "Please try refreshing the page",
+      toast.error(t("dashboard.sessions.list.errors.feedbackFetchTitle"), {
+        description: t(
+          "dashboard.sessions.list.errors.feedbackFetchDescription",
+        ),
       });
     } finally {
       setIsFeedbackLoading(false);
@@ -76,13 +84,13 @@ const SessionsListComponent = ({
       {/* Loading / Empty / List */}
       {loading ? (
         <div className="text-center py-20 text-sm font-medium text-neutral-400 animate-pulse">
-          Loading sessions...
+          {t("dashboard.sessions.list.loading")}
         </div>
       ) : sessions.length === 0 ? (
         <div className="text-center py-20 border border-dashed border-neutral-300 bg-white rounded-2xl text-neutral-400 text-sm font-medium">
-          No sessions found.
+          {t("dashboard.sessions.list.empty")}{" "}
           {loggedInUserRole === Role.ADMIN
-            ? "Click the button above to add one."
+            ? t("dashboard.sessions.list.adminEmptyHint")
             : ""}
         </div>
       ) : (
@@ -103,13 +111,18 @@ const SessionsListComponent = ({
                         onClick={() => handleOpenEditModal(session)}
                         className="text-xs font-bold text-teal-600 hover:text-teal-700 transition mr-2 cursor-pointer"
                       >
-                        Edit
+                        {t("dashboard.sessions.list.actions.edit")}
                       </button>
                     ) : null}
                     <span
-                      className={`text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border ${getStatusStyles(session.status)}`}
+                      className={`text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border ${getStatusStyles(
+                        session.status,
+                      )} ${isArabic ? "text-[12px]" : "text-[10px]"} `}
                     >
-                      {session.status}
+                      {t(
+                        `dashboard.sessions.list.status.${session.status.toLowerCase()}`,
+                        { defaultValue: session.status },
+                      )}
                     </span>
                   </div>
                 </div>
@@ -117,47 +130,56 @@ const SessionsListComponent = ({
                   {session.title}
                 </h2>
                 <p className="text-xs text-neutral-500 line-clamp-2 leading-relaxed">
-                  {session.description || "No description provided."}
+                  {session.description ||
+                    t("dashboard.sessions.list.labels.noDescription")}
                 </p>
               </div>
 
               <div className="pt-3 border-t border-neutral-100 grid grid-cols-2 gap-2 text-xs">
                 <div>
                   <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">
-                    Teacher
+                    {t("dashboard.sessions.list.labels.teacher")}
                   </span>
                   <span className="font-bold text-neutral-800">
                     {session.teacher?.user
                       ? `${session.teacher.user.firstName} ${session.teacher.user.lastName}`
-                      : "N/A"}
+                      : t("dashboard.sessions.list.labels.notAvailable")}
                   </span>
                 </div>
                 <div>
                   <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">
-                    Student
+                    {t("dashboard.sessions.list.labels.student")}
                   </span>
                   <span className="font-bold text-neutral-800">
                     {session.student?.user
                       ? `${session.student.user.firstName} ${session.student.user.lastName}`
-                      : "N/A"}
+                      : t("dashboard.sessions.list.labels.notAvailable")}
                   </span>
                 </div>
                 <div className="col-span-2 pt-2">
                   <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">
-                    Time
+                    {t("dashboard.sessions.list.labels.time")}
                   </span>
-                  <span className="font-mono font-medium text-neutral-600">
-                    {new Date(session.startTime).toLocaleString(undefined, {
-                      month: "short",
-                      day: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}{" "}
+                  <span
+                    className={`${isArabic ? "font-bold" : "font-medium"} font-mono  text-neutral-600`}
+                  >
+                    {new Date(session.startTime).toLocaleString(
+                      isArabic ? "ar-EG" : "en-US",
+                      {
+                        month: "short",
+                        day: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      },
+                    )}{" "}
                     -{" "}
-                    {new Date(session.endTime).toLocaleTimeString(undefined, {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
+                    {new Date(session.endTime).toLocaleTimeString(
+                      isArabic ? "ar-EG" : "en-US",
+                      {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      },
+                    )}
                   </span>
                 </div>
               </div>
@@ -169,14 +191,14 @@ const SessionsListComponent = ({
                   rel="noreferrer"
                   className="w-full text-center py-2 text-xs font-bold bg-neutral-900 hover:bg-neutral-800 text-teal-300 rounded-xl transition tracking-wide shadow-inner block"
                 >
-                  Join Class
+                  {t("dashboard.sessions.list.actions.joinClass")}
                 </a>
                 {session.status === SessionStatus.COMPLETED && (
                   <button
                     className="w-full text-center py-2 text-xs font-bold text-neutral-900 hover:bg-teal-500 cursor-pointer bg-teal-300 rounded-xl transition tracking-wide shadow-inner block"
                     onClick={() => handleSessionFeedback(session)}
                   >
-                    Session Feedback
+                    {t("dashboard.sessions.list.actions.sessionFeedback")}
                   </button>
                 )}
               </div>

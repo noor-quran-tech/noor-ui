@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axiosAPI from "@lib/axios";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 import type { VerificationStatus } from "@utils/types/user";
 import HeaderTabs from "@components/dashboard/user-management/main/HeaderTabs";
 import UsersTable from "@components/dashboard/user-management/main/UsersTable";
@@ -26,6 +27,8 @@ export interface UserRecord {
 const ITEMS_PER_PAGE = 10;
 
 const UserManagement = () => {
+  const { t } = useTranslation();
+
   // 1. Core Component States
   const [activeTab, setActiveTab] = useState<"teachers" | "students">(
     "teachers",
@@ -60,7 +63,11 @@ const UserManagement = () => {
           totalData: response.data.total || response.data.data?.length || 0,
         }));
       } catch {
-        toast.error(`Failed to load ${activeTab}. Please try again.`);
+        toast.error(
+          t("dashboard.userManagement.loadError", {
+            tab: t(`dashboard.userManagement.${activeTab}`),
+          }),
+        );
         setUsers([]);
       } finally {
         setLoading(false);
@@ -68,7 +75,7 @@ const UserManagement = () => {
     }
 
     fetchUserData();
-  }, [activeTab, pagination.currentPage]);
+  }, [activeTab, pagination.currentPage, t]);
 
   // Reset page counter back to 1 if user flips tabs mid-stream
   const handleTabChange = (tab: string) => {
@@ -87,10 +94,10 @@ const UserManagement = () => {
   const handleUserDelete = (account: UserRecord) => {
     toast.dismiss();
     toast.custom(
-      (t) => (
+      (tId) => (
         <div className="bg-white p-4 rounded-xl border border-neutral-200 shadow-md flex flex-col gap-3 max-w-xs">
           <p className="text-xs text-neutral-800">
-            Are you sure you want to delete{" "}
+            {t("dashboard.userManagement.deleteConfirmation")}{" "}
             <strong>
               {account.user.firstName} {account.user.lastName}
             </strong>
@@ -99,15 +106,15 @@ const UserManagement = () => {
 
           <div className="flex gap-2 justify-end">
             <button
-              onClick={() => toast.dismiss(t)}
+              onClick={() => toast.dismiss(tId)}
               className="px-2.5 py-1 text-[11px] font-bold text-neutral-500 hover:text-neutral-700 cursor-pointer"
             >
-              Cancel
+              {t("dashboard.userManagement.cancel")}
             </button>
 
             <button
               onClick={async () => {
-                toast.dismiss(t); // 1. Dismiss the confirmation box instantly
+                toast.dismiss(tId); // 1. Dismiss the confirmation box instantly
 
                 try {
                   // 2. Make the API call
@@ -120,16 +127,16 @@ const UserManagement = () => {
                         : u,
                     ),
                   );
-                  toast.success("Deleted successfully");
+                  toast.success(t("dashboard.userManagement.deleteSuccess"));
                 } catch {
-                  toast.error("Failed to delete user");
+                  toast.error(t("dashboard.userManagement.deleteError"));
                 } finally {
-                  toast.dismiss(t);
+                  toast.dismiss(tId);
                 }
               }}
               className="px-2.5 py-1 text-[11px] font-bold bg-red-500 text-white rounded-lg cursor-pointer"
             >
-              Confirm
+              {t("dashboard.userManagement.confirm")}
             </button>
           </div>
         </div>
@@ -141,10 +148,10 @@ const UserManagement = () => {
   const handleActivateUser = (account: UserRecord) => {
     toast.dismiss();
     toast.custom(
-      (t) => (
+      (tId) => (
         <div className="bg-white p-4 rounded-xl border border-neutral-200 shadow-md flex flex-col gap-3 max-w-xs">
           <p className="text-xs text-neutral-800">
-            Are you sure you want to activate{" "}
+            {t("dashboard.userManagement.activateConfirmation")}{" "}
             <strong>
               {account.user.firstName} {account.user.lastName}
             </strong>
@@ -153,15 +160,15 @@ const UserManagement = () => {
 
           <div className="flex gap-2 justify-end">
             <button
-              onClick={() => toast.dismiss(t)}
+              onClick={() => toast.dismiss(tId)}
               className="px-2.5 py-1 text-[11px] font-bold text-neutral-500 hover:text-neutral-700 cursor-pointer"
             >
-              Cancel
+              {t("dashboard.userManagement.cancel")}
             </button>
 
             <button
               onClick={async () => {
-                toast.dismiss(t); // 1. Dismiss the confirmation box instantly
+                toast.dismiss(tId); // 1. Dismiss the confirmation box instantly
 
                 try {
                   // 2. Make the API call
@@ -177,17 +184,19 @@ const UserManagement = () => {
                   );
 
                   toast.success(
-                    `${account.user.firstName} reactivated successfully`,
+                    t("dashboard.userManagement.activateSuccess", {
+                      name: account.user.firstName,
+                    }),
                   );
                 } catch {
-                  toast.error("Failed to activate user");
+                  toast.error(t("dashboard.userManagement.activateError"));
                 } finally {
-                  toast.dismiss(t);
+                  toast.dismiss(tId);
                 }
               }}
               className="px-2.5 py-1 text-[11px] font-bold bg-red-500 text-white rounded-lg cursor-pointer"
             >
-              Confirm
+              {t("dashboard.userManagement.confirm")}
             </button>
           </div>
         </div>
@@ -205,7 +214,7 @@ const UserManagement = () => {
 
       <div className="flex items-center justify-between px-2">
         <div className="bg-neutral-200/60 border border-neutral-300/40 px-2.5 py-1 rounded-full text-xs font-bold text-neutral-600 shadow-2xs">
-          Total Accounts:{" "}
+          {t("dashboard.userManagement.totalAccounts")}{" "}
           <span className="text-neutral-900 font-black">
             {pagination.totalData}
           </span>

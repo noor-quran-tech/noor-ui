@@ -8,6 +8,7 @@ import StepsCard from "@components/homePage/StepsCard";
 import TestimonialCard from "@components/homePage/TestimonialCard";
 import FAQ from "@components/homePage/FAQ";
 import HeroSection from "@components/homePage/HeroSection";
+import { useTranslation } from "react-i18next";
 
 const roles = [
   {
@@ -82,6 +83,7 @@ const testimonials = [
 ];
 
 export default function HomePage() {
+  const [t] = useTranslation();
   return (
     <div className="min-h-screen overflow-x-hidden bg-neutral-50 text-neutral-900 py-5">
       {/* HERO */}
@@ -157,11 +159,11 @@ export default function HomePage() {
           <div className="relative z-10 flex flex-col items-start justify-between gap-10 lg:flex-row lg:items-center">
             <div>
               <h2 className="max-w-2xl text-4xl font-black leading-tight text-white">
-                Ready to illuminate your learning journey?
+                {t("cta.title")}
               </h2>
 
               <p className="mt-5 max-w-xl text-lg text-teal-50">
-                Join thousands of students and teachers on Noor today.
+                {t("cta.subtitle")}
               </p>
             </div>
 
@@ -170,7 +172,7 @@ export default function HomePage() {
                 to="/signup"
                 className="rounded-full border border-white/30 px-7 py-4 text-sm font-bold text-white transition-all duration-300 hover:bg-white/10"
               >
-                Join us
+                {t("cta.join")}
               </Link>
             </div>
           </div>

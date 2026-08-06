@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import type { UserRecord } from "@pages/dashboard/UserManagement";
 import type { PaginationParams } from "@utils/types/public";
 
@@ -21,6 +22,8 @@ const UsersTable = ({
   pagination,
   handlePageChange,
 }: UserTableProps) => {
+  const { t } = useTranslation();
+
   return (
     <div className="bg-white border border-neutral-200 rounded-2xl shadow-sm overflow-hidden">
       {loading ? (
@@ -37,11 +40,14 @@ const UsersTable = ({
         /* Empty Search Array Fallback Indicator */
         <div className="p-12 text-center">
           <p className="text-sm font-semibold text-neutral-500">
-            No {activeTab} found
+            {t("dashboard.userManagement.usersTable.emptyTitle", {
+              tab: t(`dashboard.userManagement.${activeTab}`),
+            })}
           </p>
           <p className="text-xs text-neutral-400 mt-1">
-            There are currently no {activeTab} logged under this database filter
-            category.
+            {t("dashboard.userManagement.usersTable.emptyDescription", {
+              tab: t(`dashboard.userManagement.${activeTab}`),
+            })}
           </p>
         </div>
       ) : (
@@ -50,14 +56,32 @@ const UsersTable = ({
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-neutral-50 border-b border-neutral-200 text-[10px] font-bold uppercase tracking-wider text-neutral-400">
-                <th className="py-3 px-6">Image</th>
-                <th className="py-3 px-6">Name</th>
-                <th className="py-3 px-6">Email Address</th>
-                <th className="py-3 px-6">Phone Number</th>
-                <th className="py-3 px-6">Country</th>
-                <th className="py-3 px-6">Registration Date</th>
-                <th className="py-3 px-6">Is Active</th>
-                <th className="py-3 px-6 text-center">Actions</th>
+                <th className="py-3 px-6">
+                  {t("dashboard.userManagement.usersTable.headers.image")}
+                </th>
+                <th className="py-3 px-6">
+                  {t("dashboard.userManagement.usersTable.headers.name")}
+                </th>
+                <th className="py-3 px-6">
+                  {t("dashboard.userManagement.usersTable.headers.email")}
+                </th>
+                <th className="py-3 px-6">
+                  {t("dashboard.userManagement.usersTable.headers.phone")}
+                </th>
+                <th className="py-3 px-6">
+                  {t("dashboard.userManagement.usersTable.headers.country")}
+                </th>
+                <th className="py-3 px-6">
+                  {t(
+                    "dashboard.userManagement.usersTable.headers.registrationDate",
+                  )}
+                </th>
+                <th className="py-3 px-6">
+                  {t("dashboard.userManagement.usersTable.headers.isActive")}
+                </th>
+                <th className="py-3 px-6 text-center">
+                  {t("dashboard.userManagement.usersTable.headers.actions")}
+                </th>
               </tr>
             </thead>
 
@@ -99,15 +123,28 @@ const UsersTable = ({
                   {/* Date Formatting */}
                   <td className="py-3.5 px-6 text-neutral-400 font-medium">
                     {account.createdAt
-                      ? new Date(account.createdAt).toLocaleDateString()
-                      : "N/A"}
+                      ? new Date(account.createdAt).toLocaleDateString(
+                          "en-US",
+                          {
+                            day: "2-digit",
+                            month: "2-digit",
+                            year: "numeric",
+                          },
+                        )
+                      : t("dashboard.userManagement.usersTable.na")}
                   </td>
 
                   {/* Is Active */}
                   <td
-                    className={`py-3.5 px-6 text-neutral-400 font-medium ${!account.user.isActive ? "text-red-500" : "text-teal-500"}`}
+                    className={`py-3.5 px-6 text-neutral-400 font-medium ${
+                      !account.user.isActive ? "text-red-500" : "text-teal-500"
+                    }`}
                   >
-                    {account.user.isActive ? "Active" : "Inactive"}
+                    {account.user.isActive
+                      ? t("dashboard.userManagement.usersTable.status.active")
+                      : t(
+                          "dashboard.userManagement.usersTable.status.inactive",
+                        )}
                   </td>
 
                   {/* Control Buttons */}
@@ -116,7 +153,7 @@ const UsersTable = ({
                       to={`${account.user.role.toLowerCase()}s/${account.id}`}
                       className="text-[11px] font-bold text-neutral-600 hover:text-neutral-800 bg-neutral-50 hover:bg-neutral-100/80 px-2.5 py-1 rounded-md transition duration-150 cursor-pointer"
                     >
-                      View
+                      {t("dashboard.userManagement.usersTable.actions.view")}
                     </Link>
                     <button
                       onClick={() => {
@@ -126,9 +163,19 @@ const UsersTable = ({
                           handleActivateUser(account);
                         }
                       }}
-                      className={`mx-3 text-[11px] font-bold ${account.user.isActive ? "text-red-600 hover:text-red-800 bg-red-50 hover:bg-red-100/80" : "text-teal-600 hover:text-teal-800 bg-teal-50 hover:bg-teal-100/80"} px-2.5 py-1 rounded-md transition duration-150 cursor-pointer`}
+                      className={`mx-3 text-[11px] font-bold ${
+                        account.user.isActive
+                          ? "text-red-600 hover:text-red-800 bg-red-50 hover:bg-red-100/80"
+                          : "text-teal-600 hover:text-teal-800 bg-teal-50 hover:bg-teal-100/80"
+                      } px-2.5 py-1 rounded-md transition duration-150 cursor-pointer`}
                     >
-                      {account.user.isActive ? "Delete" : "Activate"}
+                      {account.user.isActive
+                        ? t(
+                            "dashboard.userManagement.usersTable.actions.delete",
+                          )
+                        : t(
+                            "dashboard.userManagement.usersTable.actions.activate",
+                          )}
                     </button>
                   </td>
                 </tr>
@@ -140,11 +187,13 @@ const UsersTable = ({
 
       {/* ====================================================
             PAGINATION BUTTON CONTROLLER SHELL
-           ==================================================== */}
+            ==================================================== */}
       {users.length > 0 && (
         <div className="px-6 py-4 border-t border-neutral-100 bg-neutral-50/50 flex items-center justify-between">
           <span className="text-[11px] font-medium text-neutral-400">
-            Page <strong>{pagination.currentPage}</strong> of{" "}
+            {t("dashboard.userManagement.usersTable.pagination.page")}{" "}
+            <strong>{pagination.currentPage}</strong>{" "}
+            {t("dashboard.userManagement.usersTable.pagination.of")}{" "}
             {pagination.totalPages}
           </span>
 
@@ -154,7 +203,7 @@ const UsersTable = ({
               disabled={pagination.currentPage === 1 || loading}
               className="px-3 py-1.5 text-[11px] font-bold text-neutral-600 bg-white border border-neutral-200 rounded-lg hover:bg-neutral-50 shadow-2xs transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
             >
-              ◀ Prev
+              {t("dashboard.userManagement.usersTable.pagination.prev")}
             </button>
 
             <button
@@ -164,7 +213,7 @@ const UsersTable = ({
               }
               className="px-3 py-1.5 text-[11px] font-bold text-neutral-600 bg-white border border-neutral-200 rounded-lg hover:bg-neutral-50 shadow-2xs transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
             >
-              Next ▶
+              {t("dashboard.userManagement.usersTable.pagination.next")}
             </button>
           </div>
         </div>

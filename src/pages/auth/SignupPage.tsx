@@ -10,6 +10,7 @@ import axiosAPI from "@lib/axios";
 import { Spinner } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 const STATIC_COUNTRIES_LIST = Country.getAllCountries().map((c) => ({
   isoCode: c.isoCode,
@@ -62,6 +63,12 @@ const SignupPage: React.FC = () => {
 
   const [citiesList, setCitiesList] = useState<string[]>([]);
 
+  const { t } = useTranslation();
+  const backendErrorMap: Record<string, string> = {
+    "Duplicate value for email. Please use another value.":
+      "errors.EMAIL_ALREADY_EXISTS",
+  };
+
   if (loggedInUser) {
     setTimeout(() => {
       navigate("/");
@@ -111,20 +118,22 @@ const SignupPage: React.FC = () => {
   ) => {
     const { firstName, lastName, email, password } = formData;
 
-    if (!firstName.trim()) newErrors.firstName = "First name is required";
+    if (!firstName.trim())
+      newErrors.firstName = t("signup.step1.validation.firstNameRequired");
     else if (firstName.length < 2)
-      newErrors.firstName = "First name must be at least 2 characters";
+      newErrors.firstName = t("signup.step1.validation.firstNameMin");
     else if (firstName.length > 30)
-      newErrors.firstName = "First name must not exceed 30 characters";
+      newErrors.firstName = t("signup.step1.validation.firstNameMax");
 
-    if (!lastName.trim()) newErrors.lastName = "Last name is required";
+    if (!lastName.trim())
+      newErrors.lastName = t("signup.step1.validation.lastNameRequired");
     else if (lastName.length < 2)
-      newErrors.lastName = "Last name must be at least 2 characters";
+      newErrors.lastName = t("signup.step1.validation.lastNameMin");
     else if (lastName.length > 30)
-      newErrors.lastName = "Last name must not exceed 30 characters";
+      newErrors.lastName = t("signup.step1.validation.lastNameMax");
 
     if (!/^\S+@\S+\.\S+$/.test(email)) {
-      newErrors.email = "Enter a valid email address";
+      newErrors.email = t("signup.step1.validation.invalidEmail");
     }
 
     const hasLowerCase = /[a-z]/.test(password);
@@ -132,11 +141,11 @@ const SignupPage: React.FC = () => {
     const hasNumber = /[0-9]/.test(password);
 
     if (password.length < 8)
-      newErrors.password = "Password must be at least 8 characters";
-    else if (password.length > 32) newErrors.password = "Password is too long";
+      newErrors.password = t("signup.step1.validation.passwordMin");
+    else if (password.length > 32)
+      newErrors.password = t("signup.step1.validation.passwordMax");
     else if (!hasLowerCase || !hasUpperCase || !hasNumber) {
-      newErrors.password =
-        "Password must contain uppercase, lowercase and number";
+      newErrors.password = t("signup.step1.validation.passwordWeak");
     }
   };
 
@@ -152,46 +161,50 @@ const SignupPage: React.FC = () => {
       addressLine2,
     } = formData;
 
-    if (!country.trim()) newErrors.country = "Country is required";
+    if (!country.trim())
+      newErrors.country = t("signup.step2.validation.countryRequired");
     else if (country.length < 2)
-      newErrors.country = "Country must be at least 2 characters";
+      newErrors.country = t("signup.step2.validation.countryMin");
     else if (country.length > 50)
-      newErrors.country = "Country must not exceed 50 characters";
+      newErrors.country = t("signup.step2.validation.countryMax");
 
-    if (!city.trim()) newErrors.city = "City is required";
+    if (!city.trim())
+      newErrors.city = t("signup.step2.validation.cityRequired");
     else if (city.length < 2)
-      newErrors.city = "City must be at least 2 characters";
+      newErrors.city = t("signup.step2.validation.cityMin");
     else if (city.length > 50)
-      newErrors.city = "City must not exceed 50 characters";
+      newErrors.city = t("signup.step2.validation.cityMax");
 
-    if (!phoneNumber.trim()) newErrors.phoneNumber = "Phone number is required";
+    if (!phoneNumber.trim())
+      newErrors.phoneNumber = t("signup.step2.validation.phoneRequired");
     else if (phoneNumber.length < 10)
-      newErrors.phoneNumber = "Phone number must be at least 10 digits";
+      newErrors.phoneNumber = t("signup.step2.validation.phoneMin");
     else if (phoneNumber.length > 30)
-      newErrors.phoneNumber = "Phone number must not exceed 30 digits";
+      newErrors.phoneNumber = t("signup.step2.validation.phoneMax");
 
     if (!dateOfBirth) {
-      newErrors.dateOfBirth = "Date of birth is required";
+      newErrors.dateOfBirth = t("signup.step2.validation.dobRequired");
     } else {
       const dobDate = new Date(dateOfBirth);
       const minAgeMs = 5 * 365.25 * 24 * 60 * 60 * 1000;
+
       if (Date.now() - dobDate.getTime() < minAgeMs) {
-        newErrors.dateOfBirth = "User must be at least 5 years old";
+        newErrors.dateOfBirth = t("signup.step2.validation.dobMinAge");
       }
     }
 
-    // Optional address fields validation (only if filled)
     if (
       addressLine1 &&
       (addressLine1.trim().length < 3 || addressLine1.length > 100)
     ) {
-      newErrors.addressLine1 = "Address must be between 3 and 100 characters";
+      newErrors.addressLine1 = t("signup.step2.validation.addressLength");
     }
+
     if (
       addressLine2 &&
       (addressLine2.trim().length < 3 || addressLine2.length > 100)
     ) {
-      newErrors.addressLine2 = "Address must be between 3 and 100 characters";
+      newErrors.addressLine2 = t("signup.step2.validation.addressLength");
     }
   };
 
@@ -211,7 +224,7 @@ const SignupPage: React.FC = () => {
 
     // Optional bio validation across both roles
     if (bio && bio.trim().length < 10) {
-      newErrors.bio = "Bio must be at least 10 characters";
+      newErrors.bio = t("signup.step3.validation.bioMin");
     }
 
     if (role === "TEACHER") {
@@ -219,31 +232,41 @@ const SignupPage: React.FC = () => {
         yearsOfExperience &&
         (yearsOfExperience < 0 || yearsOfExperience > 60)
       ) {
-        newErrors.yearsOfExperience =
-          "Years of experience must be between 0 and 60";
+        newErrors.yearsOfExperience = t(
+          "signup.step3.validation.experienceRange",
+        );
       }
+
       if (teachingLevels.length === 0) {
-        newErrors.teachingLevels = "At least one teaching level is required";
+        newErrors.teachingLevels = t(
+          "signup.step3.validation.teachingLevelsRequired",
+        );
       }
     }
 
     if (role === "STUDENT") {
-      // If any parent field is touched, validate the whole parent sub-form block
       const hasParentInfo =
         parentName.trim() || parentPhone.trim() || parentEmail.trim();
+
       if (hasParentInfo) {
         if (!parentName.trim())
-          newErrors.parentName = "Parent name is required";
+          newErrors.parentName = t(
+            "signup.step3.validation.parentNameRequired",
+          );
         else if (parentName.length < 2)
-          newErrors.parentName = "Parent name is too short";
+          newErrors.parentName = t("signup.step3.validation.parentNameShort");
 
         if (!parentPhone.trim())
-          newErrors.parentPhone = "Parent phone number is required";
+          newErrors.parentPhone = t(
+            "signup.step3.validation.parentPhoneRequired",
+          );
         else if (parentPhone.length < 10)
-          newErrors.parentPhone = "Parent phone is too short";
+          newErrors.parentPhone = t("signup.step3.validation.parentPhoneShort");
 
         if (!/^\S+@\S+\.\S+$/.test(parentEmail)) {
-          newErrors.parentEmail = "Enter a valid parent email address";
+          newErrors.parentEmail = t(
+            "signup.step3.validation.parentEmailInvalid",
+          );
         }
       }
     }
@@ -282,23 +305,23 @@ const SignupPage: React.FC = () => {
         };
         await axiosAPI.post("/auth/register-teacher", payload);
       }
-      toast.success("Signed up successfully");
+      toast.success(t("signup.messages.success"));
 
       navigate("/login");
     } catch (err) {
-      let errorMessage = "Error submitting form";
+      let errorKey = "errors.UNKNOWN_ERROR";
       if (axios.isAxiosError(err)) {
-        console.warn("err.response", err.response);
-        errorMessage =
-          err?.response?.data?.errors?.[0].message ||
-          err.message ||
-          errorMessage;
-      } else if (err instanceof Error) {
-        errorMessage = err.message;
+        const backendMessage =
+          err.response?.data?.errors?.[0]?.message ??
+          err.response?.data?.message;
+
+        if (backendMessage) {
+          errorKey = backendErrorMap[backendMessage] ?? "errors.UNKNOWN_ERROR";
+        }
       }
 
-      toast.error("Registration Failed", {
-        description: errorMessage,
+      toast.error(t("signup.messages.registrationFailed"), {
+        description: t(errorKey),
       });
     } finally {
       setSubmitLoading(false);
@@ -317,11 +340,10 @@ const SignupPage: React.FC = () => {
             </span>
           </div>
           <h1 className="text-4xl font-extrabold text-neutral-900 leading-tight mb-4">
-            Learn the Quran from the best teachers in the world.
+            {t("signup.brandTitle")}
           </h1>
           <p className="text-neutral-600 leading-relaxed">
-            Connecting specialized educators with eager students worldwide
-            through an authentic, high-quality, and interactive environment.
+            {t("signup.brandSubtitle")}
           </p>
         </div>
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-125 h-125 bg-teal-300/20 rounded-full blur-[120px] pointer-events-none" />
@@ -329,14 +351,14 @@ const SignupPage: React.FC = () => {
       </div>
 
       {/* Form Interaction Side-Pane */}
-      <div className="flex-1 flex items-center justify-center p-8 overflow-y-auto bg-neutral-50">
+      <div className="flex-1 flex items-center justify-center overflow-y-auto bg-neutral-50 p-8">
         <div className="w-full max-w-lg space-y-6">
           {/* Progress Tracking Bar */}
           <div className="space-y-2">
             <div className="text-xs font-semibold uppercase tracking-wider text-neutral-500">
-              Step {step} of 3
+              {t("signup.step", { current: step, total: 3 })}
             </div>
-            <div className="w-full h-1 bg-neutral-200 rounded-full overflow-hidden">
+            <div className="h-1 w-full overflow-hidden rounded-full bg-neutral-200">
               <div
                 className="h-full bg-teal-500 transition-all duration-300"
                 style={{ width: `${(step / 3) * 100}%` }}
@@ -347,39 +369,43 @@ const SignupPage: React.FC = () => {
           <form
             onSubmit={handleSubmit}
             noValidate
-            className="space-y-6 animate-fade-in"
+            className="animate-fade-in space-y-6"
           >
             {/* STEP 1 */}
             {step === 1 && (
               <div className="space-y-5">
                 <div>
                   <h2 className="text-2xl font-bold text-neutral-900">
-                    Create Your Account
+                    {t("signup.step1.title")}
                   </h2>
-                  <p className="text-sm text-neutral-500 mt-1">
-                    Select your identity space and fill in your core
-                    credentials.
+                  <p className="mt-1 text-sm text-neutral-500">
+                    {t("signup.step1.subtitle")}
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div
                     onClick={() =>
                       setFormData((p) => ({ ...p, role: Role.STUDENT }))
                     }
-                    className={`p-4 rounded-xl border bg-white cursor-pointer transition relative flex flex-col justify-between ${
+                    className={`relative flex cursor-pointer flex-col justify-between rounded-xl border bg-white p-4 transition ${
                       formData.role === Role.STUDENT
                         ? "border-teal-500 ring-2 ring-teal-500/10"
                         : "border-neutral-200 hover:border-neutral-300"
                     }`}
                   >
                     <span
-                      className={`font-bold block ${formData.role === Role.STUDENT ? "text-teal-600" : "text-neutral-800"}`}
+                      className={`block font-bold ${
+                        formData.role === Role.STUDENT
+                          ? "text-teal-600"
+                          : "text-neutral-800"
+                      }`}
                     >
-                      Student Portal
+                      {t("signup.step1.studentTitle")}
                     </span>
-                    <span className="text-xs text-neutral-500 mt-1 block">
-                      Learn Tajweed, Quran recitation, and Arabic from scratch.
+
+                    <span className="mt-1 block text-xs text-neutral-500">
+                      {t("signup.step1.studentDescription")}
                     </span>
                   </div>
 
@@ -387,19 +413,24 @@ const SignupPage: React.FC = () => {
                     onClick={() =>
                       setFormData((p) => ({ ...p, role: Role.TEACHER }))
                     }
-                    className={`p-4 rounded-xl border bg-white cursor-pointer transition relative flex flex-col justify-between ${
+                    className={`relative flex cursor-pointer flex-col justify-between rounded-xl border bg-white p-4 transition ${
                       formData.role === Role.TEACHER
                         ? "border-teal-500 ring-2 ring-teal-500/10"
                         : "border-neutral-200 hover:border-neutral-300"
                     }`}
                   >
                     <span
-                      className={`font-bold block ${formData.role === Role.TEACHER ? "text-teal-600" : "text-neutral-800"}`}
+                      className={`block font-bold ${
+                        formData.role === Role.TEACHER
+                          ? "text-teal-600"
+                          : "text-neutral-800"
+                      }`}
                     >
-                      Educator Portal
+                      {t("signup.step1.teacherTitle")}
                     </span>
-                    <span className="text-xs text-neutral-500 mt-1 block">
-                      For qualified scholars and certified educators.
+
+                    <span className="mt-1 block text-xs text-neutral-500">
+                      {t("signup.step1.teacherDescription")}
                     </span>
                   </div>
                 </div>
@@ -407,34 +438,47 @@ const SignupPage: React.FC = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1">
                     <label className="text-xs font-medium text-neutral-600">
-                      First Name
+                      {t("signup.labels.firstName")}
                     </label>
+
                     <input
                       type="text"
                       name="firstName"
                       value={formData.firstName}
                       onChange={handleInputChange}
-                      className={`w-full px-4 py-2.5 rounded-lg bg-white border ${errors.firstName ? "border-error bg-error-bg" : "border-neutral-200"} text-neutral-900 focus:outline-none focus:ring-2 focus:ring-teal-500/10`}
-                      placeholder="John"
+                      className={`w-full rounded-lg border bg-white px-4 py-2.5 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-teal-500/10 ${
+                        errors.firstName
+                          ? "border-error bg-error-bg"
+                          : "border-neutral-200"
+                      }`}
+                      placeholder={t("signup.placeholders.firstName")}
                     />
+
                     {errors.firstName && (
                       <span className="text-xs text-error">
                         {errors.firstName}
                       </span>
                     )}
                   </div>
+
                   <div className="space-y-1">
                     <label className="text-xs font-medium text-neutral-600">
-                      Last Name
+                      {t("signup.labels.lastName")}
                     </label>
+
                     <input
                       type="text"
                       name="lastName"
                       value={formData.lastName}
                       onChange={handleInputChange}
-                      className={`w-full px-4 py-2.5 rounded-lg bg-white border ${errors.lastName ? "border-error bg-error-bg" : "border-neutral-200"} text-neutral-900 focus:outline-none focus:ring-2 focus:ring-teal-500/10`}
-                      placeholder="Doe"
+                      className={`w-full rounded-lg border bg-white px-4 py-2.5 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-teal-500/10 ${
+                        errors.lastName
+                          ? "border-error bg-error-bg"
+                          : "border-neutral-200"
+                      }`}
+                      placeholder={t("signup.placeholders.lastName")}
                     />
+
                     {errors.lastName && (
                       <span className="text-xs text-error">
                         {errors.lastName}
@@ -445,16 +489,22 @@ const SignupPage: React.FC = () => {
 
                 <div className="space-y-1">
                   <label className="text-xs font-medium text-neutral-600">
-                    Email Address
+                    {t("signup.labels.email")}
                   </label>
+
                   <input
                     type="email"
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    className={`w-full px-4 py-2.5 rounded-lg bg-white border ${errors.email ? "border-error bg-error-bg" : "border-neutral-200"} text-neutral-900 focus:outline-none focus:ring-2 focus:ring-teal-500/10`}
-                    placeholder="john@example.com"
+                    className={`w-full rounded-lg border bg-white px-4 py-2.5 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-teal-500/10 ${
+                      errors.email
+                        ? "border-error bg-error-bg"
+                        : "border-neutral-200"
+                    }`}
+                    placeholder={t("signup.placeholders.email")}
                   />
+
                   {errors.email && (
                     <span className="text-xs text-error">{errors.email}</span>
                   )}
@@ -462,16 +512,22 @@ const SignupPage: React.FC = () => {
 
                 <div className="space-y-1">
                   <label className="text-xs font-medium text-neutral-600">
-                    Secure Password
+                    {t("signup.labels.password")}
                   </label>
+
                   <input
                     type="password"
                     name="password"
                     value={formData.password}
                     onChange={handleInputChange}
-                    className={`w-full px-4 py-2.5 rounded-lg bg-white border ${errors.password ? "border-error bg-error-bg" : "border-neutral-200"} text-neutral-900 focus:outline-none focus:ring-2 focus:ring-teal-500/10`}
-                    placeholder="••••••••"
+                    className={`w-full rounded-lg border bg-white px-4 py-2.5 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-teal-500/10 ${
+                      errors.password
+                        ? "border-error bg-error-bg"
+                        : "border-neutral-200"
+                    }`}
+                    placeholder={t("signup.placeholders.password")}
                   />
+
                   {errors.password && (
                     <span className="text-xs text-error">
                       {errors.password}
@@ -482,9 +538,9 @@ const SignupPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleNext}
-                  className="w-full py-3 bg-teal-600 hover:bg-teal-500 font-semibold text-white rounded-lg shadow-lg shadow-teal-600/10 transition duration-200 cursor-pointer"
+                  className="w-full cursor-pointer rounded-lg bg-teal-600 py-3 font-semibold text-white shadow-lg shadow-teal-600/10 transition duration-200 hover:bg-teal-500"
                 >
-                  Continue
+                  {t("signup.buttons.continue")}
                 </button>
               </div>
             )}
@@ -645,54 +701,61 @@ const SignupPage: React.FC = () => {
             )}
 
             {/* STEP 3 */}
+            {/* STEP 3 */}
             {step === 3 && (
               <div className="space-y-5">
                 {formData.role === Role.TEACHER ? (
                   <>
                     <div>
                       <h2 className="text-2xl font-bold text-neutral-900">
-                        Professional Profile
+                        {t("signup.step3.teacherTitle")}
                       </h2>
-                      <p className="text-sm text-neutral-500 mt-1">
-                        Highlight your teaching tiers for platform vetting.
+                      <p className="mt-1 text-sm text-neutral-500">
+                        {t("signup.step3.teacherSubtitle")}
                       </p>
                     </div>
+
                     <div className="space-y-1">
                       <label className="text-xs font-medium text-neutral-600">
-                        Total Years of Experience
+                        {t("signup.labels.yearsOfExperience")}
                       </label>
+
                       <input
                         type="number"
                         name="yearsOfExperience"
                         value={formData.yearsOfExperience}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-2.5 rounded-lg bg-white border border-neutral-200 text-neutral-900 focus:outline-none"
+                        className="w-full rounded-lg border border-neutral-200 bg-white px-4 py-2.5 text-neutral-900 focus:outline-none"
                       />
+
                       {errors.yearsOfExperience && (
                         <span className="text-xs text-error">
                           {errors.yearsOfExperience}
                         </span>
                       )}
                     </div>
+
                     <div className="space-y-2">
-                      <label className="text-xs font-medium text-neutral-600 block">
-                        Target Teaching Tiers (Select Multiples)
+                      <label className="block text-xs font-medium text-neutral-600">
+                        {t("signup.labels.teachingLevels")}
                       </label>
+
                       <div className="flex flex-wrap gap-2">
                         {Object.values(Level).map((lvl) => (
                           <button
                             type="button"
                             key={lvl}
                             onClick={() => handleToggleLevel(lvl)}
-                            className={`px-3 py-1.5 rounded-full text-xs font-medium transition duration-150 ${
+                            className={`rounded-full px-3 py-1.5 text-xs font-medium transition duration-150 ${
                               formData.teachingLevels.includes(lvl)
-                                ? "bg-gold-500 text-white font-bold"
+                                ? "bg-gold-500 font-bold text-white"
                                 : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200"
                             }`}
                           >
-                            {lvl}
+                            {t(`levels.${lvl.toLowerCase()}`)}
                           </button>
                         ))}
+
                         {errors.teachingLevels && (
                           <span className="text-xs text-error">
                             {errors.teachingLevels}
@@ -705,82 +768,103 @@ const SignupPage: React.FC = () => {
                   <>
                     <div>
                       <h2 className="text-2xl font-bold text-neutral-900">
-                        Current Capabilities
+                        {t("signup.step3.studentTitle")}
                       </h2>
-                      <p className="text-sm text-neutral-500 mt-1">
-                        Pick your entry experience tier down below.
+
+                      <p className="mt-1 text-sm text-neutral-500">
+                        {t("signup.step3.studentSubtitle")}
                       </p>
                     </div>
+
                     <div className="space-y-1">
                       <label className="text-xs font-medium text-neutral-600">
-                        Your Starting Tier
+                        {t("signup.labels.level")}
                       </label>
+
                       <select
                         name="level"
                         value={formData.level}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-2.5 rounded-lg bg-white border border-neutral-200 text-neutral-900 focus:outline-none"
+                        className="w-full rounded-lg border border-neutral-200 bg-white px-4 py-2.5 text-neutral-900 focus:outline-none"
                       >
-                        <option value={Level.BEGINNER}>Beginner Level</option>
-                        <option value={Level.INTERMEDIATE}>
-                          Intermediate Level
+                        <option value={Level.BEGINNER}>
+                          {t("levels.beginner")}
                         </option>
-                        <option value={Level.ADVANCED}>Advanced Track</option>
+
+                        <option value={Level.INTERMEDIATE}>
+                          {t("levels.intermediate")}
+                        </option>
+
+                        <option value={Level.ADVANCED}>
+                          {t("levels.advanced")}
+                        </option>
                       </select>
+
                       {errors.level && (
                         <span className="text-xs text-error">
                           {errors.level}
                         </span>
                       )}
                     </div>
-                    <div className="p-4 bg-neutral-50 border border-neutral-200 rounded-xl space-y-3">
+
+                    <div className="space-y-3 rounded-xl border border-neutral-200 bg-neutral-50 p-4">
                       <h4 className="text-sm font-bold text-gold-600">
-                        Parent / Guardian Access (Optional)
+                        {t("signup.parent.title")}
                       </h4>
+
                       <p className="text-xs text-neutral-500">
-                        Enables progress monitoring dashboards and session
-                        overview features.
+                        {t("signup.parent.description")}
                       </p>
+
                       <input
                         type="text"
                         name="parentName"
                         value={formData.parentName}
                         onChange={handleInputChange}
-                        placeholder="Parent Full Name"
-                        className="w-full px-4 py-2 rounded-lg bg-white border border-neutral-200 text-xs text-neutral-900 focus:outline-none"
+                        placeholder={t("signup.placeholders.parentName")}
+                        className="w-full rounded-lg border border-neutral-200 bg-white px-4 py-2 text-xs text-neutral-900 focus:outline-none"
                       />
+
                       {errors.parentName && (
                         <span className="text-xs text-error">
                           {errors.parentName}
                         </span>
                       )}
+
                       <div className="grid grid-cols-2 gap-2">
-                        <input
-                          type="tel"
-                          name="parentPhone"
-                          value={formData.parentPhone}
-                          onChange={handleInputChange}
-                          placeholder="Parent Phone"
-                          className="w-full px-4 py-2 rounded-lg bg-white border border-neutral-200 text-xs text-neutral-900 focus:outline-none"
-                        />
-                        {errors.parentPhone && (
-                          <span className="text-xs text-error">
-                            {errors.parentPhone}
-                          </span>
-                        )}
-                        <input
-                          type="email"
-                          name="parentEmail"
-                          value={formData.parentEmail}
-                          onChange={handleInputChange}
-                          placeholder="Parent Email"
-                          className="w-full px-4 py-2 rounded-lg bg-white border border-neutral-200 text-xs text-neutral-900 focus:outline-none"
-                        />
-                        {errors.parentEmail && (
-                          <span className="text-xs text-error">
-                            {errors.parentEmail}
-                          </span>
-                        )}
+                        <div>
+                          <input
+                            type="tel"
+                            name="parentPhone"
+                            value={formData.parentPhone}
+                            onChange={handleInputChange}
+                            placeholder={t("signup.placeholders.parentPhone")}
+                            className="w-full rounded-lg border border-neutral-200 bg-white px-4 py-2 text-xs text-neutral-900 focus:outline-none"
+                          />
+
+                          {errors.parentPhone && (
+                            <span className="text-xs text-error">
+                              {errors.parentPhone}
+                            </span>
+                          )}
+                        </div>
+
+                        <div>
+                          <input
+                            type="email"
+                            name="parentEmail"
+                            value={formData.parentEmail}
+                            onChange={handleInputChange}
+                            placeholder={t("signup.placeholders.parentEmail")}
+                            className="w-full rounded-lg border border-neutral-200 bg-white px-4 py-2 text-xs text-neutral-900 focus:outline-none"
+                          />
+
+                          {errors.parentEmail && (
+                            <span className="text-xs text-error">
+                              {errors.parentEmail}
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </>
@@ -788,16 +872,18 @@ const SignupPage: React.FC = () => {
 
                 <div className="space-y-1">
                   <label className="text-xs font-medium text-neutral-600">
-                    Introduce Yourself (Bio)
+                    {t("signup.labels.bio")}
                   </label>
+
                   <textarea
                     name="bio"
                     rows={3}
                     value={formData.bio}
                     onChange={handleInputChange}
-                    placeholder="Tell us a little about yourself..."
-                    className="w-full px-4 py-2.5 rounded-lg bg-white border border-neutral-200 text-neutral-900 focus:outline-none text-sm"
+                    placeholder={t("signup.placeholders.bio")}
+                    className="w-full rounded-lg border border-neutral-200 bg-white px-4 py-2.5 text-sm text-neutral-900 focus:outline-none"
                   />
+
                   {errors.bio && (
                     <span className="text-xs text-error">{errors.bio}</span>
                   )}
@@ -807,14 +893,15 @@ const SignupPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={handleBack}
-                    className="flex-1 py-3 bg-neutral-100 hover:bg-neutral-200 text-neutral-700 font-semibold rounded-lg transition duration-200 cursor-pointer"
+                    className="flex-1 cursor-pointer rounded-lg bg-neutral-100 py-3 font-semibold text-neutral-700 transition duration-200 hover:bg-neutral-200"
                   >
-                    Back
+                    {t("signup.buttons.back")}
                   </button>
+
                   <button
                     type="submit"
                     disabled={submitLoading}
-                    className="flex-1 py-3 bg-teal-600 hover:bg-teal-500 text-white font-semibold rounded-lg transition duration-200 flex items-center justify-center cursor-pointer"
+                    className="flex flex-1 cursor-pointer items-center justify-center rounded-lg bg-teal-600 py-3 font-semibold text-white transition duration-200 hover:bg-teal-500"
                   >
                     {submitLoading ? (
                       <>
@@ -823,10 +910,10 @@ const SignupPage: React.FC = () => {
                           size="sm"
                           className="me-2"
                         />
-                        Submitting...
+                        {t("signup.buttons.submitting")}
                       </>
                     ) : (
-                      "Submit"
+                      t("signup.buttons.submit")
                     )}
                   </button>
                 </div>
@@ -834,12 +921,12 @@ const SignupPage: React.FC = () => {
             )}
           </form>
           <div className="text-center text-sm text-neutral-500">
-            Already have an account?{" "}
+            {t("signup.footer.alreadyHaveAccount")}{" "}
             <Link
               to="/login"
               className="text-teal-600 hover:text-teal-500 font-medium text-decoration-none"
             >
-              Login
+              {t("signup.footer.login")}
             </Link>
           </div>
         </div>

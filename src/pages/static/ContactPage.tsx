@@ -1,5 +1,6 @@
 import { InqueryTopic } from "@utils/types/inquery";
 import React, { useState, type ChangeEvent, type FormEvent } from "react";
+import { useTranslation } from "react-i18next";
 
 import axiosAPI from "@lib/axios";
 import { isAxiosError } from "axios";
@@ -20,6 +21,7 @@ const initialFormState: ContactFormData = {
 };
 
 const ContactPage: React.FC = () => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState<ContactFormData>(initialFormState);
   const [errors, setErrors] = useState<
     Partial<Record<keyof ContactFormData, string>>
@@ -41,13 +43,14 @@ const ContactPage: React.FC = () => {
     const newErrors: Partial<Record<keyof ContactFormData, string>> = {};
     const { name, email, topic, message } = formData;
 
-    if (!name.trim()) newErrors.name = "Name is required";
+    if (!name.trim()) newErrors.name = t("contact.validation.nameRequired");
     if (!/^\S+@\S+\.\S+$/.test(email))
-      newErrors.email = "Enter a valid email address";
-    if (!topic.trim()) newErrors.topic = "Please select a topic";
-    if (!message.trim()) newErrors.message = "Message cannot be empty";
+      newErrors.email = t("contact.validation.invalidEmail");
+    if (!topic.trim()) newErrors.topic = t("contact.validation.topicRequired");
+    if (!message.trim())
+      newErrors.message = t("contact.validation.messageEmpty");
     else if (message.trim().length < 10)
-      newErrors.message = "Message must be at least 10 characters";
+      newErrors.message = t("contact.validation.messageMinLength");
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -60,18 +63,20 @@ const ContactPage: React.FC = () => {
       setLoading(true);
       await axiosAPI.post("/inquiries", formData);
       setFormData(initialFormState);
-      toast.success("Sent successfully!", {
-        description: "Your inquery is recived.",
+      toast.success(t("contact.messages.successTitle"), {
+        description: t("contact.messages.successDesc"),
       });
     } catch (err) {
-      let errorMessage = "Error submitting the form";
+      let errorMessage = t("contact.messages.defaultError");
       if (isAxiosError(err)) {
         errorMessage =
           err?.response?.data?.message || err.message || errorMessage;
       } else if (err instanceof Error) {
         errorMessage = err.message;
       }
-      toast.error("Send Failed", { description: errorMessage });
+      toast.error(t("contact.messages.errorTitle"), {
+        description: errorMessage,
+      });
     } finally {
       setLoading(false);
     }
@@ -84,11 +89,10 @@ const ContactPage: React.FC = () => {
         <div className="lg:col-span-2 flex flex-col justify-between space-y-8 bg-linear-to-br from-slate-50 to-teal-50/50 p-8 rounded-2xl border border-slate-200">
           <div className="space-y-4">
             <h1 className="text-4xl font-extrabold tracking-tight text-slate-900">
-              Get in Touch
+              {t("contact.info.title")}
             </h1>
             <p className="text-slate-600 leading-relaxed text-sm md:text-base">
-              Have questions or need assistance? Drop us a message, and our
-              dedicated team will respond shortly.
+              {t("contact.info.description")}
             </p>
           </div>
 
@@ -113,7 +117,7 @@ const ContactPage: React.FC = () => {
               </div>
               <div>
                 <h4 className="text-sm font-semibold text-slate-900">
-                  Email Support
+                  {t("contact.info.emailSupport")}
                 </h4>
                 <p className="text-sm text-slate-600 mt-0.5">
                   support@noor.com
@@ -145,15 +149,17 @@ const ContactPage: React.FC = () => {
               </div>
               <div>
                 <h4 className="text-sm font-semibold text-slate-900">
-                  Headquarters
+                  {t("contact.info.headquarters")}
                 </h4>
-                <p className="text-sm text-slate-600 mt-0.5">Cairo, Egypt</p>
+                <p className="text-sm text-slate-600 mt-0.5">
+                  {t("contact.info.address")}
+                </p>
               </div>
             </div>
           </div>
 
           <div className="text-xs text-slate-400">
-            © 2026 Noor Inc. All rights reserved.
+            {t("contact.info.copyright")}
           </div>
         </div>
 
@@ -163,7 +169,7 @@ const ContactPage: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
                 <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                  Your Name
+                  {t("contact.labels.name")}
                 </label>
                 <input
                   type="text"
@@ -171,7 +177,7 @@ const ContactPage: React.FC = () => {
                   value={formData.name}
                   onChange={handleInputChange}
                   className="w-full px-4 py-2.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:border-teal-600 focus:ring-1 focus:ring-teal-600 focus:bg-white transition"
-                  placeholder="John Doe"
+                  placeholder={t("contact.placeholders.name")}
                 />
                 {errors.name && (
                   <span className="text-xs text-red-500">{errors.name}</span>
@@ -180,7 +186,7 @@ const ContactPage: React.FC = () => {
 
               <div className="space-y-1.5">
                 <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                  Email Address
+                  {t("contact.labels.email")}
                 </label>
                 <input
                   type="email"
@@ -188,7 +194,7 @@ const ContactPage: React.FC = () => {
                   value={formData.email}
                   onChange={handleInputChange}
                   className="w-full px-4 py-2.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:border-teal-600 focus:ring-1 focus:ring-teal-600 focus:bg-white transition"
-                  placeholder="you@example.com"
+                  placeholder={t("contact.placeholders.email")}
                 />
                 {errors.email && (
                   <span className="text-xs text-red-500">{errors.email}</span>
@@ -198,7 +204,7 @@ const ContactPage: React.FC = () => {
 
             <div className="space-y-1.5">
               <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                Topic
+                {t("contact.labels.topic")}
               </label>
               <select
                 name="topic"
@@ -206,10 +212,12 @@ const ContactPage: React.FC = () => {
                 onChange={handleInputChange}
                 className="w-full px-4 py-2.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-700 focus:outline-none focus:border-teal-600 focus:ring-1 focus:ring-teal-600 focus:bg-white transition"
               >
-                <option value="">Select a topic...</option>
+                <option value="">
+                  {t("contact.placeholders.topicSelect")}
+                </option>
                 {Object.values(InqueryTopic).map((topic) => (
                   <option key={topic} value={topic}>
-                    {topic.replace(/_/g, " ").toLowerCase()}
+                    {t(`contact.topics.${topic}`)}
                   </option>
                 ))}
               </select>
@@ -220,7 +228,7 @@ const ContactPage: React.FC = () => {
 
             <div className="space-y-1.5">
               <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                Message
+                {t("contact.labels.message")}
               </label>
               <textarea
                 name="message"
@@ -228,7 +236,7 @@ const ContactPage: React.FC = () => {
                 onChange={handleInputChange}
                 rows={5}
                 className="w-full px-4 py-2.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:border-teal-600 focus:ring-1 focus:ring-teal-600 focus:bg-white transition resize-none"
-                placeholder="How can we help you?"
+                placeholder={t("contact.placeholders.message")}
               />
               {errors.message && (
                 <span className="text-xs text-red-500">{errors.message}</span>
@@ -241,10 +249,10 @@ const ContactPage: React.FC = () => {
               className="cursor-pointer w-full py-3 bg-teal-600 hover:bg-teal-700 font-semibold text-white rounded-lg shadow-md hover:shadow-lg transition duration-200 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? (
-                <span>Sending Message...</span>
+                <span>{t("contact.actions.sendingMessage")}</span>
               ) : (
                 <>
-                  <span>Send Message</span>
+                  <span>{t("contact.actions.sendMessage")}</span>
                 </>
               )}
               <svg

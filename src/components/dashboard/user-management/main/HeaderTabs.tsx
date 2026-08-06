@@ -1,16 +1,22 @@
+import { useTranslation } from "react-i18next";
+
 interface HeaderTabsProbs {
   handleTabChange: (tab: string) => void;
   activeTab: string;
 }
 
 const HeaderTabs = ({ handleTabChange, activeTab }: HeaderTabsProbs) => {
+  const { t } = useTranslation();
+
   return (
     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-4 rounded-2xl border border-neutral-200 shadow-sm">
       <div>
         <h1 className="text-lg font-bold text-neutral-900 tracking-tight">
-          System Users
+          {t("dashboard.userManagement.headerTabs.title")}
         </h1>
-        <p className="text-xs text-neutral-400">View and update users</p>
+        <p className="text-xs text-neutral-400">
+          {t("dashboard.userManagement.headerTabs.subtitle")}
+        </p>
       </div>
 
       {/* Modern Segmented Tab Bar Switch */}
@@ -23,7 +29,7 @@ const HeaderTabs = ({ handleTabChange, activeTab }: HeaderTabsProbs) => {
               : "text-neutral-500 hover:text-neutral-900"
           }`}
         >
-          Teachers
+          {t("dashboard.userManagement.headerTabs.teachers")}
         </button>
 
         <button
@@ -34,7 +40,7 @@ const HeaderTabs = ({ handleTabChange, activeTab }: HeaderTabsProbs) => {
               : "text-neutral-500 hover:text-neutral-900"
           }`}
         >
-          Students
+          {t("dashboard.userManagement.headerTabs.students")}
         </button>
       </div>
     </div>

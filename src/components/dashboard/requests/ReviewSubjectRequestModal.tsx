@@ -1,4 +1,5 @@
 import type { ReviewStatus } from "@utils/types/subject";
+import { useTranslation } from "react-i18next";
 
 export interface AuditingTarget {
   id: string;
@@ -28,6 +29,8 @@ const ReviewSubjectRequestModal = ({
   setFormNotes,
   submittingAudit,
 }: ReviewSubjectRequestModalProps) => {
+  const { t } = useTranslation();
+
   return (
     <div>
       {auditTarget && (
@@ -35,8 +38,9 @@ const ReviewSubjectRequestModal = ({
           <div className="bg-white rounded-xl shadow-xl max-w-md w-full border border-slate-200 overflow-hidden transform transition-all animate-in fade-in zoom-in-95 duration-150">
             <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/80">
               <h3 className="text-base font-bold text-slate-900">
-                Review {auditTarget.type === "student" ? "Student" : "Teacher"}{" "}
-                Request
+                {auditTarget.type === "student"
+                  ? t("dashboard.requests.modal.titleStudent")
+                  : t("dashboard.requests.modal.titleTeacher")}
               </h3>
               <button
                 onClick={() => setAuditTarget(null)}
@@ -50,7 +54,7 @@ const ReviewSubjectRequestModal = ({
               {/* Select Option State Dropdown */}
               <div className="space-y-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                  Status
+                  {t("dashboard.requests.modal.labels.status")}
                 </label>
                 <select
                   value={formStatus}
@@ -59,22 +63,30 @@ const ReviewSubjectRequestModal = ({
                   }
                   className="w-full text-sm rounded-lg border border-slate-200 px-3 py-2 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
                 >
-                  <option value="PENDING">PENDING</option>
-                  <option value="UNDER_REVIEW">Under Review</option>
-                  <option value="ACCEPTED">Accepted</option>
-                  <option value="REJECTED">Rejected</option>
+                  <option value="PENDING">
+                    {t("dashboard.requests.modal.options.pending")}
+                  </option>
+                  <option value="UNDER_REVIEW">
+                    {t("dashboard.requests.modal.options.underReview")}
+                  </option>
+                  <option value="ACCEPTED">
+                    {t("dashboard.requests.modal.options.accepted")}
+                  </option>
+                  <option value="REJECTED">
+                    {t("dashboard.requests.modal.options.rejected")}
+                  </option>
                 </select>
               </div>
 
               {/* Text Input Feedback Notes Textarea Area */}
               <div className="space-y-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                  Review Notes
+                  {t("dashboard.requests.modal.labels.reviewNotes")}
                 </label>
                 <textarea
                   value={formNotes}
                   onChange={(e) => setFormNotes(e.target.value)}
-                  placeholder="Write a note"
+                  placeholder={t("dashboard.requests.modal.placeholders.notes")}
                   rows={4}
                   className="w-full text-sm rounded-lg border border-slate-200 p-3 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder:text-slate-400 resize-none"
                 />
@@ -88,14 +100,16 @@ const ReviewSubjectRequestModal = ({
                   onClick={() => setAuditTarget(null)}
                   className="px-4 py-2 text-xs font-semibold rounded-lg border border-slate-200 text-slate-600 bg-white hover:bg-slate-50 disabled:opacity-50 transition-colors cursor-pointer"
                 >
-                  Cancel
+                  {t("dashboard.requests.modal.buttons.cancel")}
                 </button>
                 <button
                   type="submit"
                   disabled={submittingAudit}
                   className="px-4 py-2 text-xs font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 transition-colors shadow-sm cursor-pointer flex items-center gap-1.5"
                 >
-                  {submittingAudit ? "Saving..." : "Save"}
+                  {submittingAudit
+                    ? t("dashboard.requests.modal.buttons.saving")
+                    : t("dashboard.requests.modal.buttons.save")}
                 </button>
               </div>
             </form>

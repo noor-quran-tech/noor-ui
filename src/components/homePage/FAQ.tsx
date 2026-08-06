@@ -1,37 +1,16 @@
+import i18n from "@/i18n";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-
-const faqItems = [
-  {
-    question: "Do you offer one-on-one lessons or group classes?",
-    answer:
-      "We offer both options. You can choose one-on-one lessons for personalized attention or join small group classes with no more than 5 students to ensure a high-quality learning experience.",
-  },
-  {
-    question: "How can I choose the most suitable lesson schedule?",
-    answer:
-      "Our academy operates 24/7 to accommodate students across different time zones. After registering, you can choose the lesson times that best fit your daily schedule.",
-  },
-  {
-    question: "What qualifications do your teachers have?",
-    answer:
-      "All of our teachers are certified in Quran recitation and memorization by recognized institutions, including Al-Azhar, and have extensive experience teaching both children and adults online.",
-  },
-  {
-    question: "Do you offer a free trial lesson?",
-    answer:
-      "Yes! We offer a completely free trial lesson for all new students. It allows you to assess your level and experience our teaching approach before subscribing to any plan.",
-  },
-  {
-    question: "What payment methods do you accept?",
-    answer:
-      "We accept credit and debit cards, PayPal, and direct bank transfers, making it easy for students around the world to subscribe to our programs.",
-  },
-];
 
 const FAQ = () => {
   const [openQuestion, setOpenQuestion] = useState<number | null>(null);
-
+  const { t } = useTranslation();
+  const faqItems = t("faq.items", { returnObjects: true }) as {
+    question: string;
+    answer: string;
+  }[];
+  const isArabic = i18n.language === "ar";
   const handleOpenQuestion = (idx: number) => {
     if (openQuestion === idx + 1) setOpenQuestion(null);
     else setOpenQuestion(idx + 1);
@@ -42,11 +21,9 @@ const FAQ = () => {
       <div className="mx-auto max-w-4xl px-6">
         <div className="mb-12 text-center">
           <h2 className="text-4xl font-bold text-neutral-900">
-            Frequently Asked Questions
+            {t("faq.title")}
           </h2>
-          <p className="mt-3 text-neutral-600">
-            Everything you need to know before starting your learning journey.
-          </p>
+          <p className="mt-3 text-neutral-600">{t("faq.subtitle")}</p>
         </div>
 
         <div className="space-y-4">
@@ -64,11 +41,14 @@ const FAQ = () => {
                 }`}
                 onClick={() => handleOpenQuestion(idx)}
               >
-                <div className="flex items-center justify-between px-6 py-5">
+                <div
+                  className={`flex items-center justify-between px-6 py-5 ${
+                    isArabic ? "flex-row-reverse" : ""
+                  }`}
+                >
                   <h3 className="text-lg font-semibold text-neutral-900">
                     {item.question}
                   </h3>
-
                   <div
                     className={`flex h-9 w-9 items-center justify-center rounded-full transition-all duration-300
                     ${
@@ -82,7 +62,11 @@ const FAQ = () => {
                 </div>
 
                 {isOpen && (
-                  <div className="animate-fade-in border-t border-neutral-100 px-6 py-5">
+                  <div
+                    className={`animate-fade-in border-t border-neutral-100 px-6 py-5 ${
+                      isArabic ? "text-right" : "text-left"
+                    }`}
+                  >
                     <p className="leading-8 text-neutral-600">{item.answer}</p>
                   </div>
                 )}
@@ -91,14 +75,14 @@ const FAQ = () => {
           })}
           <div className="mt-12 text-center">
             <p className="text-lg font-semibold text-neutral-900">
-              Didn't find the answer you're looking for?
+              {t("faq.notFound")}
             </p>
 
             <Link
               to="/contact"
               className="mt-2 inline-block font-medium text-teal-600 transition-colors hover:text-teal-700"
             >
-              Contact us →
+              {t("faq.contact")}→
             </Link>
           </div>
         </div>
