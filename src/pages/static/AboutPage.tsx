@@ -99,8 +99,8 @@ const AboutPage: React.FC = () => {
       {/* Platform Specification Metrics Section */}
       <section className="bg-white border-b border-slate-200 px-6 py-12 md:py-16">
         <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
-          {stats.map((stat, idx) => (
-            <StatsCard stat={stat} key={idx} />
+          {stats.map((stat) => (
+            <StatsCard stat={stat} key={stat.value} />
           ))}
         </div>
       </section>
@@ -117,8 +117,8 @@ const AboutPage: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          {curriculum.map((item, idx) => (
-            <CurriculumCard curriculum={item} key={idx} />
+          {curriculum.map((item) => (
+            <CurriculumCard curriculum={item} key={item.title} />
           ))}
         </div>
       </section>
@@ -135,8 +135,8 @@ const AboutPage: React.FC = () => {
             </p>
           </div>
 
-          {rules.map((rule, idx) => (
-            <RulesCard rule={rule} key={idx} />
+          {rules.map((rule) => (
+            <RulesCard rule={rule} key={rule.title1} />
           ))}
         </div>
       </section>

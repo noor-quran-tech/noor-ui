@@ -117,7 +117,7 @@ const SessionsListComponent = ({
                     <span
                       className={`text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border ${getStatusStyles(
                         session.status,
-                      )} ${isArabic ? `text-[12px]` : `text-[10px]`} `}
+                      )} ${isArabic ? "text-[12px]" : "text-[10px]"} `}
                     >
                       {t(
                         `dashboard.sessions.list.status.${session.status.toLowerCase()}`,
