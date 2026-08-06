@@ -23,6 +23,7 @@ const ProfileContactComponent = ({
 }: ProfileContactComponentProps) => {
   const { t } = useTranslation();
   const isArabic = i18n.language === "ar";
+  const dateFormat = isArabic ? "ar-EG" : "en-US";
 
   return (
     <div className="bg-white border border-neutral-200 rounded-2xl p-6 shadow-sm space-y-4">
@@ -67,7 +68,7 @@ const ProfileContactComponent = ({
             <p className="text-sm font-bold text-neutral-900">
               {profileDetails?.dateOfBirth
                 ? new Date(profileDetails.dateOfBirth).toLocaleDateString(
-                    isArabic ? "ar-EG" : "en-US",
+                    dateFormat,
                     {
                       year: "numeric",
                       month: "long",
