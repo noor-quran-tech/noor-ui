@@ -9,7 +9,7 @@ export default function RolesCard({ role }: { role: Role }) {
   return (
     <div
       key={role.title}
-      className="group rounded-[32px] border border-neutral-100 bg-white p-8 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:border-teal-200 hover:shadow-2xl"
+      className="group rounded-4xl   border border-neutral-100 bg-white p-8 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:border-teal-200 hover:shadow-2xl"
     >
       <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-teal-50 text-3xl">
         {role.icon}
