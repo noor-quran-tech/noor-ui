@@ -838,5 +838,73 @@
     "UNDER_REVIEW": "Under Review",
     "ACCEPTED": "Accepted",
     "REJECTED": "Rejected"
+  },
+
+  "home": {
+    "hero": {
+      "quranVerse": "“My Lord, increase me in knowledge”",
+      "verseReference": "(20:114)",
+      "titlePrefix": "Where ",
+      "titleHighlight1": "knowledge",
+      "titleMiddle": " meets the right ",
+      "titleHighlight2": "teacher",
+      "description": "Noor connects students with expert teachers through personalized sessions, intelligent matching, and meaningful feedback.",
+      "startLearning": "Start Learning →",
+      "teachOnNoor": "Teach on Noor",
+      "stats": {
+        "activeStudents": "Active Students",
+        "verifiedTeachers": "Verified Teachers",
+        "satisfactionRate": "Satisfaction Rate"
+      }
+    },
+
+    "whyUs": {
+      "badge": "Why us?",
+      "title": "Why Choose Noor Academy for Online Quran Learning?",
+      "subtitle": "Committed to Student Progress and Teacher Excellence",
+      "description": "We Care the most about Students' real progress and our teachers' high performance who are highly qualified, certified, holding Ijazah of Quran and graduated from Al-Azhar University. That is all for reaching the highest quality for best online learning experience.",
+      "features": {
+        "supportTitle": "24/7 Support",
+        "supportDesc": "Fast communication from students to administration and between students and teachers as well. Students call, chat or email us anytime during the day we'll respond promptly.",
+        "qualityTitle": "High Quality",
+        "qualityDesc": "Providing best quality and highest qualifications for a successful online learning. presenting a unique value of teaching with high progress to meet students' expectations.",
+        "teachersTitle": "Our Teachers",
+        "teachersDesc": "Native Arabic Speakers (Egyptians) holding Ijazah of Quran in many Qira'at from Al-Azhar University with a great teaching experience (male & female) teachers for both kids and adults.",
+        "reportsTitle": "Regular Reports & Exams",
+        "reportsDesc": "Students' progress tracking is one of the most priorities of the quality system in the academy. Homework, exams & competitions are held for enhancing students' performance.",
+        "facilitiesTitle": "Facilities & Free Certificates",
+        "facilitiesDesc": "For busy parents & students, we help them though all enrollment steps and the learning journey. Students receive a Certificate for passing each level.",
+        "guaranteeTitle": "100% Money back Guarantee",
+        "guaranteeDesc": "If a student wanted to stop the classes for any reason, we guarantee a refund for all the classes that were not done. you can also check our refund policy."
+      }
+    },
+
+    "rolesSection": {
+      "badge": "Who It's For",
+      "titlePrefix": "Built for every role, ",
+      "titleHighlight": "crafted for growth",
+      "roles": {
+        "students": {
+          "title": "Students",
+          "description": "Book sessions, track progress, and receive detailed feedback that truly helps you improve.",
+          "features": {
+            "browse": "Browse & request subjects",
+            "track": "Track upcoming sessions",
+            "feedback": "Receive teacher feedback",
+            "reports": "Monthly progress reports"
+          }
+        },
+        "teachers": {
+          "title": "Teachers",
+          "description": "Focus on teaching while Noor handles scheduling, matching, and student management.",
+          "features": {
+            "availability": "Manage your availability",
+            "subjects": "Teach multiple subjects",
+            "feedback": "Provide structured feedback",
+            "reputation": "Build your reputation"
+          }
+        }
+      }
+    }
   }
 }
