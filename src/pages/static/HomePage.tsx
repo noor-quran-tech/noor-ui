@@ -3,39 +3,13 @@ import { Link } from "react-router-dom";
 import "@styles/homepage.css";
 
 import Footer from "@components/main/AppFooter";
-import RolesCard from "@components/homePage/RolesCard";
 import StepsCard from "@components/homePage/StepsCard";
+import WhyUsSection from "@components/homePage/WhyUsSection";
 import TestimonialCard from "@components/homePage/TestimonialCard";
 import FAQ from "@components/homePage/FAQ";
 import HeroSection from "@components/homePage/HeroSection";
 import { useTranslation } from "react-i18next";
-
-const roles = [
-  {
-    icon: "🎓",
-    title: "Students",
-    description:
-      "Book sessions, track progress, and receive detailed feedback that truly helps you improve.",
-    features: [
-      "Browse & request subjects",
-      "Track upcoming sessions",
-      "Receive teacher feedback",
-      "Monthly progress reports",
-    ],
-  },
-  {
-    icon: "✏️",
-    title: "Teachers",
-    description:
-      "Focus on teaching while Noor handles scheduling, matching, and student management.",
-    features: [
-      "Manage your availability",
-      "Teach multiple subjects",
-      "Provide structured feedback",
-      "Build your reputation",
-    ],
-  },
-];
+import RolesSction from "@components/homePage/RolesSction";
 
 const steps = [
   {
@@ -83,31 +57,15 @@ const testimonials = [
 ];
 
 export default function HomePage() {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   return (
-    <div className="min-h-screen overflow-x-hidden bg-neutral-50 text-neutral-900 py-5">
+    <div className="min-h-screen overflow-x-hidden bg-neutral-50 text-neutral-900">
       {/* HERO */}
       <HeroSection />
 
-      {/* ROLES */}
-      <section className="mx-auto max-w-7xl px-6 py-24 lg:px-12">
-        <div className="mb-16">
-          <p className="mb-3 text-sm font-bold uppercase tracking-[0.2em] text-teal-600">
-            Who It's For
-          </p>
+      <WhyUsSection />
 
-          <h2 className="max-w-2xl text-4xl font-black leading-tight text-teal-900">
-            Built for every role,
-            <span className="text-gold-500"> crafted for growth</span>
-          </h2>
-        </div>
-
-        <div className="grid gap-8 md:grid-cols-2">
-          {roles.map((role, idx) => (
-            <RolesCard key={idx} role={role} />
-          ))}
-        </div>
-      </section>
+      <RolesSction />
 
       {/* HOW IT WORKS */}
       <section className="bg-white py-24">
