@@ -906,5 +906,114 @@
         }
       }
     }
+  },
+
+  "validation": {
+    "NAME_REQUIRED": "Name is required.",
+    "NAME_TOO_SHORT": "Name must be at least 2 characters.",
+    "NAME_TOO_LONG": "Name must not exceed 30 characters.",
+
+    "EMAIL_REQUIRED": "Email address is required.",
+    "EMAIL_INVALID": "Invalid email address.",
+    "EMAIL_TOO_LONG": "Email address is too long.",
+
+    "PASSWORD_REQUIRED": "Password is required.",
+    "PASSWORD_TOO_SHORT": "Password must be at least 8 characters.",
+    "PASSWORD_TOO_LONG": "Password is too long.",
+    "PASSWORD_WEAK": "Password must contain uppercase, lowercase, and a number.",
+
+    "PHONE_REQUIRED": "Phone number is required.",
+    "PHONE_TOO_SHORT": "Phone number must be at least 10 characters.",
+    "PHONE_TOO_LONG": "Phone number is too long.",
+
+    "BIO_REQUIRED": "Bio is required.",
+    "BIO_TOO_SHORT": "Bio must be at least 10 characters.",
+    "BIO_TOO_LONG": "Bio is too long.",
+
+    "ADDRESS_REQUIRED": "Address is required.",
+    "ADDRESS_TOO_SHORT": "Address must be at least 3 characters.",
+    "ADDRESS_TOO_LONG": "Address is too long.",
+
+    "COUNTRY_REQUIRED": "Country is required.",
+    "COUNTRY_TOO_SHORT": "Country must be at least 2 characters.",
+    "COUNTRY_TOO_LONG": "Country name is too long.",
+
+    "CITY_REQUIRED": "City is required.",
+    "CITY_TOO_SHORT": "City must be at least 2 characters.",
+    "CITY_TOO_LONG": "City name is too long.",
+
+    "TIME_ZONE_TOO_LONG": "Time zone string is too long.",
+
+    "LANGUAGE_REQUIRED": "Language is required.",
+    "LANGUAGE_TOO_SHORT": "Language must be at least 2 characters.",
+    "LANGUAGE_TOO_LONG": "Language name is too long.",
+
+    "DATE_OF_BIRTH_REQUIRED": "Date of birth is required.",
+    "DATE_OF_BIRTH_INVALID": "Invalid date of birth. Must be at least 5 years old.",
+
+    "DESCRIPTION_REQUIRED": "Description is required.",
+    "DESCRIPTION_TOO_SHORT": "Description must be at least 10 characters.",
+    "DESCRIPTION_TOO_LONG": "Description is too long.",
+
+    "ID_REQUIRED": "ID is required.",
+
+    "LEVEL_INVALID": "Selected level is invalid.",
+
+    "YOE_REQUIRED": "Years of experience is required.",
+    "YOE_TOO_LOW": "Years of experience must be at least 0.",
+    "YOE_TOO_HIGH": "Years of experience must be less than or equal to 60.",
+
+    "TEACHING_LEVELS_REQUIRED": "At least one teaching level is required.",
+
+    "FEEDBACK_COMMENT_REQUIRED": "Feedback comment is required.",
+    "FEEDBACK_COMMENT_TOO_SHORT": "Feedback comment must be at least 5 characters.",
+    "FEEDBACK_COMMENT_TOO_LONG": "Feedback comment is too long.",
+
+    "FEEDBACK_RATING_REQUIRED": "Feedback rating is required.",
+    "FEEDBACK_RATING_TOO_LOW": "Feedback rating must be greater than 0.",
+    "FEEDBACK_RATING_TOO_HIGH": "Feedback rating must be less than or equal to 5.",
+
+    "INQUIRY_MESSAGE_REQUIRED": "Inquiry message is required.",
+    "INQUIRY_MESSAGE_TOO_SHORT": "Message must be at least 10 characters.",
+    "INQUIRY_MESSAGE_TOO_LONG": "Message is too long.",
+
+    "INQUIRY_TOPIC_REQUIRED": "Inquiry topic is required.",
+
+    "SESSION_TITLE_REQUIRED": "Session title is required.",
+    "SESSION_TITLE_TOO_SHORT": "Session title must be at least 3 characters.",
+    "SESSION_TITLE_TOO_LONG": "Session title must not exceed 100 characters.",
+    "SESSION_DESCRIPTION_REQUIRED": "Session description is required.",
+    "SESSION_LINK_INVALID": "Invalid session meeting link URL.",
+    "SESSION_LINK_REQUIRED": "Session link is required.",
+    "SESSION_DURATION_REQUIRED": "Session duration is required.",
+    "SESSION_DURATION_INVALID": "Session duration must be greater than 0.",
+    "SESSION_DURATION_TOO_LONG": "Session duration is too long.",
+    "SESSION_START_TIME_REQUIRED": "Session start time is required.",
+    "SESSION_START_TIME_INVALID": "Invalid session start time.",
+    "SESSION_END_TIME_REQUIRED": "Session end time is required.",
+    "SESSION_END_TIME_INVALID": "Invalid session end time.",
+    "SESSION_END_AFTER_START": "End time must be after start time.",
+    "SESSION_STUDENT_ID_REQUIRED": "Student ID is required for the session.",
+    "SESSION_TEACHER_ID_REQUIRED": "Teacher ID is required for the session.",
+    "SESSION_SUBJECT_ID_REQUIRED": "Subject ID is required for the session.",
+    "SESSION_STATUS_REQUIRED": "Session status is required.",
+
+    "SUBJECT_NAME_REQUIRED": "Subject name is required.",
+    "SUBJECT_NAME_TOO_SHORT": "Subject name must be at least 2 characters.",
+    "SUBJECT_NAME_TOO_LONG": "Subject name must not exceed 30 characters.",
+    "SUBJECT_DESCRIPTION_REQUIRED": "Subject description is required.",
+    "SUBJECT_DESCRIPTION_TOO_SHORT": "Subject description must be at least 10 characters.",
+    "SUBJECT_DESCRIPTION_TOO_LONG": "Subject description must not exceed 500 characters.",
+
+    "REVIEW_STATUS_REQUIRED": "Review status is required.",
+    "REVIEW_STATUS_INVALID": "Invalid review status value.",
+    "REVIEW_NOTES_TOO_LONG": "Review notes are too long.",
+    "REQUEST_STUDENT_ID_REQUIRED": "Student ID is required.",
+    "REQUEST_TEACHER_ID_REQUIRED": "Teacher ID is required.",
+    "REQUEST_SUBJECT_ID_REQUIRED": "Subject ID is required.",
+
+    "PROFILE_IMAGE_REQUIRED": "Profile image is required.",
+
+    "VALIDATION_ERROR": "Invalid input data. Please check your entries."
   }
 }
