@@ -10,6 +10,7 @@ import FAQ from "@components/homePage/FAQ";
 import HeroSection from "@components/homePage/HeroSection";
 import { useTranslation } from "react-i18next";
 import RolesSction from "@components/homePage/RolesSction";
+import FeaturesSection from "@components/homePage/FeaturesSection";
 
 const steps = [
   {
@@ -59,16 +60,18 @@ const testimonials = [
 export default function HomePage() {
   const { t } = useTranslation();
   return (
-    <div className="min-h-screen overflow-x-hidden bg-neutral-50 text-neutral-900">
+    <div className="min-h-screen overflow-x-hidden text-neutral-900">
       {/* HERO */}
       <HeroSection />
 
       <WhyUsSection />
 
+      <FeaturesSection />
+
       <RolesSction />
 
       {/* HOW IT WORKS */}
-      <section className="bg-white py-24">
+      <section className="bg-neutral-50 py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-12">
           <div className="mb-20">
             <p className="mb-3 text-sm font-bold uppercase tracking-[0.2em] text-teal-600">
@@ -110,7 +113,7 @@ export default function HomePage() {
       <FAQ />
 
       {/* CTA */}
-      <section className="px-6 pb-24 lg:px-12">
+      <section className="p-6 pb-24 lg:px-12">
         <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[40px] bg-linear-to-r from-teal-800 via-teal-700 to-teal-600 px-8 py-20 shadow-2xl lg:px-16">
           <div className="absolute -right-20 -top-20 h-65 w-65 rounded-full bg-white/10 blur-2xl" />
 
