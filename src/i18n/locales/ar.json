@@ -905,5 +905,114 @@
         }
       }
     }
+  },
+
+  "validation": {
+    "NAME_REQUIRED": "الاسم مطلوب",
+    "NAME_TOO_SHORT": "يجب ألا يقل الاسم عن حرفين",
+    "NAME_TOO_LONG": "يجب ألا يتجاوز الاسم 30 حرفاً",
+
+    "EMAIL_REQUIRED": "البريد الإلكتروني مطلوب",
+    "EMAIL_INVALID": "البريد الإلكتروني غير صالح",
+    "EMAIL_TOO_LONG": "البريد الإلكتروني طويل جداً",
+
+    "PASSWORD_REQUIRED": "كلمة المرور مطلوبة",
+    "PASSWORD_TOO_SHORT": "يجب ألا تقل كلمة المرور عن 8 أحرف",
+    "PASSWORD_TOO_LONG": "كلمة المرور طويلة جداً",
+    "PASSWORD_WEAK": "يجب أن تحتوي كلمة المرور على أحرف كبيرة وصغيرة وأرقام",
+
+    "PHONE_REQUIRED": "رقم الهاتف مطلوب",
+    "PHONE_TOO_SHORT": "يجب ألا يقل رقم الهاتف عن 10 أرقام",
+    "PHONE_TOO_LONG": "رقم الهاتف طويل جداً",
+
+    "BIO_REQUIRED": "النبذة الشخصية مطلوبة",
+    "BIO_TOO_SHORT": "يجب ألا تقل النبذة الشخصية عن 10 أحرف",
+    "BIO_TOO_LONG": "النبذة الشخصية طويلة جداً",
+
+    "ADDRESS_REQUIRED": "العنوان مطلوب",
+    "ADDRESS_TOO_SHORT": "يجب ألا يقل العنوان عن 3 أحرف",
+    "ADDRESS_TOO_LONG": "العنوان طويل جداً",
+
+    "COUNTRY_REQUIRED": "الدولة مطلوبة",
+    "COUNTRY_TOO_SHORT": "يجب ألا يقل اسم الدولة عن حرفين",
+    "COUNTRY_TOO_LONG": "اسم الدولة طويل جداً",
+
+    "CITY_REQUIRED": "المدينة مطلوبة",
+    "CITY_TOO_SHORT": "يجب ألا يقل اسم المدينة عن حرفين",
+    "CITY_TOO_LONG": "اسم المدينة طويل جداً",
+
+    "TIME_ZONE_TOO_LONG": "النطاق الزمني طويل جداً",
+
+    "LANGUAGE_REQUIRED": "اللغة مطلوبة",
+    "LANGUAGE_TOO_SHORT": "يجب ألا يقل اسم اللغة عن حرفين",
+    "LANGUAGE_TOO_LONG": "اسم اللغة طويل جداً",
+
+    "DATE_OF_BIRTH_REQUIRED": "تاريخ الميلاد مطلوب",
+    "DATE_OF_BIRTH_INVALID": "تاريخ الميلاد غير صالح يجب ألا يقل العمر عن 5 سنوات",
+
+    "DESCRIPTION_REQUIRED": "الوصف مطلوب",
+    "DESCRIPTION_TOO_SHORT": "يجب ألا يقل الوصف عن 10 أحرف",
+    "DESCRIPTION_TOO_LONG": "الوصف طويل جداً",
+
+    "ID_REQUIRED": "الرمز التعريفي مطلوب",
+
+    "LEVEL_INVALID": "المستوى المحدد غير صالح",
+
+    "YOE_REQUIRED": "سنوات الخبرة مطلوبة",
+    "YOE_TOO_LOW": "يجب ألا تقل سنوات الخبرة عن 0",
+    "YOE_TOO_HIGH": "يجب ألا تتجاوز سنوات الخبرة 60 سنة",
+
+    "TEACHING_LEVELS_REQUIRED": "يجب تحديد مستوى تدريسي واحد على الأقل",
+
+    "FEEDBACK_COMMENT_REQUIRED": "تعليق التقييم مطلوب",
+    "FEEDBACK_COMMENT_TOO_SHORT": "يجب ألا يقل تعليق التقييم عن 5 أحرف",
+    "FEEDBACK_COMMENT_TOO_LONG": "تعليق التقييم طويل جداً",
+
+    "FEEDBACK_RATING_REQUIRED": "التقييم مطلوب",
+    "FEEDBACK_RATING_TOO_LOW": "يجب أن يكون التقييم أكبر من 0",
+    "FEEDBACK_RATING_TOO_HIGH": "يجب ألا يتجاوز التقييم 5",
+
+    "INQUIRY_MESSAGE_REQUIRED": "رسالة الاستفسار مطلوبة",
+    "INQUIRY_MESSAGE_TOO_SHORT": "يجب ألا تقل الرسالة عن 10 أحرف",
+    "INQUIRY_MESSAGE_TOO_LONG": "الرسالة طويلة جداً",
+
+    "INQUIRY_TOPIC_REQUIRED": "موضوع الاستفسار مطلوب",
+
+    "SESSION_TITLE_REQUIRED": "عنوان الجلسة مطلوب",
+    "SESSION_TITLE_TOO_SHORT": "يجب ألا يقل عنوان الجلسة عن 3 أحرف",
+    "SESSION_TITLE_TOO_LONG": "يجب ألا يتجاوز عنوان الجلسة 100 حرف",
+    "SESSION_DESCRIPTION_REQUIRED": "وصف الجلسة مطلوب",
+    "SESSION_LINK_INVALID": "رابط اجتماع الجلسة غير صالح",
+    "SESSION_LINK_REQUIRED": "رابط الجلسة مطلوب",
+    "SESSION_DURATION_REQUIRED": "مدة الجلسة مطلوبة",
+    "SESSION_DURATION_INVALID": "يجب أن تكون مدة الجلسة أكبر من 0",
+    "SESSION_DURATION_TOO_LONG": "مدة الجلسة طويلة جداً",
+    "SESSION_START_TIME_REQUIRED": "وقت بدء الجلسة مطلوب",
+    "SESSION_START_TIME_INVALID": "وقت بدء الجلسة غير صالح",
+    "SESSION_END_TIME_REQUIRED": "وقت انتهاء الجلسة مطلوب",
+    "SESSION_END_TIME_INVALID": "وقت انتهاء الجلسة غير صالح",
+    "SESSION_END_AFTER_START": "يجب أن يكون وقت الانتهاء بعد وقت البدء",
+    "SESSION_STUDENT_ID_REQUIRED": "معرف الطالب مطلوب للجلسة",
+    "SESSION_TEACHER_ID_REQUIRED": "معرف المعلم مطلوب للجلسة",
+    "SESSION_SUBJECT_ID_REQUIRED": "معرف المادة مطلوب للجلسة",
+    "SESSION_STATUS_REQUIRED": "حالة الجلسة مطلوبة",
+
+    "SUBJECT_NAME_REQUIRED": "اسم المادة مطلوب",
+    "SUBJECT_NAME_TOO_SHORT": "يجب ألا يقل اسم المادة عن حرفين",
+    "SUBJECT_NAME_TOO_LONG": "يجب ألا يتجاوز اسم المادة 30 حرفاً",
+    "SUBJECT_DESCRIPTION_REQUIRED": "وصف المادة مطلوب",
+    "SUBJECT_DESCRIPTION_TOO_SHORT": "يجب ألا يقل وصف المادة عن 10 أحرف",
+    "SUBJECT_DESCRIPTION_TOO_LONG": "يجب ألا يتجاوز وصف المادة 500 حرف",
+
+    "REVIEW_STATUS_REQUIRED": "حالة المراجعة مطلوبة",
+    "REVIEW_STATUS_INVALID": "قيمة حالة المراجعة غير صالحة",
+    "REVIEW_NOTES_TOO_LONG": "ملاحظات المراجعة طويلة جداً",
+    "REQUEST_STUDENT_ID_REQUIRED": "معرف الطالب مطلوب",
+    "REQUEST_TEACHER_ID_REQUIRED": "معرف المعلم مطلوب",
+    "REQUEST_SUBJECT_ID_REQUIRED": "معرف المادة مطلوب",
+
+    "PROFILE_IMAGE_REQUIRED": "الصورة الشخصية مطلوبة",
+
+    "VALIDATION_ERROR": "البيانات المدخلة غير صالحة يرجى التحقق من المدخلات"
   }
 }
