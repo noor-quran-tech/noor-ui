@@ -1,6 +1,6 @@
 import StatsCard from "@components/aboutPage/StatsCard";
 import { Link } from "react-router-dom";
-import backgroundImage from "@assets/images/background.jpg";
+import backgroundImage from "@assets/images/background.png";
 import { useTranslation } from "react-i18next";
 
 const HeroSection = () => {
@@ -14,12 +14,12 @@ const HeroSection = () => {
   ];
 
   return (
-    <section className="relative overflow-hidden border-b border-neutral-100 bg-neutral-900">
+    <section className="relative min-h-screen w-full overflow-hidden border-b border-neutral-100 bg-neutral-900">
       {/* Background Image & Overlay */}
       <img
         src={backgroundImage}
         alt="Hero Background"
-        className="absolute inset-0 h-full w-full object-cover object-center"
+        className="absolute inset-0 h-full w-full object-cover object-center pointer-events-none"
       />
       {/* <div className="absolute inset-0 bg-neutral-950/75 bg-gradient-to-r from-neutral-950 via-neutral-900/80 to-transparent" /> */}
 
@@ -88,7 +88,7 @@ const HeroSection = () => {
           </div>
 
           {/* Stats */}
-          <div className="mt-16 grid grid-cols-3 gap-6 border-t border-white/10 pt-10 text-white">
+          <div className="mt-16 grid grid-cols-3 gap-6 border-t border-white/10 pt-10 text-white bg-neutral-950/10 bg-linear-to-r from-neutral-950/25 via-neutral-950/6 to-neutral-950/40">
             {stats.map((stat, idx) => (
               <StatsCard key={idx} stat={stat} />
             ))}
