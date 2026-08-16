@@ -65,10 +65,6 @@ const LoginPage: React.FC = () => {
     }
   };
 
-  const backendErrorMap: Record<string, string> = {
-    "Incorrect email or password": "login.messages.incorrectCredentials",
-  };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validateForm()) return;
