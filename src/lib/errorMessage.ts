@@ -23,25 +23,15 @@ export const resolveApiErrorMessage = (
 
   const serverData = err.response?.data;
   const validationCode = serverData?.errors?.[0]?.code;
-  console.log("serverData", serverData);
-  console.log("validationCode", validationCode);
-  const x = `validation.${validationCode}`;
-  console.log("1- t(x)", t(x), " x = ", x);
 
   if (validationCode) {
     const key = `validation.${validationCode}`;
-    console.log("1- t(key)", t(key), " key = ", key);
     if (t(key) !== key) return t(key);
   }
 
   const appErrorCode = serverData?.errorCode;
-  console.log("appErrorCode", appErrorCode);
-  const key = `APIErrors.${appErrorCode}`;
-
-  console.log("2- t(key)", t(key), " key = ", key);
   if (appErrorCode) {
     const key = `APIErrors.${appErrorCode}`;
-    console.log("2- t(key)", t(key), " key = ", key);
     if (t(key) !== key) return t(key);
   }
 
