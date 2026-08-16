@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { isAxiosError } from "axios";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
@@ -12,6 +11,7 @@ import SessionsListComponent from "@components/dashboard/sessions/SessionsListCo
 import CreateAndUpdateSessionModal from "@components/dashboard/sessions/CreateAndUpdateSessionModal";
 import UnauthorizedPage from "@pages/static/Unauthorized";
 import { Role } from "@utils/types/user";
+import { resolveApiErrorMessage } from "@lib/errorMessage";
 
 // Types
 export interface RelationOption {
@@ -220,18 +220,12 @@ const SessionsPage = () => {
       setIsModalOpen(false);
     } catch (err) {
       console.error(err);
-      let errMsg = t("dashboard.sessions.page.toasts.fallbackInputError");
-      if (isAxiosError(err) && err.response?.data) {
-        const serverData = err?.response?.data;
+      const errMsg = resolveApiErrorMessage(
+        err,
+        t,
+        t("dashboard.sessions.page.toasts.fallbackInputError"),
+      );
 
-        if (Array.isArray(serverData.errors) && serverData.errors.length > 0) {
-          errMsg = serverData.errors[0].message;
-        } else if (serverData.message) {
-          errMsg = serverData.message;
-        }
-      } else if (err instanceof Error) {
-        errMsg = err.message;
-      }
       toast.error(t("dashboard.sessions.page.toasts.saveError"), {
         description: errMsg,
       });

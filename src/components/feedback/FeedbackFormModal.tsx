@@ -1,6 +1,6 @@
 import StarRating from "@components/helpers/StarRating";
 import axiosAPI from "@lib/axios";
-import { isAxiosError } from "axios";
+import { resolveApiErrorMessage } from "@lib/errorMessage";
 import { LoaderCircleIcon } from "lucide-react";
 import { useState, type ChangeEvent } from "react";
 import { useTranslation } from "react-i18next";
@@ -52,18 +52,12 @@ const FeedbackFormModal = ({
       setShowFeedbackForm(false);
       setFeedbackFormData(initalFeedbackFormState);
     } catch (err) {
-      let errMessage = t(
-        "dashboard.sessions.feedbackFormModal.toast.defaultError",
+      const errMessage = resolveApiErrorMessage(
+        err,
+        t,
+        t("dashboard.sessions.feedbackFormModal.toast.defaultError"),
       );
-      if (isAxiosError(err)) {
-        console.warn("err.response", err.response);
-        errMessage =
-          err?.response?.data?.errors?.[0].message ||
-          err?.response?.data?.message ||
-          errMessage;
-      } else if (err instanceof Error) {
-        errMessage = err.message;
-      }
+
       toast.error(t("dashboard.sessions.feedbackFormModal.toast.errorTitle"), {
         description: errMessage,
       });
