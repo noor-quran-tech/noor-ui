@@ -3,7 +3,7 @@ import React, { useState, type ChangeEvent, type FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 
 import axiosAPI from "@lib/axios";
-import { isAxiosError } from "axios";
+import { resolveApiErrorMessage } from "@lib/errorMessage";
 import { toast } from "sonner";
 
 interface ContactFormData {
@@ -67,13 +67,12 @@ const ContactPage: React.FC = () => {
         description: t("contact.messages.successDesc"),
       });
     } catch (err) {
-      let errorMessage = t("contact.messages.defaultError");
-      if (isAxiosError(err)) {
-        errorMessage =
-          err?.response?.data?.message || err.message || errorMessage;
-      } else if (err instanceof Error) {
-        errorMessage = err.message;
-      }
+      const errorMessage = resolveApiErrorMessage(
+        err,
+        t,
+        t("contact.messages.defaultError"),
+      );
+
       toast.error(t("contact.messages.errorTitle"), {
         description: errorMessage,
       });

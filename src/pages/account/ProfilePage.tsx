@@ -3,13 +3,13 @@ import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { Country, City } from "country-state-city";
 import { toast } from "sonner";
-import { isAxiosError } from "axios";
 import { useTranslation } from "react-i18next";
 
 import type { RootState } from "@store/store";
 
 import { Role, type UserProfileData } from "@utils/types/user";
 import axiosAPI from "@lib/axios";
+import { resolveApiErrorMessage } from "@lib/errorMessage";
 import ProfileHeaderComponent from "@components/profilePage/ProfileHeaderComponent";
 import ProfileEducationComponent from "@components/profilePage/ProfileEducationComponent";
 import ProfileLocationComponent from "@components/profilePage/ProfileLocationComponent";
@@ -195,12 +195,11 @@ const ProfilePage: React.FC = () => {
       setIsEditing(false);
       toast.success(t("profile.toast.updateSuccess"));
     } catch (err: unknown) {
-      let description = t("profile.toast.updateErrorDefault");
-      if (isAxiosError(err)) {
-        description =
-          err.response?.data.errors[0].message ||
-          t("profile.toast.updateErrorDefault");
-      }
+      const description = resolveApiErrorMessage(
+        err,
+        t,
+        t("profile.toast.updateErrorDefault"),
+      );
 
       toast.error(t("profile.toast.updateErrorTitle"), {
         description,

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { isAxiosError } from "axios";
 import { useTranslation } from "react-i18next";
 
 import type { RootState } from "@store/store";
@@ -13,7 +12,9 @@ import {
 
 import UnauthorizedPage from "@pages/static/Unauthorized";
 import axiosAPI from "@lib/axios";
+import { resolveApiErrorMessage } from "@lib/errorMessage";
 import { Role } from "@utils/types/user";
+import { toast } from "sonner";
 
 const RequestSubjectPage: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -114,13 +115,17 @@ const RequestSubjectPage: React.FC = () => {
       setIsModalOpen(false);
       setSelectedSubjectId("");
     } catch (err: unknown) {
-      if (isAxiosError(err)) {
-        const errorMessage =
-          err.response?.data?.message || t("subjectRequests.failedToCreate");
-        setActionError(errorMessage);
-      } else {
-        setActionError(t("subjectRequests.genericError"));
-      }
+      const errorMessage = resolveApiErrorMessage(
+        err,
+        t,
+        t("subjectRequests.failedToCreate"),
+      );
+      console.log("errorMessage", errorMessage);
+      toast.error(t("subjectRequests.failedToCreate"), {
+        description: errorMessage,
+      });
+
+      setActionError(errorMessage);
     } finally {
       setSubmitting(false);
     }

@@ -1,6 +1,5 @@
 import React, { useState, type ChangeEvent } from "react";
 import { toast } from "sonner";
-import axios from "axios";
 
 import { Role, Level, type SignupFormData } from "@utils/types/user";
 import type { RootState } from "@store/store";
@@ -11,6 +10,7 @@ import { Spinner } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { resolveApiErrorMessage } from "@lib/errorMessage";
 
 const STATIC_COUNTRIES_LIST = Country.getAllCountries().map((c) => ({
   isoCode: c.isoCode,
@@ -64,10 +64,6 @@ const SignupPage: React.FC = () => {
   const [citiesList, setCitiesList] = useState<string[]>([]);
 
   const { t } = useTranslation();
-  const backendErrorMap: Record<string, string> = {
-    "Duplicate value for email. Please use another value.":
-      "errors.EMAIL_ALREADY_EXISTS",
-  };
 
   if (loggedInUser) {
     setTimeout(() => {
@@ -309,19 +305,14 @@ const SignupPage: React.FC = () => {
 
       navigate("/login");
     } catch (err) {
-      let errorKey = "errors.UNKNOWN_ERROR";
-      if (axios.isAxiosError(err)) {
-        const backendMessage =
-          err.response?.data?.errors?.[0]?.message ??
-          err.response?.data?.message;
-
-        if (backendMessage) {
-          errorKey = backendErrorMap[backendMessage] ?? "errors.UNKNOWN_ERROR";
-        }
-      }
+      const errorMessage = resolveApiErrorMessage(
+        err,
+        t,
+        t("APIErrors.UNKNOWN_ERROR"),
+      );
 
       toast.error(t("signup.messages.registrationFailed"), {
-        description: t(errorKey),
+        description: errorMessage,
       });
     } finally {
       setSubmitLoading(false);
