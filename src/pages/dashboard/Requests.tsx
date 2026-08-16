@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { isAxiosError } from "axios";
 
 import type {
   ReviewStatus,
@@ -13,6 +12,7 @@ import type { TabPagination } from "@utils/types/public";
 import type { RootState } from "@store/store";
 
 import axiosAPI from "@lib/axios";
+import { resolveApiErrorMessage } from "@lib/errorMessage";
 import ReviewSubjectRequestModal, {
   type AuditingTarget,
 } from "@components/dashboard/requests/ReviewSubjectRequestModal";
@@ -196,12 +196,13 @@ const Requests = () => {
       setAuditTarget(null);
     } catch (err) {
       console.error(err);
-      let errTitle = t("dashboard.requests.page.toasts.defaultErrorTitle");
-      let errMsg = t("dashboard.requests.page.toasts.defaultErrorMessage");
-      if (isAxiosError(err)) {
-        errTitle = err.response?.data?.errors?.[0]?.field || errTitle;
-        errMsg = err.response?.data?.errors?.[0]?.message || errMsg;
-      }
+      const errTitle = t("dashboard.requests.page.toasts.defaultErrorTitle");
+      const errMsg = resolveApiErrorMessage(
+        err,
+        t,
+        t("dashboard.requests.page.toasts.defaultErrorMessage"),
+      );
+
       toast.error(errTitle, {
         description: errMsg,
       });

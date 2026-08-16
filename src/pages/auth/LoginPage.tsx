@@ -1,5 +1,4 @@
 import React, { useState, type ChangeEvent } from "react";
-import axios from "axios";
 import { toast } from "sonner";
 import { Spinner } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@store/store";
 
 import axiosAPI from "@lib/axios";
+import { resolveApiErrorMessage } from "@lib/errorMessage";
 import { setCredentials } from "@store/slices/authSlice";
 import { Role } from "@utils/types/user";
 import { useTranslation } from "react-i18next";
@@ -117,21 +117,14 @@ const LoginPage: React.FC = () => {
 
       navigate("/");
     } catch (err) {
-      let errorKey = "login.messages.unknownError";
-
-      if (axios.isAxiosError(err)) {
-        const backendMessage =
-          err.response?.data?.message ??
-          err.response?.data?.errors?.[0]?.message;
-
-        if (backendMessage) {
-          errorKey =
-            backendErrorMap[backendMessage] ?? "login.messages.unknownError";
-        }
-      }
+      const resolvedError = resolveApiErrorMessage(
+        err,
+        t,
+        t("login.messages.unknownError"),
+      );
 
       toast.error(t("login.messages.authenticationFailed"), {
-        description: t(errorKey),
+        description: resolvedError,
       });
     } finally {
       setLoading(false);
