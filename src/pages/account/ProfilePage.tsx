@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { Country, City } from "country-state-city";
 import { toast } from "sonner";
@@ -15,13 +15,20 @@ import ProfileEducationComponent from "@components/profilePage/ProfileEducationC
 import ProfileLocationComponent from "@components/profilePage/ProfileLocationComponent";
 import ProfileBioComponent from "@components/profilePage/ProfileBioComponent";
 import ProfileContactComponent from "@components/profilePage/ProfileContactComponent";
+import { setCredentials } from "@store/slices/authSlice";
 
 const ProfilePage: React.FC = () => {
   const { t } = useTranslation();
   const loggedInUser = useSelector((state: RootState) => state.auth.user);
+  const {
+    token,
+    user: userFromAuthStore,
+    profile,
+  } = useSelector((state: RootState) => state.auth);
   const [user, setUser] = useState<UserProfileData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, _] = useState<string | null>(null);
+  const dispatch = useDispatch();
 
   // Edit Mode States
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -192,6 +199,19 @@ const ProfilePage: React.FC = () => {
             response.data.data,
         };
       });
+
+      dispatch(
+        setCredentials({
+          token: token,
+          profile: profile,
+          user: {
+            ...userFromAuthStore,
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+          },
+        }),
+      );
+
       setIsEditing(false);
       toast.success(t("profile.toast.updateSuccess"));
     } catch (err: unknown) {
