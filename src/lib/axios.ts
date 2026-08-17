@@ -50,9 +50,11 @@ api.interceptors.response.use(
   (error) => {
     const errorMessage = error.response?.data?.message;
     const errorName = error.response?.data?.error?.name;
+    const errorCode = error.response?.data?.error?.errorCode;
 
     const isTokenExpired =
-      errorMessage === "jwt expired" && errorName === "TokenExpiredError";
+      errorMessage === "jwt expired" &&
+      (errorName === "TokenExpiredError" || errorCode === "AUTH_TOKEN_EXPIRED");
 
     if (isTokenExpired) {
       store.dispatch(logout());
