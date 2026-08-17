@@ -814,7 +814,8 @@
     "submitting": "Submitting...",
     "loading": "Loading...",
     "failedToCreate": "Failed to create subject request.",
-    "genericError": "An error occurred while creating subject request, please try again"
+    "genericError": "An error occurred while creating subject request, please try again",
+    "createdSuccessfully": "Subject request sent successfully"
   },
 
   "roles": {
@@ -1008,6 +1009,9 @@
     "REQUEST_SUBJECT_ID_REQUIRED": "Subject ID is required.",
 
     "PROFILE_IMAGE_REQUIRED": "Profile image is required.",
+
+    "AUTH_CREDENTIALS_CORRUPTED": "Missing or corrupted auth credentials.",
+    "AUTH_TOKEN_EXPIRED": "Your session has expired. Please log in again.",
 
     "VALIDATION_ERROR": "Invalid input data. Please check your entries."
   },

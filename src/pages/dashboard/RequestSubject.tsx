@@ -109,7 +109,7 @@ const RequestSubjectPage: React.FC = () => {
           name: t("subjectRequests.requestedSubject"),
         },
       };
-
+      toast.success(t("subjectRequests.createdSuccessfully"));
       // Append raw created instance data back safely into the active tracker loop array
       setRequests((prev) => [newCreatedRequest, ...prev]);
       setIsModalOpen(false);
@@ -120,7 +120,7 @@ const RequestSubjectPage: React.FC = () => {
         t,
         t("subjectRequests.failedToCreate"),
       );
-      console.log("errorMessage", errorMessage);
+
       toast.error(t("subjectRequests.failedToCreate"), {
         description: errorMessage,
       });
