@@ -42,7 +42,10 @@ const plans = [
 
 const SubscriptionPlans = () => {
   return (
-    <section className="bg-neutral-50 py-20 px-4 sm:px-6 lg:px-12">
+    <section
+      id="subscription-plans"
+      className="scroll-mt-24 bg-neutral-50 px-4 py-20 sm:px-6 lg:px-12"
+    >
       <div className="mx-auto max-w-7xl">
         {/* Section Header */}
         <div className="mx-auto max-w-3xl text-center">
