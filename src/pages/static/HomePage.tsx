@@ -11,6 +11,7 @@ import HeroSection from "@components/homePage/HeroSection";
 import { useTranslation } from "react-i18next";
 import RolesSction from "@components/homePage/RolesSction";
 import FeaturesSection from "@components/homePage/FeaturesSection";
+import SubscriptionPlans from "@components/subscriptionPlans/SubscriptionPlans";
 
 const steps = [
   {
@@ -110,6 +111,7 @@ export default function HomePage() {
         </div>
       </section>
 
+      <SubscriptionPlans />
       <FAQ />
 
       {/* CTA */}
