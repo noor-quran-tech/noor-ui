@@ -2,7 +2,7 @@ import { toast } from "sonner";
 import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, type MouseEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import type { RootState } from "@store/store";
@@ -23,6 +23,7 @@ function AppNavbar() {
     { path: "/", label: "Home" },
     { path: "/about", label: "About" },
     { path: "/contact", label: "Contact" },
+    { path: "/#subscription-plans", label: "Subscription Plans" },
   ];
 
   const changeLanguage = (lang: string) => {
@@ -30,6 +31,25 @@ function AppNavbar() {
   };
 
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
+
+  const handlePlansClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    closeMobileMenu();
+
+    if (window.location.pathname !== "/") {
+      navigate("/#subscription-plans");
+      requestAnimationFrame(() => {
+        document
+          .getElementById("subscription-plans")
+          ?.scrollIntoView({ behavior: "smooth" });
+      });
+      return;
+    }
+
+    document
+      .getElementById("subscription-plans")
+      ?.scrollIntoView({ behavior: "smooth" });
+  };
 
   const handleLogout = () => {
     dispatch(logout());
@@ -60,6 +80,11 @@ function AppNavbar() {
               <Link
                 key={link.path}
                 to={link.path}
+                onClick={
+                  link.path === "/#subscription-plans"
+                    ? handlePlansClick
+                    : undefined
+                }
                 className="text-sm font-semibold text-white/90 transition hover:text-white"
               >
                 {t(`navbar.links.${link.label}`)}
@@ -182,10 +207,14 @@ function AppNavbar() {
               <Link
                 key={link.path}
                 to={link.path}
-                onClick={closeMobileMenu}
+                onClick={
+                  link.path === "/#subscription-plans"
+                    ? handlePlansClick
+                    : closeMobileMenu
+                }
                 className="rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
               >
-                {link.label}
+                {t(`navbar.links.${link.label}`)}
               </Link>
             ))}
 
