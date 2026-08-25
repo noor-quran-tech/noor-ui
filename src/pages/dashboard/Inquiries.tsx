@@ -51,7 +51,6 @@ const Inquiries = () => {
         limit: ITEMS_PER_PAGE,
       });
     } catch (err) {
-      console.error(err);
       toast.error(t("dashboard.inquiries.toast.fetchError"));
       setInquiries([]);
     } finally {

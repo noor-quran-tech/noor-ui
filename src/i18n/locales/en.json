@@ -905,6 +905,25 @@
     }
   },
 
+  "subscriptionPlans": {
+    "badge": "Flexible Pricing",
+    "title": "Subscription Plans",
+    "description": "Choose the perfect plan tailored to your educational goals. Upgrade, downgrade, or cancel anytime with complete flexibility.",
+    "plans": {
+      "basic": "Basic",
+      "pro": "Pro",
+      "premium": "Premium"
+    },
+    "month": "/ month",
+    "loading": "Loading subscription plans...",
+    "mostPopular": "Most Popular",
+    "bestValue": "Best Value",
+    "getStarted": "Get Started",
+    "messages": {
+      "fetchError": "Failed to load subscription plans."
+    }
+  },
+
   "validation": {
     "NAME_REQUIRED": "Name is required.",
     "NAME_TOO_SHORT": "Name must be at least 2 characters.",

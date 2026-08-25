@@ -3,6 +3,7 @@ export const PUBLIC_ENDPOINTS = [
   "/auth/register",
   "/auth/forgot-password",
   "/auth/reset-password",
+  "/subscription-plans",
 ];
 
 export const hasValidCredentials = (): boolean => {
