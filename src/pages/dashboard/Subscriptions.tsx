@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import type { RootState } from "@store/store";
 import { Role } from "@utils/types/user";
 import { Link } from "react-router-dom";
+import CreateSubscriptionModal from "@components/dashboard/subscriptions/CreateSubscriptionModal";
 
 const ALL_STATUSES: SubscriptionStatus[] = Object.values(SubscriptionStatus);
 
@@ -16,8 +17,9 @@ const Subscriptions = () => {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [actionLoadingId, setActionLoadingId] = useState<string | null>(null);
+
   const loggedInUser = useSelector((state: RootState) => state.auth.user);
-  const isAdmin = loggedInUser.role === Role.ADMIN;
+  const isAdmin = loggedInUser?.role === Role.ADMIN;
 
   const fetchSubscriptions = useCallback(async () => {
     try {
@@ -37,13 +39,15 @@ const Subscriptions = () => {
     })();
   }, [fetchSubscriptions]);
 
+  // Handle Admin Create Subscription
+
   // Handle Student Cancellation
   const handleCancelSubscription = async (id: string) => {
     toast.dismiss();
     toast.custom((tId) => (
       <div className="bg-white p-4 rounded-xl border border-neutral-200 shadow-md flex flex-col gap-3 max-w-xs">
         <p className="text-xs text-neutral-800">
-          Are you sure Delete this subscription{" "}
+          Are you sure you want to cancel this subscription?
         </p>
 
         <div className="flex gap-2 justify-end">
@@ -112,15 +116,21 @@ const Subscriptions = () => {
   };
 
   return (
-    <section className=" py-12 px-4 sm:px-6 lg:px-12">
+    <section className="py-12 px-4 sm:px-6 lg:px-12">
       <div className="mx-auto max-w-5xl">
-        <div className="mb-8">
-          <span className="inline-block rounded-full border border-gold-300 bg-gold-50 px-4 py-1 text-xs font-semibold uppercase tracking-wider text-gold-700">
-            Membership
-          </span>
-          <h2 className="mt-3 text-3xl font-extrabold text-neutral-900 sm:text-4xl">
-            {isAdmin ? "Subscriptions" : "My Subscriptions"}
-          </h2>
+        <div className="mb-8 flex items-center justify-between">
+          <div>
+            <span className="inline-block rounded-full border border-gold-300 bg-gold-50 px-4 py-1 text-xs font-semibold uppercase tracking-wider text-gold-700">
+              Membership
+            </span>
+            <h2 className="mt-3 text-3xl font-extrabold text-neutral-900 sm:text-4xl">
+              {isAdmin ? "Subscriptions" : "My Subscriptions"}
+            </h2>
+          </div>
+
+          {isAdmin && (
+            <CreateSubscriptionModal fetchSubscriptions={fetchSubscriptions} />
+          )}
         </div>
 
         {loading ? (
@@ -225,7 +235,6 @@ const Subscriptions = () => {
 
                   {/* Actions Column */}
                   <div className="flex items-center gap-3">
-                    {/* Admin Action: Update Status for all cases */}
                     {isAdmin ? (
                       <div className="flex items-center gap-2">
                         <label className="text-xs font-medium text-neutral-600">
@@ -237,7 +246,7 @@ const Subscriptions = () => {
                           onChange={(e) =>
                             handleUpdateStatus(sub.id, e.target.value)
                           }
-                          className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-xs font-semibold text-neutral-800 focus:border-teal-500 focus:outline-none disabled:opacity-50"
+                          className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-xs font-semibold text-neutral-800 focus:border-teal-500 focus:outline-none disabled:opacity-50 cursor-pointer"
                         >
                           {ALL_STATUSES.map((status) => (
                             <option key={status} value={status}>
@@ -247,7 +256,6 @@ const Subscriptions = () => {
                         </select>
                       </div>
                     ) : (
-                      /* Student Action: Cancel if NOT cancelled */
                       canCancel && (
                         <button
                           onClick={() => handleCancelSubscription(sub.id)}
