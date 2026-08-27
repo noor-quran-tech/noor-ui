@@ -905,6 +905,61 @@
     }
   },
 
+  "subscriptionDashboard": {
+    "createButton": "إنشاء اشتراك",
+    "title": "الاشتراكات",
+    "mySubscriptions": "اشتراكاتي",
+    "loading": "جاري تحميل الاشتراكات...",
+    "empty": "لم يتم العثور على سجلات اشتراك.",
+    "student": "الطالب",
+    "noEmail": "لا يوجد بريد إلكتروني",
+    "planFallback": "خطة الاشتراك",
+    "currency": "USD",
+    "status": "الحالة:",
+    "cancelConfirmation": "هل أنت متأكد من رغبتك في إلغاء هذا الاشتراك؟",
+    "statuses": {
+      "ACTIVE": "نشط",
+      "TRIAL": "تجريبي",
+      "CANCELLED": "ملغى",
+      "EXPIRED": "منتهٍ",
+      "FREE": "مجاني"
+    },
+    "buttons": {
+      "dismiss": "تجاهل",
+      "cancelSubscription": "إلغاء الاشتراك",
+      "cancelling": "جاري الإلغاء..."
+    },
+    "toasts": {
+      "fetchError": "حدث خطأ أثناء تحميل الاشتراكات",
+      "cancelSuccess": "تم إلغاء الاشتراك بنجاح",
+      "cancelError": "فشل إلغاء الاشتراك",
+      "statusSuccess": "تم تحديث حالة الاشتراك بنجاح",
+      "statusError": "فشل تحديث الحالة"
+    },
+    "modal": {
+      "title": "إنشاء اشتراك جديد",
+      "fields": {
+        "student": "الطالب",
+        "plan": "الخطة"
+      },
+      "selectStudent": "اختر طالبًا",
+      "selectPlan": "اختر خطة",
+      "loadingStudents": "جاري تحميل الطلاب...",
+      "loadingPlans": "جاري تحميل الخطط...",
+      "buttons": {
+        "cancel": "إلغاء",
+        "creating": "جاري الإنشاء...",
+        "create": "إنشاء"
+      },
+      "toasts": {
+        "loadOptionsError": "فشل تحميل خيارات الاشتراك",
+        "requiredFields": "يرجى اختيار الطالب والخطة",
+        "createSuccess": "تم إنشاء الاشتراك بنجاح",
+        "createError": "فشل إنشاء الاشتراك"
+      }
+    }
+  },
+
   "subscriptionPlans": {
     "badge": "خطط مرنة",
     "title": "خطط الاشتراك",

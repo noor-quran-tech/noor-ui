@@ -906,6 +906,61 @@
     }
   },
 
+  "subscriptionDashboard": {
+    "createButton": "Create Subscription",
+    "title": "Subscriptions",
+    "mySubscriptions": "My Subscriptions",
+    "loading": "Loading subscriptions...",
+    "empty": "No subscription records found.",
+    "student": "Student",
+    "noEmail": "No email",
+    "planFallback": "Subscription Plan",
+    "currency": "USD",
+    "status": "Status:",
+    "cancelConfirmation": "Are you sure you want to cancel this subscription?",
+    "statuses": {
+      "ACTIVE": "Active",
+      "TRIAL": "Trial",
+      "CANCELLED": "Cancelled",
+      "EXPIRED": "Expired",
+      "FREE": "Free"
+    },
+    "buttons": {
+      "dismiss": "Dismiss",
+      "cancelSubscription": "Cancel Subscription",
+      "cancelling": "Cancelling..."
+    },
+    "toasts": {
+      "fetchError": "Error fetching subscriptions",
+      "cancelSuccess": "Subscription cancelled successfully",
+      "cancelError": "Failed to cancel subscription",
+      "statusSuccess": "Subscription status updated successfully",
+      "statusError": "Failed to update status"
+    },
+    "modal": {
+      "title": "Create New Subscription",
+      "fields": {
+        "student": "Student",
+        "plan": "Plan"
+      },
+      "selectStudent": "Select a student",
+      "selectPlan": "Select a plan",
+      "loadingStudents": "Loading students...",
+      "loadingPlans": "Loading plans...",
+      "buttons": {
+        "cancel": "Cancel",
+        "creating": "Creating...",
+        "create": "Create"
+      },
+      "toasts": {
+        "loadOptionsError": "Failed to load subscription options",
+        "requiredFields": "Please select both a student and a plan",
+        "createSuccess": "Subscription created successfully",
+        "createError": "Failed to create subscription"
+      }
+    }
+  },
+
   "subscriptionPlans": {
     "badge": "Flexible Pricing",
     "title": "Subscription Plans",

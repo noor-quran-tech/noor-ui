@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { isAxiosError } from "axios";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 import axiosAPI from "@lib/axios";
 
 interface CreateSubscriptionModalProps {
@@ -24,6 +25,8 @@ interface PlanOption {
 const CreateSubscriptionModal = ({
   fetchSubscriptions,
 }: CreateSubscriptionModalProps) => {
+  const { t } = useTranslation();
+
   // Admin Create Modal States
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [createLoading, setCreateLoading] = useState<boolean>(false);
@@ -51,7 +54,9 @@ const CreateSubscriptionModal = ({
           : err instanceof Error
             ? err.message
             : undefined;
-        toast.error(message || "Failed to load subscription options");
+        toast.error(
+          message || t("subscriptionDashboard.modal.toasts.loadOptionsError"),
+        );
         setStudents([]);
         setPlans([]);
       } finally {
@@ -60,12 +65,12 @@ const CreateSubscriptionModal = ({
     };
 
     fetchOptions();
-  }, [isModalOpen]);
+  }, [isModalOpen, t]);
 
   const handleCreateSubscription = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.userId || !formData.planId) {
-      toast.error("Please select both a student and a plan");
+      toast.error(t("subscriptionDashboard.modal.toasts.requiredFields"));
       return;
     }
 
@@ -75,7 +80,7 @@ const CreateSubscriptionModal = ({
         userId: formData.userId,
         planId: formData.planId,
       });
-      toast.success("Subscription created successfully");
+      toast.success(t("subscriptionDashboard.modal.toasts.createSuccess"));
       setIsModalOpen(false);
       setFormData({ userId: "", planId: "" });
       fetchSubscriptions?.();
@@ -85,7 +90,9 @@ const CreateSubscriptionModal = ({
         : err instanceof Error
           ? err.message
           : undefined;
-      toast.error(message || "Failed to create subscription");
+      toast.error(
+        message || t("subscriptionDashboard.modal.toasts.createError"),
+      );
     } finally {
       setCreateLoading(false);
     }
@@ -97,18 +104,18 @@ const CreateSubscriptionModal = ({
         onClick={() => setIsModalOpen(true)}
         className="rounded-xl bg-teal-600 px-5 py-2.5 text-xs font-bold text-white shadow-sm transition-all hover:bg-teal-700 cursor-pointer"
       >
-        + Create Subscription
+        {t("subscriptionDashboard.createButton")}
       </button>
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-neutral-900/50 p-4">
           <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
             <h3 className="text-lg font-bold text-neutral-900 mb-4">
-              Create New Subscription
+              {t("subscriptionDashboard.modal.title")}
             </h3>
             <form onSubmit={handleCreateSubscription} className="space-y-4">
               <div>
                 <label className="block text-xs font-semibold text-neutral-700 mb-1">
-                  Student
+                  {t("subscriptionDashboard.modal.fields.student")}
                 </label>
                 <select
                   required
@@ -121,8 +128,8 @@ const CreateSubscriptionModal = ({
                 >
                   <option value="">
                     {optionsLoading
-                      ? "Loading students..."
-                      : "Select a student"}
+                      ? t("subscriptionDashboard.modal.loadingStudents")
+                      : t("subscriptionDashboard.modal.selectStudent")}
                   </option>
                   {students.map((student) => (
                     <option key={student.user.id} value={student.user.id}>
@@ -134,7 +141,7 @@ const CreateSubscriptionModal = ({
 
               <div>
                 <label className="block text-xs font-semibold text-neutral-700 mb-1">
-                  Plan
+                  {t("subscriptionDashboard.modal.fields.plan")}
                 </label>
                 <select
                   required
@@ -146,11 +153,16 @@ const CreateSubscriptionModal = ({
                   className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-xs focus:border-teal-500 focus:outline-none disabled:bg-neutral-100"
                 >
                   <option value="">
-                    {optionsLoading ? "Loading plans..." : "Select a plan"}
+                    {optionsLoading
+                      ? t("subscriptionDashboard.modal.loadingPlans")
+                      : t("subscriptionDashboard.modal.selectPlan")}
                   </option>
                   {plans.map((plan) => (
                     <option key={plan.id} value={plan.id}>
-                      {plan.name} - ${plan.price}
+                      {t(`subscriptionPlans.plans.${plan.name.toLowerCase()}`, {
+                        defaultValue: plan.name,
+                      })}{" "}
+                      - ${plan.price}
                     </option>
                   ))}
                 </select>
@@ -162,14 +174,16 @@ const CreateSubscriptionModal = ({
                   onClick={() => setIsModalOpen(false)}
                   className="rounded-lg px-4 py-2 text-xs font-semibold text-neutral-600 hover:bg-neutral-100 cursor-pointer"
                 >
-                  Cancel
+                  {t("subscriptionDashboard.modal.buttons.cancel")}
                 </button>
                 <button
                   type="submit"
                   disabled={createLoading || optionsLoading}
                   className="rounded-lg bg-teal-600 px-4 py-2 text-xs font-bold text-white hover:bg-teal-700 disabled:opacity-50 cursor-pointer"
                 >
-                  {createLoading ? "Creating..." : "Create"}
+                  {createLoading
+                    ? t("subscriptionDashboard.modal.buttons.creating")
+                    : t("subscriptionDashboard.modal.buttons.create")}
                 </button>
               </div>
             </form>
