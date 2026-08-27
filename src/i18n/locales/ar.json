@@ -366,7 +366,8 @@
       "inquiries": "الاستفسارات",
       "statistics": "الإحصائيات",
       "sessions": "الجلسات",
-      "requests": "الطلبات"
+      "requests": "الطلبات",
+      "subscriptions": "الاشتراكات"
     },
     "accessDeniedTitle": "تم رفض الوصول",
     "accessDeniedDesc": "قم بتنشيط الحساب لفتح التبويبات",
