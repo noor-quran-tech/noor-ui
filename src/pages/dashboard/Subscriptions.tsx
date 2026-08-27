@@ -9,11 +9,15 @@ import { useSelector } from "react-redux";
 import type { RootState } from "@store/store";
 import { Role } from "@utils/types/user";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import CreateSubscriptionModal from "@components/dashboard/subscriptions/CreateSubscriptionModal";
+import { resolveApiErrorMessage } from "@lib/errorMessage";
 
 const ALL_STATUSES: SubscriptionStatus[] = Object.values(SubscriptionStatus);
 
 const Subscriptions = () => {
+  const { t } = useTranslation();
+
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [actionLoadingId, setActionLoadingId] = useState<string | null>(null);
@@ -26,12 +30,18 @@ const Subscriptions = () => {
       const subscriptionsRes = await axiosAPI.get("/subscriptions");
       const subscriptionData = subscriptionsRes?.data?.data || [];
       setSubscriptions(subscriptionData);
-    } catch (err) {
-      toast.error("Error fetching subscriptions");
+    } catch (err: unknown) {
+      toast.error(
+        resolveApiErrorMessage(
+          err,
+          t,
+          t("subscriptionDashboard.toasts.fetchError"),
+        ),
+      );
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     (() => {
@@ -47,7 +57,7 @@ const Subscriptions = () => {
     toast.custom((tId) => (
       <div className="bg-white p-4 rounded-xl border border-neutral-200 shadow-md flex flex-col gap-3 max-w-xs">
         <p className="text-xs text-neutral-800">
-          Are you sure you want to cancel this subscription?
+          {t("subscriptionDashboard.cancelConfirmation")}
         </p>
 
         <div className="flex gap-2 justify-end">
@@ -55,7 +65,7 @@ const Subscriptions = () => {
             onClick={() => toast.dismiss(tId)}
             className="px-2.5 py-1 text-[11px] font-bold text-neutral-500 hover:text-neutral-700 cursor-pointer"
           >
-            Dismiss
+            {t("subscriptionDashboard.buttons.dismiss")}
           </button>
 
           <button
@@ -64,12 +74,15 @@ const Subscriptions = () => {
               setActionLoadingId(id);
               try {
                 await axiosAPI.patch(`/subscriptions/${id}/cancel`);
-                toast.success("Subscription cancelled successfully");
+                toast.success(t("subscriptionDashboard.toasts.cancelSuccess"));
                 fetchSubscriptions();
-              } catch (err: any) {
+              } catch (err: unknown) {
                 toast.error(
-                  err?.response?.data?.message ||
-                    "Failed to cancel subscription",
+                  resolveApiErrorMessage(
+                    err,
+                    t,
+                    t("subscriptionDashboard.toasts.cancelError"),
+                  ),
                 );
               } finally {
                 setActionLoadingId(null);
@@ -78,7 +91,7 @@ const Subscriptions = () => {
             }}
             className="px-2.5 py-1 text-[11px] font-bold bg-red-500 text-white rounded-lg cursor-pointer"
           >
-            Cancel Subscription
+            {t("subscriptionDashboard.buttons.cancelSubscription")}
           </button>
         </div>
       </div>
@@ -92,10 +105,16 @@ const Subscriptions = () => {
       await axiosAPI.patch(`/subscriptions/${id}/status`, {
         status: newStatus,
       });
-      toast.success("Subscription status updated successfully");
+      toast.success(t("subscriptionDashboard.toasts.statusSuccess"));
       fetchSubscriptions();
-    } catch (err: any) {
-      toast.error(err?.response?.data?.message || "Failed to update status");
+    } catch (err: unknown) {
+      toast.error(
+        resolveApiErrorMessage(
+          err,
+          t,
+          t("subscriptionDashboard.toasts.statusError"),
+        ),
+      );
     } finally {
       setActionLoadingId(null);
     }
@@ -124,7 +143,9 @@ const Subscriptions = () => {
               Membership
             </span>
             <h2 className="mt-3 text-3xl font-extrabold text-neutral-900 sm:text-4xl">
-              {isAdmin ? "Subscriptions" : "My Subscriptions"}
+              {isAdmin
+                ? t("subscriptionDashboard.title")
+                : t("subscriptionDashboard.mySubscriptions")}
             </h2>
           </div>
 
@@ -135,11 +156,11 @@ const Subscriptions = () => {
 
         {loading ? (
           <div className="py-12 text-center text-neutral-500">
-            Loading subscriptions...
+            {t("subscriptionDashboard.loading")}
           </div>
         ) : subscriptions.length === 0 ? (
           <div className="rounded-2xl border border-neutral-200 bg-neutral-50 p-8 text-center text-neutral-600">
-            No subscription records found.
+            {t("subscriptionDashboard.empty")}
           </div>
         ) : (
           <div className="space-y-4">
@@ -170,7 +191,7 @@ const Subscriptions = () => {
                         <Link to={studentProfilePath}>
                           <img
                             src={subscriptionUser.profileImage}
-                            alt={userName || "Student"}
+                            alt={userName || t("subscriptionDashboard.student")}
                             className="h-12 w-12 rounded-full border-2 border-teal-100 object-cover cursor-pointer"
                           />
                         </Link>
@@ -191,11 +212,12 @@ const Subscriptions = () => {
                       <div className="min-w-0">
                         <Link to={studentProfilePath}>
                           <p className="truncate text-sm font-bold text-neutral-900">
-                            {userName || "Student"}
+                            {userName || t("subscriptionDashboard.student")}
                           </p>
                         </Link>
                         <p className="truncate text-xs text-neutral-500">
-                          {subscriptionUser?.email || "No email"}
+                          {subscriptionUser?.email ||
+                            t("subscriptionDashboard.noEmail")}
                         </p>
                         <p className="text-xs text-neutral-500">
                           {sub.student?.phoneNumber || `ID: ${sub.studentId}`}
@@ -208,14 +230,21 @@ const Subscriptions = () => {
                   <div className="space-y-1">
                     <div className="flex items-start gap-3">
                       <h3 className="text-xl font-bold text-neutral-900">
-                        {sub.plan?.name || "Subscription Plan"}
+                        {sub.plan?.name
+                          ? t(
+                              `subscriptionPlans.plans.${sub.plan.name.toLowerCase()}`,
+                              { defaultValue: sub.plan.name },
+                            )
+                          : t("subscriptionDashboard.planFallback")}
                       </h3>
                       <span
                         className={`inline-block rounded-full border px-3 py-0.5 text-xs font-bold uppercase ${getStatusBadgeClass(
                           sub.status,
                         )}`}
                       >
-                        {sub.status}
+                        {t(`subscriptionDashboard.statuses.${sub.status}`, {
+                          defaultValue: sub.status,
+                        })}
                       </span>
                     </div>
 
@@ -228,7 +257,9 @@ const Subscriptions = () => {
                         ${sub.priceAtPurchase || sub.plan?.price}
                       </span>
                       <span className="text-xs text-neutral-500">
-                        / {sub.plan?.currency || "USD"}
+                        /{" "}
+                        {sub.plan?.currency ||
+                          t("subscriptionDashboard.currency")}
                       </span>
                     </div>
                   </div>
@@ -238,7 +269,7 @@ const Subscriptions = () => {
                     {isAdmin ? (
                       <div className="flex items-center gap-2">
                         <label className="text-xs font-medium text-neutral-600">
-                          Status:
+                          {t("subscriptionDashboard.status")}
                         </label>
                         <select
                           disabled={isProcessing}
@@ -250,7 +281,9 @@ const Subscriptions = () => {
                         >
                           {ALL_STATUSES.map((status) => (
                             <option key={status} value={status}>
-                              {status}
+                              {t(`subscriptionDashboard.statuses.${status}`, {
+                                defaultValue: status,
+                              })}
                             </option>
                           ))}
                         </select>
@@ -263,8 +296,10 @@ const Subscriptions = () => {
                           className="rounded-full bg-error-bg border border-error/20 px-5 py-2.5 text-xs font-bold text-error transition-all hover:bg-error hover:text-white disabled:opacity-50 cursor-pointer"
                         >
                           {isProcessing
-                            ? "Cancelling..."
-                            : "Cancel Subscription"}
+                            ? t("subscriptionDashboard.buttons.cancelling")
+                            : t(
+                                "subscriptionDashboard.buttons.cancelSubscription",
+                              )}
                         </button>
                       )
                     )}
