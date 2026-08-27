@@ -38,6 +38,11 @@ const DASHBOARD_NAV_ITEMS: NavItem[] = [
     path: "/dashboard/requests",
     roles: [Role.TEACHER, Role.STUDENT, Role.ADMIN],
   },
+  {
+    key: "subscriptions",
+    path: "/dashboard/subscriptions",
+    roles: [Role.STUDENT, Role.ADMIN],
+  },
 ];
 
 const Dashboard = () => {

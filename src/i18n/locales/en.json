@@ -367,7 +367,8 @@
       "inquiries": "Inquiries",
       "statistics": "Statistics",
       "sessions": "Sessions",
-      "requests": "Requests"
+      "requests": "Requests",
+      "subscriptions": "Subscriptions"
     },
     "accessDeniedTitle": "Access Denied",
     "accessDeniedDesc": "Reactivate account to open tabs.",

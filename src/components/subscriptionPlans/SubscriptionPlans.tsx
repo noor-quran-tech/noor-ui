@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 
 import type { SubscriptionPlan } from "@utils/types/subscription";
+import type { RootState } from "@store/store";
 
 import axiosAPI from "@lib/axios";
 import { resolveApiErrorMessage } from "@lib/errorMessage";
-import { useSelector } from "react-redux";
-import type { RootState } from "@store/store";
 
 const PLAN_FEATURES: Record<string, string[]> = {
   Basic: [
