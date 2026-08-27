@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { isAxiosError } from "axios";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import axiosAPI from "@lib/axios";
+import { resolveApiErrorMessage } from "@lib/errorMessage";
 
 interface CreateSubscriptionModalProps {
   fetchSubscriptions?: () => void;
@@ -49,14 +49,12 @@ const CreateSubscriptionModal = ({
         setStudents(studentsResponse.data.data || []);
         setPlans(plansResponse.data.data || []);
       } catch (err: unknown) {
-        const message = isAxiosError<{ message?: string }>(err)
-          ? err.response?.data?.message
-          : err instanceof Error
-            ? err.message
-            : undefined;
-        toast.error(
-          message || t("subscriptionDashboard.modal.toasts.loadOptionsError"),
+        const message = resolveApiErrorMessage(
+          err,
+          t,
+          t("subscriptionDashboard.modal.toasts.loadOptionsError"),
         );
+        toast.error(message);
         setStudents([]);
         setPlans([]);
       } finally {
@@ -85,14 +83,12 @@ const CreateSubscriptionModal = ({
       setFormData({ userId: "", planId: "" });
       fetchSubscriptions?.();
     } catch (err: unknown) {
-      const message = isAxiosError<{ message?: string }>(err)
-        ? err.response?.data?.message
-        : err instanceof Error
-          ? err.message
-          : undefined;
-      toast.error(
-        message || t("subscriptionDashboard.modal.toasts.createError"),
+      const message = resolveApiErrorMessage(
+        err,
+        t,
+        t("subscriptionDashboard.modal.toasts.createError"),
       );
+      toast.error(message);
     } finally {
       setCreateLoading(false);
     }

@@ -1128,6 +1128,11 @@
     "GOOGLE_MEET_LINK_FAILED": "Failed to generate Google Meet link. Please try again.",
 
     "EMAIL_ALREADY_EXISTS": "An account with this email already exists.",
-    "UNKNOWN_ERROR": "Something went wrong. Please try again."
+    "UNKNOWN_ERROR": "Something went wrong. Please try again.",
+
+    "SUBSCRIPTION_NOT_FOUND": "Subscription not found",
+    "SUBSCRIPTION_PLAN_NOT_FOUND": "Active subscription plan not found",
+    "ACTIVE_SUBSCRIPTION_EXISTS": "You already have an active subscription",
+    "SUBSCRIPTION_NOT_ACTIVE": "Subscription cannot be cancelled"
   }
 }

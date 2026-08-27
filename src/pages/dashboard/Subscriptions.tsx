@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from "react";
-import { isAxiosError } from "axios";
 import {
   SubscriptionStatus,
   type Subscription,
@@ -12,6 +11,7 @@ import { Role } from "@utils/types/user";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import CreateSubscriptionModal from "@components/dashboard/subscriptions/CreateSubscriptionModal";
+import { resolveApiErrorMessage } from "@lib/errorMessage";
 
 const ALL_STATUSES: SubscriptionStatus[] = Object.values(SubscriptionStatus);
 
@@ -30,8 +30,14 @@ const Subscriptions = () => {
       const subscriptionsRes = await axiosAPI.get("/subscriptions");
       const subscriptionData = subscriptionsRes?.data?.data || [];
       setSubscriptions(subscriptionData);
-    } catch {
-      toast.error(t("subscriptionDashboard.toasts.fetchError"));
+    } catch (err: unknown) {
+      toast.error(
+        resolveApiErrorMessage(
+          err,
+          t,
+          t("subscriptionDashboard.toasts.fetchError"),
+        ),
+      );
     } finally {
       setLoading(false);
     }
@@ -71,13 +77,12 @@ const Subscriptions = () => {
                 toast.success(t("subscriptionDashboard.toasts.cancelSuccess"));
                 fetchSubscriptions();
               } catch (err: unknown) {
-                const message = isAxiosError<{ message?: string }>(err)
-                  ? err.response?.data?.message
-                  : err instanceof Error
-                    ? err.message
-                    : undefined;
                 toast.error(
-                  message || t("subscriptionDashboard.toasts.cancelError"),
+                  resolveApiErrorMessage(
+                    err,
+                    t,
+                    t("subscriptionDashboard.toasts.cancelError"),
+                  ),
                 );
               } finally {
                 setActionLoadingId(null);
@@ -103,12 +108,13 @@ const Subscriptions = () => {
       toast.success(t("subscriptionDashboard.toasts.statusSuccess"));
       fetchSubscriptions();
     } catch (err: unknown) {
-      const message = isAxiosError<{ message?: string }>(err)
-        ? err.response?.data?.message
-        : err instanceof Error
-          ? err.message
-          : undefined;
-      toast.error(message || t("subscriptionDashboard.toasts.statusError"));
+      toast.error(
+        resolveApiErrorMessage(
+          err,
+          t,
+          t("subscriptionDashboard.toasts.statusError"),
+        ),
+      );
     } finally {
       setActionLoadingId(null);
     }
