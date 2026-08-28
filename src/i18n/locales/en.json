@@ -981,6 +981,51 @@
     }
   },
 
+  "payment": {
+    "badge": "Secure checkout",
+    "title": "Complete your subscription",
+    "subtitle": "Review your plan and pay securely with PayPal.",
+    "orderSummary": "Order summary",
+    "monthlyPlan": "Monthly subscription",
+    "instantAccess": "Access starts after payment confirmation",
+    "cancelAnytime": "Manage or cancel your plan anytime",
+    "secureCheckout": "Protected by PayPal buyer security",
+    "loading": "Preparing your checkout...",
+    "back": "Back to plans",
+    "backToPlans": "Return to plans",
+    "unavailableTitle": "Plan details unavailable",
+    "unavailableDescription": "Please choose a subscription plan before starting checkout.",
+    "messages": {
+      "loadPlanError": "We could not load the selected plan.",
+      "createOrderError": "We could not create your PayPal order.",
+      "captureError": "We could not confirm your PayPal payment.",
+      "insufficientFunds": "Payment declined due to insufficient funds.",
+      "instrumentDeclined": "Your payment method was declined. Please try another.",
+      "transactionRefused": "Transaction was refused. Please contact support.",
+      "duplicateInvoice": "This order has already been processed. Please refresh and try again."
+    },
+    "success": {
+      "badge": "Payment confirmed",
+      "title": "Welcome to your new plan",
+      "description": "Your payment was completed successfully. Your subscription request has been sent and your plan is ready to use.",
+      "nextTitle": "Your subscription is on its way",
+      "nextDescription": "You can review its status and details from your subscriptions dashboard.",
+      "secureTitle": "Payment securely recorded",
+      "secureDescription": "PayPal confirmed your payment and Noor received the transaction details.",
+      "viewSubscription": "View my subscription",
+      "backHome": "Return to home"
+    },
+    "cancelled": {
+      "badge": "Checkout cancelled",
+      "title": "Your payment was not completed",
+      "description": "No subscription was activated. You can return to checkout whenever you are ready.",
+      "helpTitle": "Nothing was charged",
+      "helpDescription": "Your plan is still available. Try again with PayPal or choose another plan from the pricing section.",
+      "back": "Back to checkout",
+      "chooseAnother": "Choose a plan"
+    }
+  },
+
   "subscriptionPlanManagement": {
     "badge": "Admin workspace",
     "title": "Subscription plan management",

@@ -980,6 +980,51 @@
     }
   },
 
+  "payment": {
+    "badge": "دفع آمن",
+    "title": "إكمال اشتراكك",
+    "subtitle": "راجع خطتك وادفع بأمان عبر PayPal.",
+    "orderSummary": "ملخص الطلب",
+    "monthlyPlan": "اشتراك شهري",
+    "instantAccess": "يبدأ الوصول بعد تأكيد الدفع",
+    "cancelAnytime": "يمكنك إدارة خطتك أو إلغاؤها في أي وقت",
+    "secureCheckout": "الدفع محمي بواسطة PayPal",
+    "loading": "جارٍ تجهيز صفحة الدفع...",
+    "back": "العودة إلى الخطط",
+    "backToPlans": "العودة إلى الخطط",
+    "unavailableTitle": "تفاصيل الخطة غير متاحة",
+    "unavailableDescription": "يرجى اختيار خطة اشتراك قبل بدء الدفع.",
+    "messages": {
+      "loadPlanError": "تعذر تحميل الخطة المحددة.",
+      "createOrderError": "تعذر إنشاء طلب PayPal.",
+      "captureError": "تعذر تأكيد الدفع عبر PayPal.",
+      "insufficientFunds": "تم رفض الدفع لعدم كفاية الرصيد.",
+      "instrumentDeclined": "تم رفض طريقة الدفع. يرجى تجربة طريقة أخرى.",
+      "transactionRefused": "تم رفض المعاملة. يرجى التواصل مع الدعم.",
+      "duplicateInvoice": "تمت معالجة هذا الطلب مسبقًا. يرجى التحديث والمحاولة مرة أخرى."
+    },
+    "success": {
+      "badge": "تم تأكيد الدفع",
+      "title": "مرحبًا بك في خطتك الجديدة",
+      "description": "اكتمل الدفع بنجاح. تم إرسال طلب اشتراكك وأصبحت خطتك جاهزة للاستخدام.",
+      "nextTitle": "اشتراكك قيد التجهيز",
+      "nextDescription": "يمكنك مراجعة حالته وتفاصيله من لوحة الاشتراكات.",
+      "secureTitle": "تم تسجيل الدفع بأمان",
+      "secureDescription": "أكد PayPal دفعتك واستلم Noor تفاصيل المعاملة.",
+      "viewSubscription": "عرض اشتراكي",
+      "backHome": "العودة إلى الصفحة الرئيسية"
+    },
+    "cancelled": {
+      "badge": "تم إلغاء الدفع",
+      "title": "لم تكتمل عملية الدفع",
+      "description": "لم يتم تفعيل أي اشتراك. يمكنك العودة إلى صفحة الدفع عندما تكون مستعدًا.",
+      "helpTitle": "لم يتم خصم أي مبلغ",
+      "helpDescription": "لا تزال خطتك متاحة. حاول مرة أخرى باستخدام PayPal أو اختر خطة أخرى من قسم الأسعار.",
+      "back": "العودة إلى الدفع",
+      "chooseAnother": "اختيار خطة"
+    }
+  },
+
   "subscriptionPlanManagement": {
     "badge": "مساحة عمل الإدارة",
     "title": "إدارة خطط الاشتراك",
