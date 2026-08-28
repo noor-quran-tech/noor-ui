@@ -18,6 +18,9 @@ import Requests from "@pages/dashboard/Requests";
 import Inquiries from "@pages/dashboard/Inquiries";
 import Subscriptions from "@pages/dashboard/Subscriptions";
 import SubscriptionPlans from "@pages/dashboard/SubscriptionPlans";
+import PaypalPayment from "@pages/payment/PaypalPayment";
+import CompletePayment from "@components/payment/CompletePayment";
+import CancelPayment from "@components/payment/CancelPayment";
 
 const AppRoutes = () => {
   return (
@@ -54,6 +57,10 @@ const AppRoutes = () => {
             <Route path="subscriptions" element={<Subscriptions />} />
             <Route path="subscription-plans" element={<SubscriptionPlans />} />
           </Route>
+
+          <Route path="/payment" element={<PaypalPayment />}></Route>
+          <Route path="complete-payment" element={<CompletePayment />} />
+          <Route path="cancel-payment" element={<CancelPayment />} />
         </Route>
 
         {/* FALLBACK 404 */}

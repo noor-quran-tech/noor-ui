@@ -47,7 +47,12 @@ const SubscriptionPlans = () => {
       return;
     }
     navigate("/payment", {
-      state: { planId: plan.id, planName: plan.name, price: plan.price },
+      state: {
+        planId: plan.id,
+        planName: plan.name,
+        price: plan.price,
+        description: plan.description,
+      },
     });
   };
 
