@@ -32,7 +32,7 @@ const PLAN_FEATURES: Record<string, string[]> = {
   ],
 };
 
-const SubscriptionPlans = () => {
+const SubscriptionPlansHome = () => {
   const { t } = useTranslation();
   const [plans, setPlans] = useState<SubscriptionPlan[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -47,7 +47,12 @@ const SubscriptionPlans = () => {
       return;
     }
     navigate("/payment", {
-      state: { planId: plan.id, planName: plan.name, price: plan.price },
+      state: {
+        planId: plan.id,
+        planName: plan.name,
+        price: plan.price,
+        description: plan.description,
+      },
     });
   };
 
@@ -192,4 +197,4 @@ const SubscriptionPlans = () => {
   );
 };
 
-export default SubscriptionPlans;
+export default SubscriptionPlansHome;

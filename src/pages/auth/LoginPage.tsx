@@ -1,7 +1,7 @@
 import React, { useState, type ChangeEvent } from "react";
 import { toast } from "sonner";
 import { Spinner } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import type { RootState } from "@store/store";
@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
   const loggedInUser = useSelector((state: RootState) => state.auth.user);
 
@@ -27,7 +28,15 @@ const LoginPage: React.FC = () => {
 
   if (loggedInUser) {
     setTimeout(() => {
-      navigate("/");
+      const redirectState = location.state as {
+        redirectTo?: string;
+        planId?: string;
+      } | null;
+      navigate(redirectState?.redirectTo ?? "/", {
+        state: redirectState?.planId
+          ? { planId: redirectState.planId }
+          : undefined,
+      });
     }, 500);
     return;
   }
