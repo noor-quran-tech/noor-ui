@@ -32,7 +32,7 @@ const PLAN_FEATURES: Record<string, string[]> = {
   ],
 };
 
-const SubscriptionPlans = () => {
+const SubscriptionPlansHome = () => {
   const { t } = useTranslation();
   const [plans, setPlans] = useState<SubscriptionPlan[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -197,4 +197,4 @@ const SubscriptionPlans = () => {
   );
 };
 
-export default SubscriptionPlans;
+export default SubscriptionPlansHome;
