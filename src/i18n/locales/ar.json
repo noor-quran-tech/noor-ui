@@ -367,7 +367,8 @@
       "statistics": "الإحصائيات",
       "sessions": "الجلسات",
       "requests": "الطلبات",
-      "subscriptions": "الاشتراكات"
+      "subscriptions": "الاشتراكات",
+      "subscriptionPlans": "خطط الإشتراك"
     },
     "accessDeniedTitle": "تم رفض الوصول",
     "accessDeniedDesc": "قم بتنشيط الحساب لفتح التبويبات",
@@ -976,6 +977,43 @@
     "getStarted": "ابدأ الآن",
     "messages": {
       "fetchError": "فشل تحميل خطط الاشتراك."
+    }
+  },
+
+  "subscriptionPlanManagement": {
+    "badge": "مساحة عمل الإدارة",
+    "title": "إدارة خطط الاشتراك",
+    "description": "أنشئ الخطط المتاحة للطلاب وحدّثها واحذفها.",
+    "createButton": "إضافة خطة",
+    "editButton": "تعديل الخطة",
+    "deleteButton": "حذف الخطة",
+    "active": "نشطة",
+    "inactive": "غير نشطة",
+    "perMonth": "/ شهر",
+    "loading": "جارٍ تحميل خطط الاشتراك...",
+    "empty": "لم يتم العثور على خطط اشتراك.",
+    "messages": {
+      "fetchError": "فشل تحميل خطط الاشتراك.",
+      "requiredFields": "الاسم والوصف مطلوبان.",
+      "invalidPrice": "أدخل سعرًا صالحًا يساوي صفرًا أو أكثر.",
+      "createSuccess": "تم إنشاء خطة الاشتراك بنجاح.",
+      "updateSuccess": "تم تحديث خطة الاشتراك بنجاح.",
+      "saveError": "فشل حفظ خطة الاشتراك.",
+      "deleteConfirm": "هل تريد حذف خطة الاشتراك هذه؟ لا يمكن التراجع عن هذا الإجراء.",
+      "deleteSuccess": "تم حذف خطة الاشتراك بنجاح.",
+      "deleteError": "فشل حذف خطة الاشتراك."
+    },
+    "modal": {
+      "createTitle": "إنشاء خطة اشتراك",
+      "editTitle": "تعديل خطة الاشتراك",
+      "subtitle": "حافظ على تفاصيل الخطة والسعر الشهري محدثين.",
+      "name": "اسم الخطة",
+      "description": "الوصف",
+      "price": "السعر الشهري",
+      "close": "إغلاق النافذة",
+      "cancel": "إلغاء",
+      "save": "حفظ الخطة",
+      "saving": "جارٍ الحفظ..."
     }
   },
 

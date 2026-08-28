@@ -368,7 +368,8 @@
       "statistics": "Statistics",
       "sessions": "Sessions",
       "requests": "Requests",
-      "subscriptions": "Subscriptions"
+      "subscriptions": "Subscriptions",
+      "subscriptionPlans": "Subscription Plans"
     },
     "accessDeniedTitle": "Access Denied",
     "accessDeniedDesc": "Reactivate account to open tabs.",
@@ -977,6 +978,43 @@
     "getStarted": "Get Started",
     "messages": {
       "fetchError": "Failed to load subscription plans."
+    }
+  },
+
+  "subscriptionPlanManagement": {
+    "badge": "Admin workspace",
+    "title": "Subscription plan management",
+    "description": "Create, update, and remove the plans available to students.",
+    "createButton": "Add plan",
+    "editButton": "Edit plan",
+    "deleteButton": "Delete plan",
+    "active": "Active",
+    "inactive": "Inactive",
+    "perMonth": "/ month",
+    "loading": "Loading subscription plans...",
+    "empty": "No subscription plans found.",
+    "messages": {
+      "fetchError": "Failed to load subscription plans.",
+      "requiredFields": "Name and description are required.",
+      "invalidPrice": "Enter a valid price that is zero or greater.",
+      "createSuccess": "Subscription plan created successfully.",
+      "updateSuccess": "Subscription plan updated successfully.",
+      "saveError": "Failed to save subscription plan.",
+      "deleteConfirm": "Delete this subscription plan? This action cannot be undone.",
+      "deleteSuccess": "Subscription plan deleted successfully.",
+      "deleteError": "Failed to delete subscription plan."
+    },
+    "modal": {
+      "createTitle": "Create subscription plan",
+      "editTitle": "Edit subscription plan",
+      "subtitle": "Keep the plan details and monthly price up to date.",
+      "name": "Plan name",
+      "description": "Description",
+      "price": "Monthly price",
+      "close": "Close dialog",
+      "cancel": "Cancel",
+      "save": "Save plan",
+      "saving": "Saving..."
     }
   },
 

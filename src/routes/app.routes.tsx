@@ -17,6 +17,7 @@ import SessionsPage from "@pages/dashboard/SessionsPage";
 import Requests from "@pages/dashboard/Requests";
 import Inquiries from "@pages/dashboard/Inquiries";
 import Subscriptions from "@pages/dashboard/Subscriptions";
+import SubscriptionPlans from "@pages/dashboard/SubscriptionPlans";
 
 const AppRoutes = () => {
   return (
@@ -51,6 +52,7 @@ const AppRoutes = () => {
             <Route path="requests" element={<Requests />} />
             <Route path="inquiries" element={<Inquiries />} />
             <Route path="subscriptions" element={<Subscriptions />} />
+            <Route path="subscription-plans" element={<SubscriptionPlans />} />
           </Route>
         </Route>
 
