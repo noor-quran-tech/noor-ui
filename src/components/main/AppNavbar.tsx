@@ -119,19 +119,19 @@ function AppNavbar() {
                 {isDropdownOpen && (
                   <div className="absolute right-0 z-50 mt-3 w-48 rounded-xl border border-neutral-200 bg-white p-2 shadow-xl">
                     <Link
+                      onClick={() => setIsDropdownOpen(false)}
                       to="/profile"
                       className="block rounded-lg px-3 py-2 text-sm text-black hover:bg-neutral-100"
                     >
                       👤 {t("navbar.profile")}
                     </Link>
-
                     <Link
+                      onClick={() => setIsDropdownOpen(false)}
                       to="/dashboard"
                       className="block rounded-lg px-3 py-2 text-sm text-black hover:bg-neutral-100"
                     >
                       📊 {t("navbar.dashboard")}
                     </Link>
-
                     <hr className="my-1 text-black" />
 
                     <button
