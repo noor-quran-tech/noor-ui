@@ -1,12 +1,17 @@
 import { Route, Routes } from "react-router-dom";
 
-import { GuestRoute, ProtectedRoute } from "@components/guards/AuthGuards";
+import {
+  GuestRoute,
+  ProtectedRoute,
+  RoleRoute,
+} from "@components/guards/AuthGuards";
 
 import HomePage from "@pages/static/HomePage";
 import SignupPage from "@pages/auth/SignupPage";
 import LoginPage from "@pages/auth/LoginPage";
 import ContactPage from "@pages/static/ContactPage";
 import AboutPage from "@pages/static/AboutPage";
+import UnauthorizedPage from "@pages/static/Unauthorized";
 import NotFoundPage from "@pages/static/NotFoundPage";
 import ProfilePage from "@pages/account/ProfilePage";
 import RequestSubjectPage from "@pages/dashboard/RequestSubject";
@@ -21,6 +26,7 @@ import SubscriptionPlans from "@pages/dashboard/SubscriptionPlans";
 import PaypalPayment from "@pages/payment/PaypalPayment";
 import CompletePayment from "@components/payment/CompletePayment";
 import CancelPayment from "@components/payment/CancelPayment";
+import { Role } from "@utils/types/user";
 
 const AppRoutes = () => {
   return (
@@ -32,6 +38,7 @@ const AppRoutes = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
         {/* ====================================================
             GUEST-ONLY ROUTES (Logged-in users get redirected)
@@ -47,15 +54,35 @@ const AppRoutes = () => {
         <Route element={<ProtectedRoute />}>
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/request-subject" element={<RequestSubjectPage />} />
+
           <Route path="/dashboard" element={<Dashboard />}>
-            <Route path="users" element={<UserManagement />} />
-            <Route path="users/students/:id" element={<UserProfilePage />} />
-            <Route path="users/teachers/:id" element={<UserProfilePage />} />
-            <Route path="sessions" element={<SessionsPage />} />
-            <Route path="requests" element={<Requests />} />
-            <Route path="inquiries" element={<Inquiries />} />
-            <Route path="subscriptions" element={<Subscriptions />} />
-            <Route path="subscription-plans" element={<SubscriptionPlans />} />
+            <Route element={<RoleRoute allowedRoles={[Role.ADMIN]} />}>
+              <Route path="users" element={<UserManagement />} />
+              <Route path="users/students/:id" element={<UserProfilePage />} />
+              <Route path="users/teachers/:id" element={<UserProfilePage />} />
+              <Route path="inquiries" element={<Inquiries />} />
+              <Route
+                path="subscription-plans"
+                element={<SubscriptionPlans />}
+              />
+            </Route>
+
+            <Route
+              element={<RoleRoute allowedRoles={[Role.STUDENT, Role.ADMIN]} />}
+            >
+              <Route path="subscriptions" element={<Subscriptions />} />
+            </Route>
+
+            <Route
+              element={
+                <RoleRoute
+                  allowedRoles={[Role.STUDENT, Role.TEACHER, Role.ADMIN]}
+                />
+              }
+            >
+              <Route path="sessions" element={<SessionsPage />} />
+              <Route path="requests" element={<Requests />} />
+            </Route>
           </Route>
 
           <Route path="/payment" element={<PaypalPayment />}></Route>
