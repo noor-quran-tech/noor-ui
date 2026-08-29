@@ -276,7 +276,7 @@ const Inquiries = () => {
                     </label>
                     <a
                       href={`mailto:${selectedInquiry.email}`}
-                      className="text-sm font-semibold text-teal-600 hover:underline"
+                      className="block text-sm font-semibold text-teal-600 hover:underline break-all overflow-hidden"
                     >
                       {selectedInquiry.email}
                     </a>
@@ -287,7 +287,7 @@ const Inquiries = () => {
                   <label className="text-[11px] font-bold uppercase tracking-wider text-neutral-400 block mb-2">
                     {t("dashboard.inquiries.drawer.message")}
                   </label>
-                  <div className="bg-white border border-neutral-200 p-5 rounded-xl text-neutral-700 whitespace-pre-wrap leading-relaxed shadow-xs text-sm">
+                  <div className="bg-white border border-neutral-200 p-5 rounded-xl text-neutral-700 whitespace-pre-wrap wrap-break-word leading-relaxed shadow-xs text-sm overflow-hidden">
                     {selectedInquiry.message}
                   </div>
                 </div>

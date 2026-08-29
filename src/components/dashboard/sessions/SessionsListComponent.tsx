@@ -129,7 +129,7 @@ const SessionsListComponent = ({
                 <h2 className="text-base font-extrabold text-neutral-900 tracking-tight">
                   {session.title}
                 </h2>
-                <p className="text-xs text-neutral-500 line-clamp-2 leading-relaxed">
+                <p className="text-xs text-neutral-500 leading-relaxed wrap-break-word overflow-wrap-anywhere whitespace-pre-wrap">
                   {session.description ||
                     t("dashboard.sessions.list.labels.noDescription")}
                 </p>
