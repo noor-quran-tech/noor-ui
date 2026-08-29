@@ -120,7 +120,7 @@ const LoginPage: React.FC = () => {
         }),
       );
 
-      navigate("/");
+      navigate("/dashboard");
     } catch (err) {
       const resolvedError = resolveApiErrorMessage(
         err,
