@@ -72,7 +72,7 @@ const FeedbackModal = ({
                         </span>
                         <StarRating value={feedbackSent.rating} />
                       </div>
-                      <p className="text-xs text-neutral-600 leading-relaxed">
+                      <p className="text-xs text-neutral-600 leading-relaxed wrap-break-word overflow-wrap-anywhere">
                         {feedbackSent.comment}
                       </p>
                     </div>
@@ -114,7 +114,7 @@ const FeedbackModal = ({
                         </span>
                         <StarRating value={feedbackReceived.rating} />
                       </div>
-                      <p className="text-xs text-neutral-600 leading-relaxed">
+                      <p className="text-xs text-neutral-600 leading-relaxed wrap-break-word overflow-wrap-anywhere">
                         {feedbackReceived.comment}
                       </p>
                     </div>
