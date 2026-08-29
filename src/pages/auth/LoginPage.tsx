@@ -222,12 +222,12 @@ const LoginPage: React.FC = () => {
                   {t("login.labels.password")}
                 </label>
 
-                <Link
+                {/* <Link
                   to="#forgot"
                   className="text-decoration-none text-xs font-semibold text-teal-600 transition duration-150 hover:text-teal-500 hover:underline"
                 >
                   {t("login.actions.forgotPassword")}
-                </Link>
+                </Link> */}
               </div>
 
               <input
