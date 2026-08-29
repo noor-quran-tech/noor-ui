@@ -145,10 +145,12 @@ const TableComponent = ({
                           )}
                         </td>
                         <td
-                          className="p-4 max-w-62.5 wrap-break text-xs text-slate-500"
+                          className="p-4 max-w-[220px] text-xs text-slate-500 break-words overflow-wrap-anywhere"
                           title={req.reviewNotes || ""}
                         >
-                          {req.reviewNotes || (
+                          {req.reviewNotes ? (
+                            req.reviewNotes
+                          ) : (
                             <span className="italic text-slate-400/70">
                               {t("dashboard.requests.table.labels.noNotes")}
                             </span>
@@ -228,10 +230,12 @@ const TableComponent = ({
                         )}
                       </td>
                       <td
-                        className="p-4 max-w-xs truncate text-xs text-slate-500"
+                        className="p-4 max-w-[220px] text-xs text-slate-500 break-words overflow-wrap-anywhere"
                         title={req.reviewNotes || ""}
                       >
-                        {req.reviewNotes || (
+                        {req.reviewNotes ? (
+                          req.reviewNotes
+                        ) : (
                           <span className="italic text-slate-400/70">
                             {t("dashboard.requests.table.labels.noNotes")}
                           </span>
