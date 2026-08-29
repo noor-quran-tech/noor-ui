@@ -11,7 +11,7 @@ interface RoleRouteProps {
 export const ProtectedRoute = () => {
   const location = useLocation();
   const loggedInUser = useSelector((state: RootState) => state.auth);
-  console.log("redirectTo: location.pathname", location.pathname);
+
   if (
     !loggedInUser ||
     !loggedInUser.token ||
